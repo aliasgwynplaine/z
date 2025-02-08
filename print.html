@@ -1,0 +1,888 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>zettelkasten</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">zettelkasten</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p>#index</p>
+<h1 id="index"><a class="header" href="#index">index</a></h1>
+<hr />
+<p>este es el índice</p>
+<p>sistemas operativos <a href="1-systemes-dexploitation.html">1-systemes-dexploitation.md</a>
+algo <a href="2-algorithmes.html">2-algorithmes.md</a>
+information security <a href="3-securite-dinformation.html">3-securite-dinformation.md</a>
+cyber security <a href="4-cyber-security.html">4-cyber-security.md</a>
+ordinateurs <a href="5-computers.html">5-computers.md</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computation #ordinateurs #fr</p>
+<h1 id="systèmes-dexploitation"><a class="header" href="#systèmes-dexploitation">Systèmes d'exploitation</a></h1>
+<hr />
+<p>C'est le programme ou ensemble de programmes qui gère l'utilisation des ressources d'un ordinateur par des logiciels applicatifs. On peut dire que le OS est l'interface entre le matériel et les applicatifs</p>
+<h2 id="parties"><a class="header" href="#parties">Parties</a></h2>
+<ul>
+<li>kernel ou noyau <a href="1d-kernel.html">1d-kernel</a></li>
+<li>services <a href="1p-kernel-services.html">1p-kernel-services</a></li>
+<li>drivers ou pilotes <a href="1n-drivers.html">1n-drivers</a></li>
+<li>user-land <a href="1o-userland.html">1o-userland</a></li>
+</ul>
+<h2 id="exemples"><a class="header" href="#exemples">exemples</a></h2>
+<ul>
+<li>UNIX <a href="1k-unix.html">1k-unix</a></li>
+<li>GNU/Linux <a href="1e-gnu-linux.html">1e-gnu-linux</a></li>
+<li>MacOS <a href="1f-macOS.html">1f-macOS</a></li>
+<li>Android <a href="1g-android.html">1g-android</a></li>
+<li>Windows <a href="1h-windows.html">1h-windows</a></li>
+<li>FreeDOS <a href="1j-freedos.html">1j-freedos</a></li>
+</ul>
+<h2 id="concepts"><a class="header" href="#concepts">Concepts</a></h2>
+<p>compilation <a href="1a-compilation.html">1a-compilation</a>
+EFL format <a href="1c2-format-ELF.html">1c2-format-ELF</a>
+système des fichiers <a href="1c-systeme-des-fichiers.html">1c-systeme-des-fichiers</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#compilation #programmes #ordinateurs #fr</p>
+<h1 id="compilation"><a class="header" href="#compilation">compilation</a></h1>
+<hr />
+<p>c'est le processus dont on utilise pour transformer un code source en un fichier binaire executable (appelé <a href="1a2-code-objet.html">code objet</a>).</p>
+<p>Un des languages compilées le plus connue est C. Concrètement, le GNU C Compiler gcc (<a href="1a3-gcc.html">1a3-gcc</a>), bien qu'il y en ait d'autres.</p>
+<p>Par contre, il y a aussi des langages interprétées (<a href="1m-langages-interpretees.html">1m-langages-interpretees</a>).</p>
+<h2 id="outils"><a class="header" href="#outils">Outils</a></h2>
+<p>puedes usar <a href="1a1-nm.html"><code>nm</code></a> para inspeccionar la tabla de símbolos de un <a href="1c2-format-ELF.html">ejecutable ELF</a>... si no has usado <code>strip</code>.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#linux #unix #commands #fr</p>
+<h1 id="nm"><a class="header" href="#nm"><code>nm</code></a></h1>
+<p>De la <code>manpage</code>:</p>
+<div style="break-before: page; page-break-before: always;"></div><p>#computation #compilation #fr</p>
+<h1 id="code-objet"><a class="header" href="#code-objet">code objet</a></h1>
+<hr />
+<p>C'est un ensemble des instructions normalement en code binaire.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#c #gcc #gnu #linux #ordinateurs #fr</p>
+<h1 id="gnu-c-compiler"><a class="header" href="#gnu-c-compiler">GNU C Compiler</a></h1>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computation #ordinateurs #fr</p>
+<h1 id="systèmes-des-fichiers"><a class="header" href="#systèmes-des-fichiers">Systèmes des fichiers</a></h1>
+<hr />
+<p>On utilise le terme pour designer l'organisation des informations de fichiers <a href="1c1-fichier.html">1c1-fichier</a> dans un dispositif de stockage, mais aussi utilisé pour designer l'organisation des fichiers (et repertoires) dans le système d'exploitation.</p>
+<h2 id="exemples-des-fichiers-exécutables"><a class="header" href="#exemples-des-fichiers-exécutables">exemples des fichiers exécutables</a></h2>
+<ul>
+<li>ELF <a href="1c2-format-ELF.html">1c2-format-ELF</a></li>
+<li>Mach-O <a href="1c3-format-Mach-O.html">1c3-format-Mach-O</a></li>
+<li>PE <a href="1c4-format-PE.html">1c4-format-PE</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#informatics #computation #os</p>
+<h1 id="fichier"><a class="header" href="#fichier">fichier</a></h1>
+<hr />
+<p>C'est un abstraction qui consiste en un ensemble d'octets encodant des informations. Les informations ont de sense a cause d'un format</p>
+<ul>
+<li><a href="1c2-format-ELF.html">1c2-format-ELF</a></li>
+<li><a href="1c3-format-Mach-O.html">1c3-format-Mach-O</a></li>
+<li><a href="1c4-format-PE.html">1c4-format-PE</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#unix #linux #ordinateurs #fr</p>
+<h1 id="formato-elf"><a class="header" href="#formato-elf">formato ELF</a></h1>
+<p>C'est le format des binaires exécutables dans les <a href="1c-systeme-des-fichiers.html">systèmes UNIX</a>.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#macos #ordinateurs #fr</p>
+<h1 id="mach-o-format"><a class="header" href="#mach-o-format">Mach-O format</a></h1>
+<hr />
+<p>C'est le format de fichiers</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#windows #ordinateurs</p>
+<h1 id="portable-executable-pe"><a class="header" href="#portable-executable-pe">Portable Executable (PE)</a></h1>
+<hr />
+<p>Format de fichiers exécutables du système d'exploitation windows.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#systemesdexploitation #kernel #ordinateurs #fr</p>
+<h1 id="kernel"><a class="header" href="#kernel">kernel</a></h1>
+<hr />
+<p>C'est la partie du système d'exploitation qui gère les ressources de l'ordinateur et qui s'execute en mode système. Notamment, le noyau fournit des mécanismes d'abstraction de la mémoire, des processeurs et des périphériques.</p>
+<p>Le kernel est aussi un programme et doit être codé, compilé et il est mappé dans la mémoire vive tant qu'on utilise le système d'exploitation. Pour des raisons de sécurité, l'adresse de base du kernel n'est pas fixée dans le mapping. <a href="1d12-KASLR.html">1d12-KASLR</a></p>
+<p>Quand un programme ou application a besoin d'accès mémoire ou doit se communiquer avec un périphérique, il doit demander au kernel pour faire operation pour lui. C'est qu'on connais comme appel système (<a href="1l-syscall.html">1l-syscall</a>).|</p>
+<p>classement des noyaux <a href="1d1-kernel-structure-types.html">1d1-kernel-structure-types</a>.</p>
+<h2 id="exemples-1"><a class="header" href="#exemples-1">exemples</a></h2>
+<ul>
+<li>linux <a href="1d8-linux.html">1d8-linux</a></li>
+<li>windows NT kernel <a href="1d9-windows-nt-kernel.html">1d9-windows-nt-kernel</a></li>
+<li>XNU <a href="1d10-xnu.html">1d10-xnu</a></li>
+<li>unix kernel <a href="1d11-unix-kernel.html">1d11-unix-kernel</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #security #memorycorruption</p>
+<h1 id="kernel-classement"><a class="header" href="#kernel-classement">kernel classement</a></h1>
+<hr />
+<p>Les noyaux peuvent être classifiés en fonction de leur structure et leur conception par rapport au système d'exploitation.</p>
+<ul>
+<li>noyau monolithiques <a href="1d2-kernel-monolithique.html">1d2-kernel-monolithique</a></li>
+<li>micro-noyau <a href="1d3-micro-kernel.html">1d3-micro-kernel</a></li>
+<li>noyau monolithique modulaire <a href="1d4-kernel-monolithique-modulaire.html">1d4-kernel-monolithique-modulaire</a></li>
+<li>micro-noyau hybride <a href="1d5-micro-kernel-hybride.html">1d5-micro-kernel-hybride</a></li>
+<li>exokernel <a href="1d6-exokernel.html">1d6-exokernel</a></li>
+<li>unikernel <a href="1d7-unikernel.html">1d7-unikernel</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#fr #kernel #todo</p>
+<h1 id="unix-kernel"><a class="header" href="#unix-kernel">unix kernel</a></h1>
+<hr />
+<p>uni devices <a href="1d11a-unix-drivers.html">1d11a-unix-drivers</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#unix #kernel #drivers #fr</p>
+<h1 id="pilotes-unix"><a class="header" href="#pilotes-unix">pilotes UNIX</a></h1>
+<hr />
+<p>Les dispositifs étaient identifiés par deux numéros: major et minor.
+major -&gt; type de service
+minor -&gt; instance du device</p>
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #informatics #computerscience #fr</p>
+<h1 id="kernel-monolithique"><a class="header" href="#kernel-monolithique">Kernel monolithique</a></h1>
+<hr />
+<p>Compilé statiquement sur une seule binaire et il est chargé entièrement en mémoire. Ils sont généralement optimisés pour une architecture especifique. En consequence, on a bon performance, mais une grand surface d'attaque et portabilité limité.</p>
+<h2 id="exemples-2"><a class="header" href="#exemples-2">exemples</a></h2>
+<ul>
+<li>UNIX <a href="1k-unix.html">1k-unix</a></li>
+<li></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #fr</p>
+<h1 id="micro-noyau"><a class="header" href="#micro-noyau">micro-noyau</a></h1>
+<hr />
+<p>Le µ-noyau minimise les fonctionnalités intégrées au noyau en plaçant la plus grande partie des <em>services</em> du système d'exploitation à l’extérieur du noyau. C'est-à-dire, les services sont exécutés en mode S.</p>
+<p>En consequence, la sécurité est renforcé, aussi que la souplesse et la portabilité. Par contre, on perde en performance à cause d'avoir besoin de basculer entre mode S et mode U. Aussi, on a besoin d'standardiser une API afin que les services interagissent avec le µ-noyau.</p>
+<p>On appelle <strong>µ-noyau enrichi</strong> à l'ensemble logiciel formé par le µ-noyau et ses services.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #fr</p>
+<h1 id="noyau-monolithique-modulaire"><a class="header" href="#noyau-monolithique-modulaire">Noyau monolithique modulaire</a></h1>
+<hr />
+<p>Les <em>services</em> du système d'exploitation se transforment en modules qui sont mis dedans le noyau dynamiquement. Les services sont exécutés en mode S une fois chargés et partagent le même space d'adressage que le coeur du noyau.</p>
+<p>En tant que les modules sont exécutés en mode S, l'aspect sécurité peut être compromis.</p>
+<h2 id="exemples-3"><a class="header" href="#exemples-3">exemples</a></h2>
+<ul>
+<li>linux <a href="1d8-linux.html">1d8-linux</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #fr #systemesdexploitation</p>
+<h1 id="micro-kernel-hybride"><a class="header" href="#micro-kernel-hybride">micro-kernel hybride</a></h1>
+<hr />
+<p>C'est un µ-noyau qui intègre directement certains services cruciaux, mais le reste de services restants sont à l’extérieur du noyau.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#exokernel #kernel #fr</p>
+<h1 id="exokernel"><a class="header" href="#exokernel">exokernel</a></h1>
+<hr />
+<p>micro-kernel minimum qui apporte accès au hardware sans imposer politiques d'haute niveau. Les applications ont plus de flexibilité au moment d'interagir avec le hardware mais, par contre, les applications peuvent être plus laborieuses à faire.</p>
+<p>Par example: l'exokernel apporte accès secure au disque en évitant les accès non autorisés; et la manière dont l'information du disque est abstrait dépendra des applications ou la bibliothèque dont l'application en particulier est en train d'utiliser.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#unikernel #kernel #systemesdexploitation #fr</p>
+<h1 id="unikernel"><a class="header" href="#unikernel">unikernel</a></h1>
+<hr />
+<p>C'est un noyau spécialisée pour une application ou une nombre très limité d'applications. Dans ce paradigme, tous les applications partage le même space d'adressage. On obtient une système d'exploitation qui a besoin de peu space et avec une surface d'attaque réduit. Attractifs pour microservices.</p>
+<p>Tant les unikernels comme les exokernels appartiennent a la categorie des systèmes d'exploitation bibliothèque.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #linux #fr #todo</p>
+<h1 id="noyau-linux"><a class="header" href="#noyau-linux">noyau linux</a></h1>
+<hr />
+<p>linux file struct <a href="1d8f-linux-file-struct.html">1d8f-linux-file-struct</a>
+linux drivers <a href="1d8a-linux-drivers.html">1d8a-linux-drivers</a>
+linux modules <a href="1d8e-linux-modules.html">1d8e-linux-modules</a></p>
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #drivers #fr #sorbonne</p>
+<h1 id="pilotes-dans-linux"><a class="header" href="#pilotes-dans-linux">pilotes dans linux</a></h1>
+<hr />
+<p>Les pilotes sont associés au dispositifs (devices) et on le traitera de manière indifférencié.</p>
+<p>Les pilotes sont accessibles dans la partition devfs dans <code>/dev/</code>.</p>
+<ul>
+<li>character -&gt; échange d'octets (char) <a href="1d8b-linux-char-device.html">1d8b-linux-char-device</a></li>
+<li>block -&gt; échange des bloques d'octets <a href="1d8c-linux-block-devices.html">1d8c-linux-block-devices</a></li>
+<li>network -&gt; contrôle des périphériques réseau <a href="1d8d-linux-network-device.html">1d8d-linux-network-device</a></li>
+</ul>
+<p>L'identification des pilotes est fait comme dans UNIX: avec le major et minor <a href="1d11a-unix-drivers.html">1d11a-unix-drivers</a>.</p>
+<p>Concevoir un pilote de périphérique <a href="1d8a1-linux-drivers-programming.html">1d8a1-linux-drivers-programming</a></p>
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers</p>
+<h1 id="linux-drivers-programming"><a class="header" href="#linux-drivers-programming">Linux drivers programming</a></h1>
+<hr />
+<h2 id="guidelines"><a class="header" href="#guidelines">Guidelines</a></h2>
+<ul>
+<li>Définir les services attendus</li>
+<li>Doit réutiliser le code des autres sous-systèmes.</li>
+<li>Le code doit être réentrant. Il faut éviter l'usage des variables globales dans les fonctions (voir <code>strtok(...)</code>, par example).</li>
+</ul>
+<p>Au niveau pratique, il y a beaucoup de similitudes entre écrire un driver et écrire un module.</p>
+<ul>
+<li>allocation des numéros major et minor<a href="1d8a2-linux-drivers-major-minor-allocation.html">1d8a2-linux-drivers-major-minor-allocation</a></li>
+<li>la structures  <code>file_operations</code> <a href="1d8a3-linux-drivers-file-operations.html">1d8a3-linux-drivers-file-operations</a></li>
+<li></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops</p>
+<h1 id="linux-drivers-programming-1"><a class="header" href="#linux-drivers-programming-1">Linux drivers programming</a></h1>
+<hr />
+<p>La structure <code>file_operations</code> est défini dans <code>linux/fs.h</code> est toutes ses champs sont des pointeurs aux fonctions. Chaque fichier associé est associé a une structure <code>file_operations</code> <a href="1d8f-linux-file-struct.html">1d8f-linux-file-struct</a>.</p>
+<pre><code class="language-c"> struct file_operations {
+   struct module *owner;
+   loff_t (*llseek) (struct file *, loff_t, int);
+   ssize_t (*read) (struct file *, char *, size_t, loff_t *);
+   ssize_t (*write) (struct file *, const char *, size_t, loff_t *);
+   int (*readdir) (struct file *, void *, filldir_t);
+   unsigned int (*poll) (struct file *, struct poll_table_struct *);
+   int (*ioctl) (struct inode *, struct file *, unsigned int, unsigned long);
+   int (*mmap) (struct file *, struct vm_area_struct *);
+   int (*open) (struct inode *, struct file *);
+   int (*flush) (struct file *);
+   int (*release) (struct inode *, struct file *);
+   int (*fsync) (struct file *, struct dentry *, int datasync);
+   int (*fasync) (int, struct file *, int);
+   int (*lock) (struct file *, int, struct file_lock *);
+   ssize_t (*readv) (struct file *, const struct iovec *, unsigned long,
+					 loff_t *);
+   ssize_t (*writev) (struct file *, const struct iovec *, unsigned long,
+		              loff_t *);
+};
+</code></pre>
+<p>char devices programming <a href="1d8a3a-linux-drivers-char-device-programming.html">1d8a3a-linux-drivers-char-device-programming</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops #char</p>
+<h1 id="linux-char-device-programming"><a class="header" href="#linux-char-device-programming">Linux char device programming</a></h1>
+<hr />
+<h2 id="les-fonctions"><a class="header" href="#les-fonctions">les fonctions</a></h2>
+<p>le décorateur <code>__user</code> indique que les pointeurs sont dans l'espace utilisateur. C'est-à-dire, il est possible qu'il soit pas disponible ni en RAM. Utilise les fonctions de <code>asm/uaccess.h</code> (<a href="1d8a3a1-linux-driver-uaccess.html">1d8a3a1-linux-driver-uaccess</a>) pour transférer la mémoire entre espace kernel et espace utilisateur.</p>
+<p>Il est préférable d'implementer les fonctions en suivant certaines directives<sup class="footnote-reference"><a href="#1">1</a></sup></p>
+<ul>
+<li>open <a href="1d8a3b-linux-driver-char-device-open.html">1d8a3b-linux-driver-char-device-open</a></li>
+<li>release (close) <a href="1d8a3c-linux-driver-char-device-close.html">1d8a3c-linux-driver-char-device-close</a></li>
+<li>read <a href="1d8a3d-linux-driver-char-device-read.html">1d8a3d-linux-driver-char-device-read</a></li>
+<li>write <a href="1d8a3e-linux-driver-char-device-write.html">1d8a3e-linux-driver-char-device-write</a></li>
+<li></li>
+</ul>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>https://static.lwn.net/images/pdf/LDD3/ch03.pdf</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops #char</p>
+<h1 id="linux---uaccess-fonctions"><a class="header" href="#linux---uaccess-fonctions">linux - uaccess fonctions</a></h1>
+<hr />
+<pre><code class="language-c">unsigned long copy_to_user(void __user *to, const void *from, 
+						   unsigned long count);
+unsigned long copy_from_user(void *to, const void __user *from, 
+						     unsigned long count);
+</code></pre>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops #char</p>
+<h1 id="linux-char-device---open"><a class="header" href="#linux-char-device---open">linux char device - open</a></h1>
+<hr />
+<p>On doit performer le suivant:</p>
+<ul>
+<li>tester erreurs liées au dispositif specific.</li>
+<li>initialiser le dispositif si jamais il est la premiere fois qu'il est ouvert</li>
+<li>metre a jour le pointeur <code>f_op</code>, si nécessaire.</li>
+<li>faire l'allocation de la memoire à mettre dans <code>filp-&gt;private_data</code>, si nécessaire.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops #char</p>
+<h1 id="linux-char-device---open-1"><a class="header" href="#linux-char-device---open-1">linux char device - open</a></h1>
+<hr />
+<p>On doit performer le suivant:</p>
+<ul>
+<li>désallouer la mémoire, si nécessaire.</li>
+<li>éteindre le dispositif si jamais on est les derniers à l'utiliser.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops #char</p>
+<h1 id="linux-char-device---read"><a class="header" href="#linux-char-device---read">linux char device - read</a></h1>
+<hr />
+<pre><code class="language-c">ssize_t read(struct file *filp, char __user *buff, size_t count, loff_t *offp); 
+</code></pre>
+<ul>
+<li><code>buff</code>. cette variable pointe vers l'adresse mémoire où les données lues devraient être placées.</li>
+<li><code>count</code>. c'est la taille de la donnée à transférer</li>
+<li><code>offp</code>. indiques la position dont l'usager accede.</li>
+</ul>
+<h2 id="la-valeur-de-retourne"><a class="header" href="#la-valeur-de-retourne">La valeur de retourne</a></h2>
+<p>interpreté pour les applications</p>
+<ul>
+<li>si elle est égale à <code>count</code>, donc le nombre de octets demandé ont été transmit.</li>
+<li>s elle est positive, mais plus petite que <code>count</code>, donc on se sont transmit qu'une partie des octets demandés.</li>
+<li>si elle est égale a 0, donc on a trouvé <code>EOF</code> mais on a rien lu</li>
+<li>si elle est négative, donc erreur. Regarde <code>linux/errno.h</code> <a href="1d8g-linux-errno.html">1d8g-linux-errno</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops #char</p>
+<h1 id="linux-char-device---write"><a class="header" href="#linux-char-device---write">linux char device - write</a></h1>
+<hr />
+<pre><code class="language-c">ssize_t write(struct file *filp, const char __user *buff, size_t count, loff_t *offp);
+</code></pre>
+<ul>
+<li><code>buff</code>. cette variable pointe vers l'adresse mémoire celui des données qu'on va transférer au dispositif.</li>
+<li><code>count</code>. c'est la taille de la donnée à transférer</li>
+<li><code>offp</code>. indiques la position dont l'usager accede.</li>
+</ul>
+<h1 id="la-valeur-de-retourne-1"><a class="header" href="#la-valeur-de-retourne-1">la valeur de retourne</a></h1>
+<ul>
+<li>si elle est égale à <code>count</code>, donc le nombre de octets demandé ont été transmit.</li>
+<li>s elle est positive, mais plus petite que <code>count</code>, donc on se sont transmit qu'une partie des octets demandés.</li>
+<li>si elle est égale a 0, donc on a rien écrit.</li>
+<li>si elle est négative, donc erreur. Regarde <code>linux/errno.h</code> <a href="1d8g-linux-errno.html">1d8g-linux-errno</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#linux #kernel #fr</p>
+<h1 id="linux-character-device"><a class="header" href="#linux-character-device">linux character device</a></h1>
+<hr />
+<p>/dev/mem -&gt;
+/dev/kmem</p>
+<p>linux driver char device programming <a href="1d8a3a-linux-drivers-char-device-programming.html">1d8a3a-linux-drivers-char-device-programming</a></p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>linux kernel <code>Documentation/devices.txt</code></p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><p>#linux #modules #kernel #fr #sorbonne</p>
+<h1 id="linux-modules"><a class="header" href="#linux-modules">Linux modules</a></h1>
+<hr />
+<p>Les modules du linux ajoute des services dans le noyau: pilotes <a href="1d8a-linux-drivers.html">1d8a-linux-drivers</a>, appels systèmes, implementations des protocoles réseau.
+Dans linux, il peut être chargé ou déchargé dynamiquement. Les modules s'execute en mode système.</p>
+<p>Les modules linux doivent toujours avoir une fonction d'initialisation et une fonction de sortie:</p>
+<pre><code class="language-c">/* headers here */
+
+static int __init mod_init(void) { /* ... */ }
+
+static void __exit mod_cleanup(void) { /* ... */ }
+
+module_init(mod_init);
+module_exit(mod_cleanup);
+</code></pre>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #linux #fr #todo #fileops #file</p>
+<h1 id="structure-file"><a class="header" href="#structure-file">structure file</a></h1>
+<hr />
+<p>C'est la structure qui gère les fichiers ouverts dans le noyau linux.</p>
+<pre><code class="language-c">struct file {
+	struct list_head       f_list;        /* list of file objects */
+	struct dentry          *f_dentry;     /* associated dentry object */
+	struct vfsmount        *f_vfsmnt;     /* associated mounted fs */
+	struct file_operations *f_op;         /* file operations table */
+	atomic_t               f_count;       /* file object's usage count */
+	unsigned int           f_flags;       /* flags specified on open */
+	mode_t                 f_mode;        /* file access mode */
+	loff_t                 f_pos;         /* file offset (file pointer) */
+	struct fown_struct     f_owner;       /* owner data for signals */
+	unsigned int           f_uid;         /* user's UID */
+	unsigned int           f_gid;         /* user's GID */
+	int                    f_error;       /* error code */
+	struct file_ra_state   f_ra;          /* read-ahead state */
+	unsigned long          f_version;     /* version number */
+	void                   *f_security;   /* security module */
+	void                   *private_data; /* tty driver hook */
+	struct list_head       f_ep_links;    /* list of eventpoll links */
+	spinlock_t             f_ep_lock;     /* eventpoll lock */
+	struct address_space   *f_mapping;    /* page cache mapping */
+};
+</code></pre>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#unix #systemesdexploitation #c #fr</p>
+<h1 id="unix"><a class="header" href="#unix">Unix</a></h1>
+<hr />
+<h2 id="histoire"><a class="header" href="#histoire">Histoire</a></h2>
+<ul>
+<li>
+<ol start="1969">
+<li>Ken Thompson (ATT Bell labs) écrit la première version pour un PDP-7 de ce qui sera Unix</li>
+</ol>
+</li>
+<li>
+<ol start="1970">
+<li>Ken Thompson et Dennis Ritchie l’adaptent au DEC PDP-11/20. Au passage ils développent le premier compilateur C.</li>
+</ol>
+</li>
+<li>
+<ol start="1979">
+<li>ATT annonce son intention de créer une version commerciale d’Unix. En réaction l’université de Californie à Berkeley lance sa propre variante : BSD UNIX.</li>
+</ol>
+</li>
+<li>
+<ol start="1990">
+<li>La coopération entre Sun et ATT donne naissance à la System V R4 qui comporte de nouveaux standard d’unification d’UNIX. En réaction, les autres grands constructeurs, dont DEC, HP et IBM, décident de créer l’OSF (Open Software Foundation).</li>
+</ol>
+</li>
+<li>
+<ol start="1991">
+<li>La guerre des clones commence avec l’arrivée de Linux et FreeBSD.</li>
+</ol>
+</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#systemesdexploitation #kernel #ordinateurs #fr #syscall</p>
+<h1 id="appel-système"><a class="header" href="#appel-système">appel système</a></h1>
+<hr />
+<p>C'est le mécanisme utilisé pour les applicatifs utilisateurs pour demander l'accès au ressources de l'ordinateurs au noyau.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#drivers #systemesdexploitation #fr</p>
+<h1 id="pilote-de-périphérique-noyau"><a class="header" href="#pilote-de-périphérique-noyau">Pilote de périphérique noyau</a></h1>
+<hr />
+<p>On peut voir les pilotes de périphériques comme des extensions du noyau. Un périphérique est un composant matériel additional communicant avec l'ordinateur (mouse, clavier, haut-parleur, etc).</p>
+<p>L'organisation et nature des pilotes peut varier entres systèmes d'exploitation différents.
+linux drivers <a href="1d8a-linux-drivers.html">1d8a-linux-drivers</a>
+unix drivers <a href="1d11a-unix-drivers.html">1d11a-unix-drivers</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr</p>
+<h1 id="algorithmes"><a class="header" href="#algorithmes">algorithmes</a></h1>
+<hr />
+<p>Un algorithme c'est...</p>
+<p>fonction d'hachage <a href="2a-hash-function.html">2a-hash-function</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#hash #digest #infosec #fr #algorithmes</p>
+<h1 id="fonction-dhachage"><a class="header" href="#fonction-dhachage">fonction d'hachage</a></h1>
+<p>C'est une fonction qui...</p>
+<p>fonction d'hachage cryptographique <a href="2a1-cryptographic-hash-function.html">2a1-cryptographic-hash-function</a></p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>https://cp-algorithms.com/string/string-hashing.html</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><p>#crypto #algorithmes #hash #fr</p>
+<h1 id="fonction-dhachage-cryptographic"><a class="header" href="#fonction-dhachage-cryptographic">Fonction d'hachage cryptographic</a></h1>
+<p>C'est une fonction d'hachage qui a des propriétés particuliers:</p>
+<ul>
+<li>la taille de l'image est fixé ($n$)</li>
+<li>elle est déterministe</li>
+<li>la probabilité d'un sortie est bas (~$2^{-n}$)</li>
+<li>résistance à la préimage</li>
+<li>résistance à la deuxième préimage.</li>
+<li>résistance aux collisions</li>
+</ul>
+<h2 id="exemples-4"><a class="header" href="#exemples-4">exemples</a></h2>
+<ul>
+<li>md5</li>
+<li>bcrypt</li>
+<li>ntlm hash <a href="2a1a-ntlm-hash-function.html">2a1a-ntlm-hash-function</a></li>
+<li></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#crypto #hash #activedirectory #ntlm #fr</p>
+<h1 id="fonction-dhachage-de-ntlm"><a class="header" href="#fonction-dhachage-de-ntlm">fonction d'hachage de NTLM</a></h1>
+<hr />
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#infosec #security #information #sorbonne #fr</p>
+<h1 id="sécurité-des-systèmes-dinformation"><a class="header" href="#sécurité-des-systèmes-dinformation">Sécurité des systèmes d'information</a></h1>
+<hr />
+<p>La sécurité des systèmes d'information est un ensemble des techniques, outils pratiques et politiques visant garantir la sûreté (<a href="3a-surete.html">3a-surete</a>) et la sécurité(<a href="3b-securite.html">3b-securite</a>) des systèmes d'information. Il est fortement liée aux données, sa <a href="3a1-disponibilit%C3%A9">disponibilité</a>, <a href="3b5-integrite">intégrité</a> et <a href="3b4-confidentialite">confidentialité</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #infosec #fr</p>
+<h1 id="sûreté"><a class="header" href="#sûreté">Sûreté</a></h1>
+<hr />
+<p>C'est le degré de confiance que peut accorder les utilisateurs dans le service délivré.
+Elle est liée à la disponibilité  (<a href="3a1-disponibilit%C3%A9.html">3a1-disponibilité</a>) et la fiabilité (<a href="3a2-fiabilit%C3%A9.html">3a2-fiabilité</a>).</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #infosec #fr</p>
+<h1 id="disponibilité-1"><a class="header" href="#disponibilité-1">Disponibilité <sup class="footnote-reference"><a href="#1">1</a></sup></a></h1>
+<hr />
+<p>C'est la capacité à être prêt à délivrer le service (dans les meilleures conditions) <sup class="footnote-reference"><a href="#2">2</a></sup></p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>de l'anglais: availability</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Module SASI, 2025, Sorbonne</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><p>#infosec #sorbonne #fr</p>
+<h1 id="fiabilité-1"><a class="header" href="#fiabilité-1">Fiabilité <sup class="footnote-reference"><a href="#1">1</a></sup></a></h1>
+<hr />
+<p>C'est la propriété ou caractère d'un système d'assurer la continuité de ses services (pas d’arrêt) <sup class="footnote-reference"><a href="#2">2</a></sup></p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>de l'anglais: reliability</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Module SASI, 2025, Sorbonne</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #infosec #fr</p>
+<h1 id="sécurité"><a class="header" href="#sécurité">Sécurité</a></h1>
+<hr />
+<p>La sécurité de fonctionnement d'un système d'information se décompose en deux aspects:</p>
+<ul>
+<li><em>safety</em> <a href="3b1-safety.html">3b1-safety</a></li>
+<li><em>security</em> <a href="3b2-security.html">3b2-security</a></li>
+</ul>
+<p>Selon le cours SAS, il faut retenir <em>les 5 piliers de la sécurité</em>:</p>
+<ul>
+<li>confidentialité <a href="3b4-confidentialite.html">3b4-confidentialite</a></li>
+<li>authentification <a href="3b3-authentification.html">3b3-authentification</a></li>
+<li>intégrité <a href="3b5-integrite.html">3b5-integrite</a></li>
+<li>non répudiation <a href="3b6-non-repudiation.html">3b6-non-repudiation</a></li>
+<li>auditabilité <a href="3b7-auditabilite.html">3b7-auditabilite</a>
+on considere aussi la vie privée et l'anonymat <a href="3b8-vie-privee.html">3b8-vie-privee</a>, <a href="3b9-anonymat.html">3b9-anonymat</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #fr #infosec</p>
+<h1 id="safety"><a class="header" href="#safety">Safety</a></h1>
+<hr />
+<p>évitement des situations catastrophiques.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #infosec #fr</p>
+<h1 id="security"><a class="header" href="#security">Security</a></h1>
+<hr />
+<p>préservation de la confidentialité et de l’intégrité des informations.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #fr #infosec</p>
+<h1 id="authentification"><a class="header" href="#authentification">authentification</a></h1>
+<hr />
+<p>C'est la propriété qui assure la reconnaissance sûre de l’identité d’une entité. Il protège contre l'usurpation d'identité <a href="3b3f-deguissement-mascarade.html">3b3f-deguissement-mascarade</a>
+On propose un défi à l'entité que veut authentifier dans un système: un mot de passe, une identification, un jeton, un graphisme, etc.</p>
+<p>Il y a tellement des méthodes d'authentification...</p>
+<p>kerberos <a href="3b3a-kerberos.html">3b3a-kerberos</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#infosec #cybersec #auth #fr</p>
+<h1 id="kerberos-protocol"><a class="header" href="#kerberos-protocol">Kerberos protocol</a></h1>
+<hr />
+<p>Développé au MIT pour  le projet Athena, c'est un protocole d'authentification mais pas de autorisation. C'est-à-dire, même si la plateforme procure l'information des droits, c'est à les applications de les vérifier.
+Il fonctionne en utilisant des <em>tickets</em> (<a href="3b3d-kerberos-tickets.html">3b3d-kerberos-tickets</a>). Les tickets sont demandés au KDC (<a href="3b3b1-kerberos-kdc.html">3b3b1-kerberos-kdc</a>) et sont utilisé pour s'authentifier dans les différents services de la réseau.
+Le protocol utilise du cryptage symétrique.</p>
+<h2 id="ports-utilisés"><a class="header" href="#ports-utilisés">Ports utilisés</a></h2>
+<p>Au niveau de transport, Kerberos utilise par default:</p>
+<div class="table-wrapper"><table><thead><tr><th>type</th><th>port</th></tr></thead><tbody>
+<tr><td>TCP</td><td>88</td></tr>
+<tr><td>UDP</td><td>88</td></tr>
+</tbody></table>
+</div>
+<p>workflow <a href="3b3e-kerberos-workflow.html">3b3e-kerberos-workflow</a>
+agentes ou entités dans Kerberos <a href="3b3b-kerberos-agents.html">3b3b-kerberos-agents</a>
+clés de chiffrement <a href="3b3c-kerberos-keys.html">3b3c-kerberos-keys</a>
+tickets de kerberos <a href="3b3d-kerberos-tickets.html">3b3d-kerberos-tickets</a>
+attaques au Kerberos <a href="3b3a1-kerberos-attacks.html">3b3a1-kerberos-attacks</a></p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>https://www.tarlogic.com/es/blog/como-funciona-kerberos/</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><p>#kerberos #cybersec #attack #fr #activedirectory</p>
+<h1 id="attaques-au-protocole-kerberos"><a class="header" href="#attaques-au-protocole-kerberos">Attaques au protocole Kerberos</a></h1>
+<hr />
+<p>Il y a plein d'attaques au protocole Kerberos.</p>
+<ul>
+<li>kerberoasting <a href="3b3a2-kerberoasting.html">3b3a2-kerberoasting</a></li>
+<li>pass-the-hash attack <a href="3b3a3-pass-the-hash-attack.html">3b3a3-pass-the-hash-attack</a></li>
+<li>golden ticket attack <a href="3b3a4-golden-ticket-attack.html">3b3a4-golden-ticket-attack</a></li>
+<li>silver ticket attack <a href="3b3a5-silver-ticket-attack.html">3b3a5-silver-ticket-attack</a></li>
+</ul>
+<h2 id="quelques-outils"><a class="header" href="#quelques-outils">Quelques outils</a></h2>
+<ul>
+<li><a href="https://github.com/x0pr4nt3s/Tools_enum_AD_without-RSAT">enum AD without RSAT</a></li>
+<li><a href="https://github.com/x0pr4nt3s/Other-Tools-AD">Other-Tools-AD</a></li>
+<li></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#kerberos #cybersec #auth #fr #infosec  #activedirectory</p>
+<h1 id="agentes-dans-kerberos"><a class="header" href="#agentes-dans-kerberos">Agentes dans Kerberos</a></h1>
+<hr />
+<p>Grosso modo, on a</p>
+<ul>
+<li>client ou usager.</li>
+<li>le Serveur Application (AP)</li>
+<li>Centre de distribution des clés (KDC) <a href="3b3b1-kerberos-kdc.html">3b3b1-kerberos-kdc</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kerberos #fr #infosec #cybersec  #activedirectory</p>
+<h1 id="kdc"><a class="header" href="#kdc">KDC</a></h1>
+<hr />
+<p>Si on parle d'Active Directory, c'est installé dans le Domain Controller.
+Il est composé de trois éléments :</p>
+<ul>
+<li>Le serveur d'authentication (AS)</li>
+<li>Le serveur d'attribution des clés (TGS)</li>
+<li>la base de données
+La compte de service du KDC est <code>krbtgt</code> <a href="3b3b2-kerberos-krbtgt.html">3b3b2-kerberos-krbtgt</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#activedirectory #kerberos #cybersec #fr #todo</p>
+<h1 id="krbtgt"><a class="header" href="#krbtgt">krbtgt</a></h1>
+<hr />
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kerberos #activedirectory #crypto #fr</p>
+<h1 id="clés-dans-kerberos"><a class="header" href="#clés-dans-kerberos">Clés dans Kerberos</a></h1>
+<hr />
+<p>C'est important d'identifier le role qui jouent des usagers dans kerberos.</p>
+<ul>
+<li>clé de KDC (krbtgt)</li>
+<li>clé d'usager</li>
+<li>clé de service</li>
+<li>clé de session</li>
+<li>clé de session du service</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kerberos #activedirectory #infosec #cybersec #fr</p>
+<h1 id="tickets-dans-le-protocole-kerberos"><a class="header" href="#tickets-dans-le-protocole-kerberos">Tickets dans le protocole Kerberos</a></h1>
+<hr />
+<p>Il y a deux types de tickets:</p>
+<ul>
+<li>ticket de service (ST) <a href="3b3d2-kerberos-service-ticket.html">3b3d2-kerberos-service-ticket</a></li>
+<li>ticket principal (TGT) <a href="3b3d1-kerberos-ticket-tgt.html">3b3d1-kerberos-ticket-tgt</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kerberos #crypto #activedirectory #infosec #fr #cybersec</p>
+<h1 id="ticket-granting-ticket"><a class="header" href="#ticket-granting-ticket">Ticket Granting Ticket</a></h1>
+<hr />
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kerberos #activedirectory #cybersec #fr</p>
+<h1 id="le-workflow-de-kerberos"><a class="header" href="#le-workflow-de-kerberos">Le workflow de Kerberos</a></h1>
+<hr />
+<p>Tout d'abord, le client n'a aucun ticket. Du coup, il demande un TGT (<a href="3b3d1-kerberos-ticket-tgt.html">3b3d1-kerberos-ticket-tgt</a>) en envoyant un Kerberos Authentication Service Request qui contient le nom d'usager, le nom du service (maintenant kerberos), et un <em>timestamp</em> chiffré avec le hash NTLM (<a href="2a1a-ntlm-hash-function.html">2a1a-ntlm-hash-function</a>) de l'usager.</p>
+<pre><code>user -----------------&gt;  KDC (DC)
+	  [1] KRB_AS_REQ
+	 &lt;-----------------
+	  [2] KRB_AS_REP   
+	 -----------------&gt; 
+	  [3] KRB_TGT_REQ
+	 &lt;-----------------
+	  [4] KRB_TGT_REP   
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #infosec #fr</p>
+<h1 id="déguisement-mascarade"><a class="header" href="#déguisement-mascarade">déguisement (mascarade)</a></h1>
+<hr />
+<p>Pour rentrer dans un système, on essaye de piéger des usagers et de se faire passer pour quelqu'un d'autre (usurpation d’identité)</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #fr #infosec</p>
+<h1 id="confidentialité"><a class="header" href="#confidentialité">confidentialité</a></h1>
+<hr />
+<p>C'est la propriété qui assure qu'une information ne peut être lue que par des entités habilitées (selon des contraintes précises)</p>
+<h2 id="méthodes-pour-sauvegarder-la-confidentialité"><a class="header" href="#méthodes-pour-sauvegarder-la-confidentialité">méthodes pour sauvegarder la confidentialité</a></h2>
+<ul>
+<li>cryptographie. <a href="3b4a-cryptographie.html">3b4a-cryptographie</a></li>
+<li></li>
+</ul>
+<h2 id="attaques-à-la-confidentialité"><a class="header" href="#attaques-à-la-confidentialité">attaques à la confidentialité</a></h2>
+<ul>
+<li>man in the middle.</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#crypto #infosec #fr #sorbonne</p>
+<h1 id="cryptographie"><a class="header" href="#cryptographie">Cryptographie</a></h1>
+<hr />
+<p>fonction d'hachage cryptographic <a href="2a1-cryptographic-hash-function.html">2a1-cryptographic-hash-function</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #infosec #fr</p>
+<h1 id="intégrité"><a class="header" href="#intégrité">intégrité</a></h1>
+<hr />
+<p>C'est la propriété qui assure qu'une information n'est modifiée que par des entités habilitées (selon des contraintes précises)</p>
+<p>L’intégrité peut être vérifiée avec une signature ou avec l'empreinte numérique d'une fonction d'hachage cryptographique (<a href="2a1-cryptographic-hash-function.html">2a1-cryptographic-hash-function</a>).</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#infosec #sorbonne #fr</p>
+<h1 id="non-repudiation"><a class="header" href="#non-repudiation">non repudiation</a></h1>
+<hr />
+<p>C'est la propriété qui assure que l'auteur d'un acte ne peut ensuite dénier l'avoir effectué. D'un coté, un message ou une transaction ne peut être nié.e par son émetteur. D'autre coté, un récepteur ne peut ultérieurement nier avoir reçu un ordre.</p>
+<p>Par contre, on souvent cherche la repudiation pour protéger l'identité d'un témoin ou un source journalistique.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #infosec #soc #fr</p>
+<h1 id="auditabilité"><a class="header" href="#auditabilité">auditabilité</a></h1>
+<hr />
+<p>C'est la propriété qui assure la capacité à détecter et à enregistrer de façon infalsifiable les tentatives de violation de la politique de sécurité.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#infosec #fr #sorbonne</p>
+<h1 id="anonymat"><a class="header" href="#anonymat">Anonymat</a></h1>
+<hr />
+<p>L’anonymat est l’état (dans un « système informatique ») d’être inconnu et non identifiable.</p>
+<p>L'anonymat est quelque chose difficile à obtenir aujourd'hui. Pourtant, on peut minimiser l'impact qu'on a sur internet en utilisant des méthodes. <a href="https://www.reddit.com/r/Piracy/wiki/megathread/">r/Piracy</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#cybersec #fr</p>
+<h1 id="cyber-sécurité"><a class="header" href="#cyber-sécurité">Cyber sécurité</a></h1>
+<hr />
+<p>C'est la pratique à proteger les systèmes, les réseaux, les programmes des attaques (<a href="4a-cyber-attaques.html">4a-cyber-attaques</a>).</p>
+<div style="break-before: page; page-break-before: always;"></div><p>#cybersec #hacking #fr</p>
+<h1 id="cyber-attaques"><a class="header" href="#cyber-attaques">cyber attaques</a></h1>
+<hr />
+<p>Les cyber attaques e</p>
+<p>Les points d'entrée d'un cyber attaques sont des vulnérabilités <a href="4a1-vulnerabilites.html">4a1-vulnerabilites</a>.</p>
+<h2 id="classement"><a class="header" href="#classement">Classement</a></h2>
+<p>On peut classer les cyber attaques de nombreuses formes.</p>
+<p><a href="3b3a1-kerberos-attacks.html">3b3a1-kerberos-attacks</a></p>
+<p><a href="4a2-side-channel-attacks.html">4a2-side-channel-attacks</a></p>
+<div style="break-before: page; page-break-before: always;"></div><p>#cybersec #fr #vulnerabilites</p>
+<h1 id="vulnérabilités"><a class="header" href="#vulnérabilités">vulnérabilités</a></h1>
+<hr />
+<h2 id="impact"><a class="header" href="#impact">impact</a></h2>
+<p>L'impact d'un cyber attaque potentiel à cause d'une vulnérabilité donné peut être quantifier en voyant comment il affecte la <a href="3a1-disponibilit%C3%A9.html">3a1-disponibilité</a>, la <a href="3b4-confidentialite.html">3b4-confidentialite</a> et la <a href="3b5-integrite.html">3b5-integrite</a> de l'information. Il est quantifié en utilisant le <a href="https://www.first.org/cvss/">CVSS</a>.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#cybersec #hacking #fr</p>
+<h1 id="attaques-par-canal-auxiliare"><a class="header" href="#attaques-par-canal-auxiliare">attaques par canal auxiliare</a></h1>
+<hr />
+<p>out-of-band attack <a href="4a3-out-of-band-attack.html">4a3-out-of-band-attack</a></p>
+<hr />
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
