@@ -5,7 +5,7 @@ C'est la partie du système d'exploitation qui gère les ressources de l'ordinat
 
 Le kernel est aussi un programme et doit être codé, compilé et il est mappé dans la mémoire vive tant qu'on utilise le système d'exploitation. Pour des raisons de sécurité, l'adresse de base du kernel n'est pas fixée dans le mapping. [1d12-KASLR](1d12-KASLR.md)
 
-Quand un programme ou application a besoin d'accès mémoire ou doit se communiquer avec un périphérique, il doit demander au kernel pour faire operation pour lui. C'est qu'on connais comme appel système ([1l-syscall](1l-syscall.md)).|
+Quand un programme ou application a besoin d'accès mémoire ou doit se communiquer avec un périphérique, il doit demander au kernel pour faire operation pour lui. C'est qu'on connais comme appel système ([1l-syscall](1l-syscall.md)).
 
 classement des noyaux [1d1-kernel-structure-types](1d1-kernel-structure-types.md).
 ## exemples
