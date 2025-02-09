@@ -6,3 +6,4 @@ src = "src"
 title = "zettelkasten"
 [output.html]
 mathjax-support = true
+cname = z.xn--ida.live
