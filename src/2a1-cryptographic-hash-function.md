@@ -1,7 +1,7 @@
 #crypto #algorithmes #hash #fr 
 # Fonction d'hachage cryptographic
 C'est une fonction d'hachage qui a des propriétés particuliers:
-+ la taille de l'image est fixé ($n$)
++ la taille de l'image est fixé (\\(n\\))
 + elle est déterministe
 + la probabilité d'un sortie est bas (~$2^{-n}$)
 + résistance à la préimage
