@@ -7,6 +7,11 @@ C'est une fonction d'hachage qui a des propriétés particuliers:
 + résistance à la préimage
 + résistance à la deuxième préimage.
 + résistance aux collisions
+
+$$
+x_1 = \frac{1}{0}
+$$
+
 ## exemples
 + md5
 + bcrypt
