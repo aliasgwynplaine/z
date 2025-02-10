@@ -1,9 +1,11 @@
-#cybersec #hacking #fr 
+#cybersec #hacking #fr #sidechannel #attack 
 # attaques par canal auxiliare
 ---
+C'est une attaque dont le but est obtenir information à partir de l'implementation inhérente d'un protocole, algorithm ou architecture. 
 
 
-out-of-band attack [4a3-out-of-band-attack](4a3-out-of-band-attack.md)
+SysBumps [[4a3-sysbumps]]
+
 
 
 ---
