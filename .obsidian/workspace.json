@@ -11,10 +11,24 @@
             "id": "ac22e0a41550b8d0",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "5b1-procesor.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "5b1-procesor"
             }
           }
         ]
@@ -49,8 +63,8 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "crypto",
-                "matchingCase": false,
+                "query": "",
+                "matchingCase": true,
                 "explainSearch": false,
                 "collapseAll": false,
                 "extraContext": false,
@@ -70,8 +84,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -91,6 +104,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "5b1-procesor.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +114,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for 5b1-procesor"
             }
           },
           {
@@ -164,6 +178,14 @@
   },
   "active": "ac22e0a41550b8d0",
   "lastOpenFiles": [
+    "5b-digital-computers.md",
+    "5b1-procesor.md",
+    "5-computers.md",
+    "0-index.md",
+    "4a3-sysbumps.md",
+    "4a2-side-channel-attacks.md",
+    "1a-compilation.md",
+    "1c3-format-Mach-O.md",
     "2a1-cryptographic-hash-function.md",
     "3b4a-cryptographie.md",
     "1d11a-unix-drivers.md",
@@ -175,7 +197,6 @@
     "1c1-fichier.md",
     "1c2-format-ELF.md",
     "1c-systeme-des-fichiers.md",
-    "0-index.md",
     "1d-kernel.md",
     "1-systemes-dexploitation.md",
     "SUMMARY.md",
