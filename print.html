@@ -186,9 +186,11 @@
 <li>FreeDOS <a href="1j-freedos.html">1j-freedos</a></li>
 </ul>
 <h2 id="concepts"><a class="header" href="#concepts">Concepts</a></h2>
-<p>compilation <a href="1a-compilation.html">1a-compilation</a>
-EFL format <a href="1c2-format-ELF.html">1c2-format-ELF</a>
-système des fichiers <a href="1c-systeme-des-fichiers.html">1c-systeme-des-fichiers</a></p>
+<ul>
+<li>compilation <a href="1a-compilation.html">1a-compilation</a></li>
+<li>EFL format <a href="1c2-format-ELF.html">1c2-format-ELF</a></li>
+<li>système des fichiers <a href="1c-systeme-des-fichiers.html">1c-systeme-des-fichiers</a></li>
+</ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#compilation #programmes #ordinateurs #fr</p>
 <h1 id="compilation"><a class="header" href="#compilation">compilation</a></h1>
@@ -198,6 +200,7 @@ système des fichiers <a href="1c-systeme-des-fichiers.html">1c-systeme-des-fich
 <p>Par contre, il y a aussi des langages interprétées (<a href="1m-langages-interpretees.html">1m-langages-interpretees</a>).</p>
 <h2 id="outils"><a class="header" href="#outils">Outils</a></h2>
 <p>puedes usar <a href="1a1-nm.html"><code>nm</code></a> para inspeccionar la tabla de símbolos de un <a href="1c2-format-ELF.html">ejecutable ELF</a>... si no has usado <code>strip</code>.</p>
+<p>On peut utiliser <a href="1a4-make.html">1a4-make</a> pour automatiser la compilation de plusieurs fichiers.</p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#linux #unix #commands #fr</p>
 <h1 id="nm"><a class="header" href="#nm"><code>nm</code></a></h1>
@@ -207,9 +210,48 @@ système des fichiers <a href="1c-systeme-des-fichiers.html">1c-systeme-des-fich
 <hr />
 <p>C'est un ensemble des instructions normalement en code binaire.</p>
 <hr />
-<div style="break-before: page; page-break-before: always;"></div><p>#c #gcc #gnu #linux #ordinateurs #fr</p>
+<div style="break-before: page; page-break-before: always;"></div><p>#c #gcc #gnu #linux #ordinateurs #en</p>
 <h1 id="gnu-c-compiler"><a class="header" href="#gnu-c-compiler">GNU C Compiler</a></h1>
 <hr />
+<p>It's the C compiler of the GNU project.</p>
+<ul>
+<li>storage class in the compiler <a href="1a3a-gcc-storage-class.html">1a3a-gcc-storage-class</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#c #gcc #gnu #linux #ordinateurs #en #keywords</p>
+<h1 id="gcc-storage-class"><a class="header" href="#gcc-storage-class">gcc storage class</a></h1>
+<h3 id="static1"><a class="header" href="#static1"><code>static</code><sup class="footnote-reference"><a href="#1">1</a></sup></a></h3>
+<ol>
+<li>variable: stores the variable <em>statically</em> allocated in memory instead of automatically. As a consequence, the variable will preserve its value between calls. See <code>strtok</code> implementation. See storage class. <sup class="footnote-reference"><a href="#2">2</a></sup></li>
+<li>function: The function will be visible only for functions from the same file. You can find lots of this folks at linux module programming.</li>
+<li>arrays: set the minimum size of an array
+<pre><code class="language-c">void setpasswd(char password[static 16]);
+</code></pre>
+</li>
+</ol>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>https://stackoverflow.com/questions/572547/what-does-static-mean-in-c</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>https://web.archive.org/web/20080624102132/http://www.space.unibe.ch/comp_doc/c_manual/C/CONCEPT/storage_class.html</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><p>#compilation #programmes #ordinateurs #en #make</p>
+<h1 id="make"><a class="header" href="#make">make</a></h1>
+<hr />
+<p>The  make  utility  will determine automatically which pieces of a large program need to be recompiled, and issue the commands to recompile them.</p>
+<p><code>make</code> looks for instructions in a file named <code>Makefile</code>.</p>
+<h2 id="obj-m"><a class="header" href="#obj-m">obj-m</a></h2>
+<p>The <code>obj-m</code>-thing<sup class="footnote-reference"><a href="#1">1</a></sup></p>
+<pre><code class="language-make">obj-m += nom.o
+</code></pre>
+<p>When the module is built from multiple sources, an additional line is needed listing the files:</p>
+<pre><code class="language-make">&lt;module_name&gt;-y := &lt;src1&gt;.o &lt;src2&gt;.o ...
+</code></pre>
+<p>For detailed info about this you can refer <a href="https://www.kernel.org/doc/Documentation/kbuild/modules.txt">here</a></p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>[[https://stackoverflow.com/questions/57839941/what-is-the-meaning-of-obj-m-in-linux-device-driver-makefile]]</p>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><p>#computation #ordinateurs #fr</p>
 <h1 id="systèmes-des-fichiers"><a class="header" href="#systèmes-des-fichiers">Systèmes des fichiers</a></h1>
 <hr />
@@ -333,12 +375,16 @@ minor -&gt; instance du device</p>
 <p>C'est un noyau spécialisée pour une application ou une nombre très limité d'applications. Dans ce paradigme, tous les applications partage le même space d'adressage. On obtient une système d'exploitation qui a besoin de peu space et avec une surface d'attaque réduit. Attractifs pour microservices.</p>
 <p>Tant les unikernels comme les exokernels appartiennent a la categorie des systèmes d'exploitation bibliothèque.</p>
 <hr />
-<div style="break-before: page; page-break-before: always;"></div><p>#kernel #linux #fr #todo</p>
-<h1 id="noyau-linux"><a class="header" href="#noyau-linux">noyau linux</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #linux #fr #todo #en</p>
+<h1 id="linux-kernel"><a class="header" href="#linux-kernel">linux kernel</a></h1>
 <hr />
-<p>linux file struct <a href="1d8f-linux-file-struct.html">1d8f-linux-file-struct</a>
-linux drivers <a href="1d8a-linux-drivers.html">1d8a-linux-drivers</a>
-linux modules <a href="1d8e-linux-modules.html">1d8e-linux-modules</a></p>
+<ul>
+<li>linux kernel architecture <a href="1d8h-linux-kernel-architeture.html">1d8h-linux-kernel-architeture</a></li>
+<li>linux file struct <a href="1d8f-linux-file-struct.html">1d8f-linux-file-struct</a></li>
+<li>linux drivers <a href="1d8a-linux-drivers.html">1d8a-linux-drivers</a></li>
+<li>linux modules <a href="1d8e-linux-modules.html">1d8e-linux-modules</a></li>
+<li>development <a href="1d8i-linux-kernel-development.html">1d8i-linux-kernel-development</a></li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><p>#kernel #drivers #fr #sorbonne</p>
 <h1 id="pilotes-dans-linux"><a class="header" href="#pilotes-dans-linux">pilotes dans linux</a></h1>
 <hr />
@@ -431,7 +477,7 @@ unsigned long copy_from_user(void *to, const void __user *from,
 <li>faire l'allocation de la memoire à mettre dans <code>filp-&gt;private_data</code>, si nécessaire.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops #char</p>
-<h1 id="linux-char-device---open-1"><a class="header" href="#linux-char-device---open-1">linux char device - open</a></h1>
+<h1 id="linux-char-device---close"><a class="header" href="#linux-char-device---close">linux char device - close</a></h1>
 <hr />
 <p>On doit performer le suivant:</p>
 <ul>
@@ -487,8 +533,9 @@ unsigned long copy_from_user(void *to, const void __user *from,
 <div style="break-before: page; page-break-before: always;"></div><p>#linux #modules #kernel #fr #sorbonne</p>
 <h1 id="linux-modules"><a class="header" href="#linux-modules">Linux modules</a></h1>
 <hr />
-<p>Les modules du linux ajoute des services dans le noyau: pilotes <a href="1d8a-linux-drivers.html">1d8a-linux-drivers</a>, appels systèmes, implementations des protocoles réseau.
-Dans linux, il peut être chargé ou déchargé dynamiquement. Les modules s'execute en mode système.</p>
+<p>Les modules du linux ajoute des services dans le noyau: pilotes <a href="1d8a-linux-drivers.html">1d8a-linux-drivers</a>, appels systèmes, implementations des protocoles réseau.</p>
+<p>Dans linux, il peut être chargé ou déchargé dynamiquement. Les modules s'execute en mode système.</p>
+<p><em>cheat-sheet</em>  on linux module development <a href="https://cs.xn--ida.live/linux-kernel-modules.html">here</a></p>
 <p>Les modules linux doivent toujours avoir une fonction d'initialisation et une fonction de sortie:</p>
 <pre><code class="language-c">/* headers here */
 
@@ -499,7 +546,17 @@ static void __exit mod_cleanup(void) { /* ... */ }
 module_init(mod_init);
 module_exit(mod_cleanup);
 </code></pre>
+<h2 id="module-dependencies"><a class="header" href="#module-dependencies">Module dependencies</a></h2>
+<p>If a module X uses at least one symbol from module Y, then X depends on Y.
+The dependencies are automatically inferred when compiled and available at <code>/lib/module/&lt;version&gt;/module.dep</code> generated by <code>depmod</code>.</p>
+<h3 id="building-a-module"><a class="header" href="#building-a-module">Building a module</a></h3>
+<p>The running kernel is deployed with a generic <code>Makefile</code> <sup class="footnote-reference"><a href="#1">1</a></sup> <a href="1a4-make.html">1a4-make</a></p>
+<pre><code class="language-bash">make -C /lib/module/\\((uname -r)/build M=\\)PWD
+</code></pre>
 <hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>https://www.kernel.org/doc/Documentation/kbuild/modules.txt</p>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><p>#kernel #linux #fr #todo #fileops #file</p>
 <h1 id="structure-file"><a class="header" href="#structure-file">structure file</a></h1>
 <hr />
@@ -527,7 +584,69 @@ module_exit(mod_cleanup);
 };
 </code></pre>
 <hr />
-<div style="break-before: page; page-break-before: always;"></div><p>#unix #systemesdexploitation #c #fr</p>
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #linux #fr #todo #en #sorbonne</p>
+<h1 id="linux-kernel-architecture-1"><a class="header" href="#linux-kernel-architecture-1">Linux kernel architecture <sup class="footnote-reference"><a href="#1">1</a></sup></a></h1>
+<hr />
+<p>Linux offers six main functions</p>
+<ul>
+<li>Process management</li>
+<li>Memory management</li>
+<li>Network management</li>
+<li>Storage management</li>
+<li>System interface</li>
+<li>Human interface</li>
+</ul>
+<p>through five abstraction layers:</p>
+<ol>
+<li>
+<p>User space interfaces</p>
+<p>System calls, procfs, sysfs, device files, …</p>
+</li>
+<li>
+<p>Virtual subsystems</p>
+<p>Virtual memory, virtual filesystem, network protocols, …</p>
+</li>
+<li>
+<p>Functional subsystems</p>
+<p>Filesystems, memory allocators, scheduler, …</p>
+</li>
+<li>
+<p>Devices control</p>
+<p>Interrupts, generic drivers, block devices, …</p>
+</li>
+<li>
+<p>Hardware interfaces</p>
+<p>Device drivers, architecture-specific code, …</p>
+</li>
+</ol>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>https://teaching.os.rwth-aachen.de/LKP/lecture/lkp-lecture.html#/linux-kernel-architecture
+linux kernel programming course</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #linux #fr #todo #en</p>
+<h1 id="linux-kernel-development"><a class="header" href="#linux-kernel-development">Linux kernel development</a></h1>
+<hr />
+<p>Is important to keep in mind the directory tree</p>
+<p>the kernel dynamic linker <a href="1d8i1-kernel-dynamic-linker.html">1d8i1-kernel-dynamic-linker</a></p>
+<h2 id="annotations"><a class="header" href="#annotations">Annotations</a></h2>
+<p>The <code>__init</code> and <code>__exit</code> annotations are used to help the compiler optimise the memory usage.<br />
+When some module is statically built-in the kernel binary, functions tagged with these annotations are placed in specific segments:</p>
+<ul>
+<li><code>.init.text</code> that is freed after the boot of the kernel</li>
+<li><code>.exit.text</code> that is never loaded in memory</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #linux #fr #todo #en</p>
+<h1 id="kernel-dynamic-linker"><a class="header" href="#kernel-dynamic-linker">Kernel dynamic linker</a></h1>
+<hr />
+<p>By default, module have access to no variable or function from the kernel, even if they are not static.</p>
+<p>export symbols <strong>to</strong> modules</p>
+<pre><code class="language-c">EXPORT_SYMBOL(s) // makes s visible to all loaded modules
+EXPORT_SYMBOL_GPL(s) // makes s visible to all modules GPL-compatible licensed
+</code></pre>
+<p>You need to declare your symbol <code>extern</code> and load the module where it is defined.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><p>#unix #systemesdexploitation #c #fr</p>
 <h1 id="unix"><a class="header" href="#unix">Unix</a></h1>
 <hr />
 <h2 id="histoire"><a class="header" href="#histoire">Histoire</a></h2>

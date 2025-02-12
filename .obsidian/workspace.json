@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "12792a575e6dd9d6",
+        "id": "5954e6e9daa6047a",
         "type": "tabs",
         "children": [
           {
-            "id": "1b2190c33c5e5e61",
+            "id": "fd8f28ab0a00ca82",
             "type": "leaf",
             "state": {
-              "type": "empty",
+              "type": "graph",
               "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -90,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "5b1-procesor.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 5b1-procesor"
+              "title": "Backlinks"
             }
           },
           {
@@ -145,7 +144,8 @@
               "title": "Outline"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -162,8 +162,24 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "1b2190c33c5e5e61",
+  "active": "fd8f28ab0a00ca82",
   "lastOpenFiles": [
+    "1a4-make.md",
+    "1d8e-linux-modules.md",
+    "1d8-linux.md",
+    "1d8a-linux-drivers.md",
+    "3b5-integrite.md",
+    "1d8i-linux-kernel-development.md",
+    "1d8i1-kernel-dynamic-linker.md",
+    "1a3a-gcc-storage-class.md",
+    "1a-compilation.md",
+    "1a3-gcc.md",
+    "1a2-code-objet.md",
+    "1a1-nm.md",
+    "1d8h-linux-kernel-architeture.md",
+    "1d9-windows-nt-kernel.md",
+    "1d-kernel.md",
+    "1d8f-linux-file-struct.md",
     "5c4-virtualisation-hybride.md",
     "5c6-paas.md",
     "5c7-iaas.md",
@@ -173,22 +189,6 @@
     "5c2-container.md",
     "5c5-saas.md",
     "5c3-virtualisation-pure.md",
-    "5-computers.md",
-    "1a3-gcc.md",
-    "1a-compilation.md",
-    "5b1-procesor.md",
-    "5b-digital-computers.md",
-    "0-index.md",
-    "4a3-sysbumps.md",
-    "4a2-side-channel-attacks.md",
-    "1c3-format-Mach-O.md",
-    "2a1-cryptographic-hash-function.md",
-    "3b4a-cryptographie.md",
-    "1d11a-unix-drivers.md",
-    "1d11-unix-kernel.md",
-    "1m-msdos.md",
-    "1k-unix.md",
-    "1c5-format-FAT.md",
-    "1c4-format-PE.md"
+    "5-computers.md"
   ]
 }
