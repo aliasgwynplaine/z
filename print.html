@@ -870,6 +870,7 @@ La compte de service du KDC est <code>krbtgt</code> <a href="3b3b2-kerberos-krbt
 </blockquote>
 <p>ordinateurs mécaniques <a href="5a-mechanic-computers.html">5a-mechanic-computers</a>
 ordinateurs électroniques <a href="5b-digital-computers.html">5b-digital-computers</a></p>
+<p>infrastructures virtuelles et conteneurs <a href="5c-virtual-infrastructures.html">5c-virtual-infrastructures</a></p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr</p>
 <h1 id="digital-computers"><a class="header" href="#digital-computers">Digital computers</a></h1>
@@ -881,6 +882,164 @@ ordinateurs électroniques <a href="5b-digital-computers.html">5b-digital-comput
 <div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr</p>
 <h1 id="processeur"><a class="header" href="#processeur">Processeur</a></h1>
 <hr />
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne</p>
+<h1 id="infrastructures-virtuelles-et-conteneurs"><a class="header" href="#infrastructures-virtuelles-et-conteneurs">Infrastructures Virtuelles et Conteneurs</a></h1>
+<hr />
+<p>On les appel aussi IVC. On cherche l'utilisation des composantes logiciels et la virtualisation des certains services. Les IVC tentent de fusionner les deux approches.</p>
+<ul>
+<li>l'isolation</li>
+<li>la gestion des services systèmes et des services applicatifs</li>
+</ul>
+<p>On cherche aussi</p>
+<ul>
+<li>virtualisation des applications</li>
+<li>virtualisation des serveurs</li>
+<li>virtualisation des réseaux</li>
+<li>virtualisation du stockage</li>
+</ul>
+<p><strong>glossaire</strong> <a href="5c8-virtual-infrastructures-glossary.html">5c8-virtual-infrastructures-glossary</a></p>
+<p><strong>histoire</strong> <a href="5c9-virtual-infrastructures-history.html">5c9-virtual-infrastructures-history</a></p>
+<h2 id="advantages"><a class="header" href="#advantages">advantages</a></h2>
+<ul>
+<li>Le matériel virtuel émulé reste plus homogène que les matèriels physiques.</li>
+<li>Usage plus optimal des ressources parce qu'on peut tailler et contrôler les ressources.</li>
+<li>Sécurité: isolation, mise en suspend, surveillance, audit log, forensic analysis plus facile a faire.</li>
+</ul>
+<h2 id="désavantages"><a class="header" href="#désavantages">désavantages</a></h2>
+<ul>
+<li>limitation de la puissance</li>
+<li>complexification des interactions</li>
+</ul>
+<h2 id="modèles-génériques-de-virtualisation"><a class="header" href="#modèles-génériques-de-virtualisation">Modèles génériques de virtualisation</a></h2>
+<ul>
+<li>SaaS <a href="5c5-saas.html">5c5-saas</a></li>
+<li>PaaS <a href="5c6-paas.html">5c6-paas</a></li>
+<li>IaaS <a href="5c7-iaas.html">5c7-iaas</a></li>
+</ul>
+<h2 id="types-de-virtualisation"><a class="header" href="#types-de-virtualisation">Types de virtualisation</a></h2>
+<ul>
+<li>Conteneur <a href="5c2-container.html">5c2-container</a></li>
+<li>Virtualisation pure <a href="5c3-virtualisation-pure.html">5c3-virtualisation-pure</a></li>
+<li>Hybride <a href="5c4-virtualisation-hybride.html">5c4-virtualisation-hybride</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne #container</p>
+<h1 id="conteneurs"><a class="header" href="#conteneurs">Conteneurs</a></h1>
+<hr />
+<p>isolateur ou virtualisation d'OS</p>
+<ul>
+<li>pas de système virtualisé. on utilise le même noyau que celui du système hôte.</li>
+<li>il y a un couche isolation/virtualisation</li>
+<li>isole l'exécution des application dans des contextes d'exécution</li>
+<li>très performante et très économique en mémoire</li>
+<li>on isole les systèmes des fichiers aussi</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne #container</p>
+<h1 id="virtualisation-pure"><a class="header" href="#virtualisation-pure">Virtualisation pure</a></h1>
+<hr />
+<p>Création d'une machine complète virtuelle et emulation de tous les éléments d'une machine
+Nécessite ce qu'on appelle un hyperviseur pour gérer des machines virtuelles et leur cohabitation.</p>
+<p>Pour chaque application du système virtualisé, on fait deux translation d'adresse
+EPT (Extended Page Table) permet d'éviter ces conversions en garantissant la sécurité (isolation)</p>
+<h2 id="defautes"><a class="header" href="#defautes">Defautes</a></h2>
+<ul>
+<li>point de défaillance unique</li>
+<li>un recours à des machines plus puissantes</li>
+<li>dégradation des performances</li>
+<li>complexité accrue de l'analyse d'erreurs</li>
+<li>parfois inadapté</li>
+</ul>
+<h2 id="types"><a class="header" href="#types">types</a></h2>
+<ul>
+<li>Hyperviseur avec architecture hébergée
+emulation de matériel
+il peut être multi-kernel
+exemples: VirtualBox, QEMU, Vmware (workstation, fusion,player), Microsoft Virtual PC, Parallels desktop,…</li>
+<li>Hyperviseur complet
+OS virtualisé
+MiniOS gestionaire comme hyperviseur.
+Peut émuler du matériel ou faire de la délegation
+exemples: XEN, KVM, Vmware vSphere</li>
+<li>Paravirtualisation
+L'hyperviseur n'émule pas du materiel: il delegue au vrai matériel (CPU/GPU)
+utilisable avec les instructions spécifiques des CPU
+souvent impracticable pour les systèmes non libres
+exemples: Vmware Vsphere, XEN, MicrosoP Hyper-V server, KVM</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne</p>
+<h1 id="hybride"><a class="header" href="#hybride">Hybride</a></h1>
+<hr />
+<ul>
+<li>Noyau dans l'espace utilisateur
+un noyau linux s'exécute comme une application dans le user-space du noyau linux
+multi-kernel(linux seulement)
+pas de couche d'isolation
+exemple: UML (User Mode Linux)
+abandonnée</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne #cloud</p>
+<h1 id="software-as-a-service-saas"><a class="header" href="#software-as-a-service-saas">Software as a Service (SaaS)</a></h1>
+<hr />
+<ul>
+<li>Accès à un <strong>logiciel</strong> au travers d'une connexion à un serveur distant</li>
+<li>L'accès peut être libre ou sur abonnement</li>
+<li>exemples: mail service, editeur en ligne, github, etc</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne #cloud</p>
+<h1 id="platform-as-a-service-paas"><a class="header" href="#platform-as-a-service-paas">Platform as a Service (PaaS)</a></h1>
+<ul>
+<li>Le client déploie son application sur l'infrastructure cloud</li>
+<li><strong>Le fournisseur fournit les briques logicielles de base</strong>: os, taille de matériel, etc</li>
+<li>Le fournisseur maintient la plateforme d'execution: stockage, réseau, etc</li>
+<li>Le fournisseur peut fournir des services en plus</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne #cloud</p>
+<h1 id="infrastructure-as-a-service-iaas"><a class="header" href="#infrastructure-as-a-service-iaas">Infrastructure as a Service (IaaS)</a></h1>
+<hr />
+<ul>
+<li>Le fournisseur donne accès à des resources informatiques</li>
+<li>Accès souvent sous forme de machines virtuelles</li>
+<li>Le client installe sa propre pile logicielle sur les ressources obtenues</li>
+<li>Possibilité de déployer son propre OS.</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne</p>
+<h1 id="glossaire"><a class="header" href="#glossaire">Glossaire</a></h1>
+<hr />
+<ul>
+<li><strong>le système hôte</strong>. Os principal de l'ordinateur</li>
+<li><strong>le système invité</strong>. OS installé à l'interieur d'une machine viruelle.</li>
+<li><strong>machine virtuelle (VM)</strong>. <a href="5c1-virtual-machines.html">5c1-virtual-machines</a></li>
+<li><strong>virtuel device (VD)</strong>. système embarqué émulé</li>
+<li><strong>ordinateur virtuel</strong></li>
+<li><strong>hyperviseur</strong>. noyau ultra léger permettant la gestion le monitoring et le diagnostique des VM/VD</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne</p>
+<h1 id="histoire-1"><a class="header" href="#histoire-1">Histoire</a></h1>
+<hr />
+<ul>
+<li>1979 - 1982. UNIX <code>chroot</code> pour UNIX v7 et BSD</li>
+<li>1990's. Émulateurs d'Atari, Amiga, NES, SNES</li>
+<li>1998-2000. BSD Jail</li>
+<li>2000's:
+<ul>
+<li>VMWare, VirtualBox</li>
+<li>Xen, Qemu</li>
+<li>Intel VTx</li>
+<li>KVM</li>
+<li>Linux LXC</li>
+<li>Microsoft Hyper-V</li>
+<li>Docker</li>
+</ul>
+</li>
+</ul>
 <hr />
 
                     </main>
