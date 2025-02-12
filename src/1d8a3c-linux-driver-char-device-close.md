@@ -1,5 +1,5 @@
 #kernel #programming #fr #drivers #fileops #char 
-# linux char device - open
+# linux char device - close
 ----
 On doit performer le suivant:
 + désallouer la mémoire, si nécessaire.
