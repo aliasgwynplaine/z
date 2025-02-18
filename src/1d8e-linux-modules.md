@@ -29,6 +29,20 @@ The running kernel is deployed with a generic `Makefile` [^1] [[1a4-make]]
 ```bash
 make -C /lib/module/$(uname -r)/build M=$PWD
 ```
+This following Makefile can be used to compile a kernel module:
+```make
+KERNELDIR_LKP ?= /lib/modules/$(shell uname -r)/build
+
+obj-m += helloWorld.o
+
+all:
+	make -C $(KERNELDIR_LKP) M=$$PWD modules
+
+clean:
+	make -C $(KERNELDIR_LKP) M=$$PWD clean
+
+```
+
 
 ---
 [^1]: https://www.kernel.org/doc/Documentation/kbuild/modules.txt
