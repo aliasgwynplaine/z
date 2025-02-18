@@ -11,10 +11,24 @@
             "id": "fd8f28ab0a00ca82",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "1d8e-linux-modules.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "1d8e-linux-modules"
             }
           }
         ]
@@ -164,31 +178,31 @@
   },
   "active": "fd8f28ab0a00ca82",
   "lastOpenFiles": [
-    "1a4-make.md",
-    "1d8e-linux-modules.md",
     "1d8-linux.md",
     "1d8a-linux-drivers.md",
+    "1d8b-linux-char-device.md",
+    "1d8a3a-linux-drivers-char-device-programming.md",
+    "1d8a3a1-linux-driver-uaccess.md",
+    "1d8a1-linux-drivers-programming.md",
+    "1d8a2-linux-drivers-major-minor-allocation.md",
+    "1d8a3-linux-drivers-file-operations.md",
+    "1d8e-linux-modules.md",
+    "1d-kernel.md",
+    "1a-compilation.md",
+    "1a2-code-objet.md",
+    "1a3-gcc.md",
+    "1a3a-gcc-storage-class.md",
+    "1a4-make.md",
     "3b5-integrite.md",
     "1d8i-linux-kernel-development.md",
     "1d8i1-kernel-dynamic-linker.md",
-    "1a3a-gcc-storage-class.md",
-    "1a-compilation.md",
-    "1a3-gcc.md",
-    "1a2-code-objet.md",
     "1a1-nm.md",
     "1d8h-linux-kernel-architeture.md",
     "1d9-windows-nt-kernel.md",
-    "1d-kernel.md",
     "1d8f-linux-file-struct.md",
     "5c4-virtualisation-hybride.md",
     "5c6-paas.md",
     "5c7-iaas.md",
-    "5c-virtual-infrastructures.md",
-    "5c9-virtual-infrastructures-history.md",
-    "5c8-virtual-infrastructures-glossary.md",
-    "5c2-container.md",
-    "5c5-saas.md",
-    "5c3-virtualisation-pure.md",
-    "5-computers.md"
+    "5c-virtual-infrastructures.md"
   ]
 }

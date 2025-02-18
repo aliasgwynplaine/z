@@ -413,33 +413,24 @@ minor -&gt; instance du device</p>
 <li></li>
 </ul>
 <hr />
-<div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops</p>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops</p>
 <h1 id="linux-drivers-programming-1"><a class="header" href="#linux-drivers-programming-1">Linux drivers programming</a></h1>
 <hr />
-<p>La structure <code>file_operations</code> est défini dans <code>linux/fs.h</code> est toutes ses champs sont des pointeurs aux fonctions. Chaque fichier associé est associé a une structure <code>file_operations</code> <a href="1d8f-linux-file-struct.html">1d8f-linux-file-struct</a>.</p>
+<p>La structure <code>file_operations</code> est défini dans <code>linux/fs.h</code> est il a des champs qui sont des pointeurs aux fonctions. Chaque fichier char associé à un driver est associé a une structure <code>file_operations</code> <a href="1d8f-linux-file-struct.html">1d8f-linux-file-struct</a>.</p>
 <pre><code class="language-c"> struct file_operations {
-   struct module *owner;
-   loff_t (*llseek) (struct file *, loff_t, int);
-   ssize_t (*read) (struct file *, char *, size_t, loff_t *);
-   ssize_t (*write) (struct file *, const char *, size_t, loff_t *);
-   int (*readdir) (struct file *, void *, filldir_t);
-   unsigned int (*poll) (struct file *, struct poll_table_struct *);
-   int (*ioctl) (struct inode *, struct file *, unsigned int, unsigned long);
-   int (*mmap) (struct file *, struct vm_area_struct *);
-   int (*open) (struct inode *, struct file *);
-   int (*flush) (struct file *);
-   int (*release) (struct inode *, struct file *);
-   int (*fsync) (struct file *, struct dentry *, int datasync);
-   int (*fasync) (int, struct file *, int);
-   int (*lock) (struct file *, int, struct file_lock *);
-   ssize_t (*readv) (struct file *, const struct iovec *, unsigned long,
-					 loff_t *);
-   ssize_t (*writev) (struct file *, const struct iovec *, unsigned long,
-		              loff_t *);
-};
+	struct module *owner;
+	loff_t (*llseek) (struct file *, loff_t, int);
+	ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);
+	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
+	ssize_t (*read_iter) (struct kiocb *, struct iov_iter *);
+	ssize_t (*write_iter) (struct kiocb *, struct iov_iter *);
+	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
+	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
+	int (*open) (struct inode *, struct file *);
+	int (*release) (struct inode *, struct file *);
+	/* ... */
+}
 </code></pre>
-<p>char devices programming <a href="1d8a3a-linux-drivers-char-device-programming.html">1d8a3a-linux-drivers-char-device-programming</a></p>
-<hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops #char</p>
 <h1 id="linux-char-device-programming"><a class="header" href="#linux-char-device-programming">Linux char device programming</a></h1>
 <hr />
@@ -460,6 +451,7 @@ minor -&gt; instance du device</p>
 <div style="break-before: page; page-break-before: always;"></div><p>#kernel #programming #fr #drivers #fileops #char</p>
 <h1 id="linux---uaccess-fonctions"><a class="header" href="#linux---uaccess-fonctions">linux - uaccess fonctions</a></h1>
 <hr />
+<p>This functions are in <code>linux/uaccess.h</code></p>
 <pre><code class="language-c">unsigned long copy_to_user(void __user *to, const void *from, 
 						   unsigned long count);
 unsigned long copy_from_user(void *to, const void __user *from, 
@@ -552,6 +544,18 @@ The dependencies are automatically inferred when compiled and available at <code
 <h3 id="building-a-module"><a class="header" href="#building-a-module">Building a module</a></h3>
 <p>The running kernel is deployed with a generic <code>Makefile</code> <sup class="footnote-reference"><a href="#1">1</a></sup> <a href="1a4-make.html">1a4-make</a></p>
 <pre><code class="language-bash">make -C /lib/module/\\((uname -r)/build M=\\)PWD
+</code></pre>
+<p>This following Makefile can be used to compile a kernel module:</p>
+<pre><code class="language-make">KERNELDIR_LKP ?= /lib/modules/$(shell uname -r)/build
+
+obj-m += helloWorld.o
+
+all:
+	make -C \\((KERNELDIR_LKP) M=\\)$PWD modules
+
+clean:
+	make -C \\((KERNELDIR_LKP) M=\\)$PWD clean
+
 </code></pre>
 <hr />
 <div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
