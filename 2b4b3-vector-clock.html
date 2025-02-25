@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5c3-virtualisation-pure - zettelkasten</title>
+        <title>2b4b3-vector-clock - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,37 +154,43 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#computers #computerscience #fr #sorbonne #container</p>
-<h1 id="virtualisation-pure"><a class="header" href="#virtualisation-pure">Virtualisation pure</a></h1>
+                        <p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="horloge-vectoriel"><a class="header" href="#horloge-vectoriel">Horloge vectoriel</a></h1>
 <hr />
-<p>Création d'une machine complète virtuelle et emulation de tous les éléments d'une machine
-Nécessite ce qu'on appelle un hyperviseur pour gérer des machines virtuelles et leur cohabitation.</p>
-<p>Pour chaque application du système virtualisé, on fait deux translation d'adresse
-EPT (Extended Page Table) permet d'éviter ces conversions en garantissant la sécurité (isolation)</p>
-<h2 id="defautes"><a class="header" href="#defautes">Defautes</a></h2>
 <ul>
-<li>point de défaillance unique</li>
-<li>un recours à des machines plus puissantes</li>
-<li>dégradation des performances</li>
-<li>complexité accrue de l'analyse d'erreurs</li>
-<li>parfois inadapté et avec surcoût</li>
+<li>\(T = \mathbb{N}^N\)</li>
+<li>chaque processus \(i\) gère un vecteur \(VC_i\) de taille \(N\).
+<ul>
+<li>\(VC_i[i]\): nombre d'événements du proc \(i\)</li>
+<li>\(VC_i[j]\): connaissance qu'a \(i\) de l'avancement de l'horloge de \(j\)</li>
 </ul>
-<h2 id="types"><a class="header" href="#types">types</a></h2>
+</li>
+<li>À tout instant, l'état réel d'avancement du système est donné par \(W=(VC_1[1],...,VC_N[N])\)</li>
+</ul>
+<h2 id="algorithme-de-mise-à-jour"><a class="header" href="#algorithme-de-mise-à-jour">algorithme de mise à jour</a></h2>
 <ul>
-<li>Hyperviseur avec architecture hébergée
-emulation de matériel
-il peut être multi-kernel
-exemples: VirtualBox, QEMU, Vmware (workstation, fusion,player), Microsoft Virtual PC, Parallels desktop,…</li>
-<li>Hyperviseur complet
-OS virtualisé
-MiniOS gestionaire comme hyperviseur.
-Peut émuler du matériel ou faire de la délegation
-exemples: XEN, KVM, Vmware vSphere</li>
-<li>Paravirtualisation
-L'hyperviseur n'émule pas du materiel: il delegue au vrai matériel (CPU/GPU)
-utilisable avec les instructions spécifiques des CPU
-souvent impracticable pour les systèmes non libres
-exemples: Vmware Vsphere, XEN, MicrosoP Hyper-V server, KVM</li>
+<li>À chaque événement de \(P_i\), le processus exécute
+\(VC_i[i] = VC_i[i] + 1\)</li>
+<li>À l'emission d'un message \(m\): rien à faire.</li>
+<li>À la réception d'un message \(m\) portant un horloge \(m.VC\).</li>
+<li>\(\forall x: VC_i[x] = \max(VC_i[x], m.VC[x])\text{ et } VC_i[i] = VC_i[i] + 1\)</li>
+</ul>
+<h2 id="causalité"><a class="header" href="#causalité">causalité</a></h2>
+<ul>
+<li>on a les relations
+<ul>
+<li>\(VC_i \leq VC_j \Leftrightarrow \forall k: VC_i[k] \leq VC_j[k]\)</li>
+<li>\(VC_i &lt; VC_j \Leftrightarrow VC_i[k] \leq VC_j[k] \text{ et } VC_i \neq VC_j\)</li>
+<li>\(VC_i | VC_j \Leftrightarrow  (VC_i \leq VC_j) \wedge (VC_i \leq VC_j)\)</li>
+</ul>
+</li>
+<li>Les horloges vectorielles définissent un ordre partiel sur les événements</li>
+<li>Les horloges vectorielles <em>caractérisent</em> la causalité (consistence forte)
+\(e\rightarrow e' \Leftrightarrow VC(e) &lt; VC(e')\)
+\(e | e' \Leftrightarrow VC(e) | VC(e')\)</li>
+<li>augmentent la quantité d'info à gérer localement et circulant sur la réseau</li>
+<li>la causalité des événements d'un système réparti avec \(N\) processus ne peut être caractérisée qu'avec des horloges vectorielles ayant au moins \(N\) entrées</li>
+<li>détection à la volée du respect de l'ordre causale impossible et donc délivrance causale non respectée</li>
 </ul>
 <hr />
 
@@ -192,11 +198,11 @@ exemples: Vmware Vsphere, XEN, MicrosoP Hyper-V server, KVM</li>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="5c2-container.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b4b2-lamport-timestamps.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="5c4-virtualisation-hybride.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b4b4-matrix-clock.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -206,11 +212,11 @@ exemples: Vmware Vsphere, XEN, MicrosoP Hyper-V server, KVM</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="5c2-container.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b4b2-lamport-timestamps.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="5c4-virtualisation-hybride.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b4b4-matrix-clock.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

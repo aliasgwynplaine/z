@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5c3-virtualisation-pure - zettelkasten</title>
+        <title>2b4b-clocks - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,49 +154,59 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#computers #computerscience #fr #sorbonne #container</p>
-<h1 id="virtualisation-pure"><a class="header" href="#virtualisation-pure">Virtualisation pure</a></h1>
+                        <p>#algorithmes #fr #distributedalgorithms #sorbonne #clock</p>
+<h1 id="horloges"><a class="header" href="#horloges">Horloges</a></h1>
 <hr />
-<p>Création d'une machine complète virtuelle et emulation de tous les éléments d'une machine
-Nécessite ce qu'on appelle un hyperviseur pour gérer des machines virtuelles et leur cohabitation.</p>
-<p>Pour chaque application du système virtualisé, on fait deux translation d'adresse
-EPT (Extended Page Table) permet d'éviter ces conversions en garantissant la sécurité (isolation)</p>
-<h2 id="defautes"><a class="header" href="#defautes">Defautes</a></h2>
+<p>On considere un système réparti comme un ensemble de processus asynchrones s’exécutant sur différents sites. Les proc communiquent uniquement par message. Il y a pas d'horloge globale.</p>
+<h2 id="types-dévénements"><a class="header" href="#types-dévénements">Types d'événements</a></h2>
 <ul>
-<li>point de défaillance unique</li>
-<li>un recours à des machines plus puissantes</li>
-<li>dégradation des performances</li>
-<li>complexité accrue de l'analyse d'erreurs</li>
-<li>parfois inadapté et avec surcoût</li>
+<li><strong>événements locaux</strong>. changement de l'état interne d'un processus.
+<code>e_1</code></li>
+<li><strong>emissions de messages</strong>
+<code>send(m)</code></li>
+<li><strong>receptions de messages</strong>
+<code>recv(m)</code></li>
+<li><strong>délivrance de messages</strong>
+<code>delivre(m)</code></li>
 </ul>
-<h2 id="types"><a class="header" href="#types">types</a></h2>
+<blockquote>
+<p>On veut pouvoir tracer l'execution et donner une relation de causalité entre événements.</p>
+</blockquote>
+<p>Datation <a href="2b4b5-datation.html">2b4b5-datation</a></p>
+<h2 id="horloges-physiques"><a class="header" href="#horloges-physiques">Horloges physiques</a></h2>
 <ul>
-<li>Hyperviseur avec architecture hébergée
-emulation de matériel
-il peut être multi-kernel
-exemples: VirtualBox, QEMU, Vmware (workstation, fusion,player), Microsoft Virtual PC, Parallels desktop,…</li>
-<li>Hyperviseur complet
-OS virtualisé
-MiniOS gestionaire comme hyperviseur.
-Peut émuler du matériel ou faire de la délegation
-exemples: XEN, KVM, Vmware vSphere</li>
-<li>Paravirtualisation
-L'hyperviseur n'émule pas du materiel: il delegue au vrai matériel (CPU/GPU)
-utilisable avec les instructions spécifiques des CPU
-souvent impracticable pour les systèmes non libres
-exemples: Vmware Vsphere, XEN, MicrosoP Hyper-V server, KVM</li>
+<li>Problème. ils dérivent au cours de temps et le sens et l'amplitude de la dérive est propre à chaque machine.</li>
+<li>Consequence: la précédence causale n'est pas respectée. <a href="2b4b1-causal-order.html">2b4b1-causal-order</a></li>
 </ul>
-<hr />
+<h2 id="horloges-logiques"><a class="header" href="#horloges-logiques">Horloges logiques</a></h2>
+<blockquote>
+<p><strong>def.</strong>
+\(H\): ensemble des événements de l'application (muni de l'ordre partiel \(\rightarrow\))
+\(T\): domaine de temps (muni de l'ordre partiel \(&lt;\)).
+\[
+\begin{align}
+C: &amp;H \longrightarrow T \
+&amp;e\longmapsto C(e) \text{ tq } e\rightarrow e' \Rightarrow C(e) &lt; C(e')
+\end{align}
+\]
+on dit que l'horloge <em>capture</em> la causalité.
+Si, en plus, \(C(e) &lt; C(e') \Rightarrow e \rightarrow e'\) (consistence forte), on dit que l'horloge <em>caractérise</em> la causalité.</p>
+</blockquote>
+<ul>
+<li><strong>horloges scalaires</strong> <a href="2b4b2-lamport-timestamps.html">2b4b2-lamport-timestamps</a></li>
+<li><strong>horloges vectoriels</strong> <a href="2b4b3-vector-clock.html">2b4b3-vector-clock</a></li>
+<li><strong>horloges matricielles</strong> <a href="2b4b4-matrix-clock.html">2b4b4-matrix-clock</a></li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="5c2-container.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b4-temporal-models.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="5c4-virtualisation-hybride.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b4b1-causal-order.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -206,11 +216,11 @@ exemples: Vmware Vsphere, XEN, MicrosoP Hyper-V server, KVM</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="5c2-container.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b4-temporal-models.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="5c4-virtualisation-hybride.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b4b1-causal-order.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

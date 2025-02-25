@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5c3-virtualisation-pure - zettelkasten</title>
+        <title>2b2-communication-channels - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,49 +154,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#computers #computerscience #fr #sorbonne #container</p>
-<h1 id="virtualisation-pure"><a class="header" href="#virtualisation-pure">Virtualisation pure</a></h1>
+                        <p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="canaux-de-communication"><a class="header" href="#canaux-de-communication">Canaux de communication</a></h1>
 <hr />
-<p>Création d'une machine complète virtuelle et emulation de tous les éléments d'une machine
-Nécessite ce qu'on appelle un hyperviseur pour gérer des machines virtuelles et leur cohabitation.</p>
-<p>Pour chaque application du système virtualisé, on fait deux translation d'adresse
-EPT (Extended Page Table) permet d'éviter ces conversions en garantissant la sécurité (isolation)</p>
-<h2 id="defautes"><a class="header" href="#defautes">Defautes</a></h2>
 <ul>
-<li>point de défaillance unique</li>
-<li>un recours à des machines plus puissantes</li>
-<li>dégradation des performances</li>
-<li>complexité accrue de l'analyse d'erreurs</li>
-<li>parfois inadapté et avec surcoût</li>
+<li>Risque de déséquencement des messages</li>
 </ul>
-<h2 id="types"><a class="header" href="#types">types</a></h2>
+<blockquote>
+<p>canal FIFO = pas de déséquencement</p>
+</blockquote>
 <ul>
-<li>Hyperviseur avec architecture hébergée
-emulation de matériel
-il peut être multi-kernel
-exemples: VirtualBox, QEMU, Vmware (workstation, fusion,player), Microsoft Virtual PC, Parallels desktop,…</li>
-<li>Hyperviseur complet
-OS virtualisé
-MiniOS gestionaire comme hyperviseur.
-Peut émuler du matériel ou faire de la délegation
-exemples: XEN, KVM, Vmware vSphere</li>
-<li>Paravirtualisation
-L'hyperviseur n'émule pas du materiel: il delegue au vrai matériel (CPU/GPU)
-utilisable avec les instructions spécifiques des CPU
-souvent impracticable pour les systèmes non libres
-exemples: Vmware Vsphere, XEN, MicrosoP Hyper-V server, KVM</li>
+<li>Risque de perte de messages</li>
 </ul>
+<blockquote>
+<p>communications fiables</p>
+</blockquote>
+<ul>
+<li>Certains canaux peuvent avoir une capacité bornée.</li>
+</ul>
+<p>Topologies de systèmes répartis <a href="2b2a-distributed-topologies.html">2b2a-distributed-topologies</a></p>
 <hr />
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="5c2-container.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b1-distributed-apps-classification.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="5c4-virtualisation-hybride.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b2a-distributed-topologies.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -206,11 +193,11 @@ exemples: Vmware Vsphere, XEN, MicrosoP Hyper-V server, KVM</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="5c2-container.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b1-distributed-apps-classification.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="5c4-virtualisation-hybride.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b2a-distributed-topologies.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

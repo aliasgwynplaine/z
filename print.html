@@ -164,6 +164,7 @@
 <p>information security <a href="3-securite-dinformation.html">3-securite-dinformation</a></p>
 <p>cyber security <a href="4-cyber-security.html">4-cyber-security</a></p>
 <p>ordinateurs <a href="5-computers.html">5-computers</a></p>
+<p>math <a href="6-mathematics.html">6-mathematics</a></p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#computation #ordinateurs #fr</p>
 <h1 id="systèmes-dexploitation"><a class="header" href="#systèmes-dexploitation">Systèmes d'exploitation</a></h1>
@@ -704,6 +705,7 @@ unix drivers <a href="1d11a-unix-drivers.html">1d11a-unix-drivers</a></p>
 <hr />
 <p>Un algorithme c'est...</p>
 <p>fonction d'hachage <a href="2a-hash-function.html">2a-hash-function</a></p>
+<p>algorithmes réparties <a href="2b-distributed-algorithms.html">2b-distributed-algorithms</a></p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#hash #digest #infosec #fr #algorithmes</p>
 <h1 id="fonction-dhachage"><a class="header" href="#fonction-dhachage">fonction d'hachage</a></h1>
@@ -737,6 +739,359 @@ x_1 = \frac{1}{0}
 <div style="break-before: page; page-break-before: always;"></div><p>#crypto #hash #activedirectory #ntlm #fr</p>
 <h1 id="fonction-dhachage-de-ntlm"><a class="header" href="#fonction-dhachage-de-ntlm">fonction d'hachage de NTLM</a></h1>
 <hr />
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="algorithmique-repartie"><a class="header" href="#algorithmique-repartie">Algorithmique repartie</a></h1>
+<hr />
+<p>Système réparti:</p>
+<blockquote>
+<p>Ensemble interconnecté d'entités autonomes qui communiquent via un medium de communication
+-- G. Tel</p>
+</blockquote>
+<p>Canaux de communication <a href="2b2-communication-channels.html">2b2-communication-channels</a></p>
+<h2 id="caractérisation-dun-calcul-réparti"><a class="header" href="#caractérisation-dun-calcul-réparti">Caractérisation d'un calcul réparti</a></h2>
+<ul>
+<li><strong>non séquentiel</strong>. deux instructions peuvent être exécutées simultanément.</li>
+<li><strong>non centralisé</strong>. Les paramètres décrivant l'état du système sont répartis.</li>
+<li><strong>non déterministe</strong>. deux actions concurrentes peuvent être exécutées dans n'importe quel ordre.</li>
+</ul>
+<h2 id="but-dun-système-réparti"><a class="header" href="#but-dun-système-réparti">But d'un système réparti</a></h2>
+<ul>
+<li><strong>technique</strong>. mise en commun des ressources matérielles de plusieurs machines
+<ul>
+<li>Factorisation des coûts</li>
+<li>Partage de charge</li>
+<li>Tolerance aux pannes <a href="2b3-failures.html">2b3-failures</a></li>
+</ul>
+</li>
+<li><strong>fonctionnel</strong>. mise en commun d'information entre plusieurs utilisateurs en systèmes.
+<ul>
+<li>Travail coopératif entre utilisateurs</li>
+<li>Automatisation de chaînes de traitement</li>
+</ul>
+</li>
+</ul>
+<p>Classification des applications répartis <a href="2b1-distributed-apps-classification.html">2b1-distributed-apps-classification</a></p>
+<p>Modèles temporelles <a href="2b4-temporal-models.html">2b4-temporal-models</a></p>
+<p>Critères d'evaluation <a href="2b5-evaluation-criteria.html">2b5-evaluation-criteria</a></p>
+<p>Verification d'un algorithme réparti <a href="2b6-distributed-algorithms-verification.html">2b6-distributed-algorithms-verification</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="classification-des-applications-répartis"><a class="header" href="#classification-des-applications-répartis">Classification des applications répartis</a></h1>
+<hr />
+<ul>
+<li><strong>processus coopérants</strong>. les processus interagissent via des mémoires ou des variables partagées.</li>
+</ul>
+<blockquote>
+<p>gérer les conflits d’accès aux ressources communes.</p>
+</blockquote>
+<ul>
+<li><strong>processus communicants</strong>. les processus s’échangent des messages par l'intermédiaire de canaux <a href="2b2-communication-channels.html">2b2-communication-channels</a>.</li>
+</ul>
+<blockquote>
+<p>gérer l'échange de la connaissance.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="canaux-de-communication"><a class="header" href="#canaux-de-communication">Canaux de communication</a></h1>
+<hr />
+<ul>
+<li>Risque de déséquencement des messages</li>
+</ul>
+<blockquote>
+<p>canal FIFO = pas de déséquencement</p>
+</blockquote>
+<ul>
+<li>Risque de perte de messages</li>
+</ul>
+<blockquote>
+<p>communications fiables</p>
+</blockquote>
+<ul>
+<li>Certains canaux peuvent avoir une capacité bornée.</li>
+</ul>
+<p>Topologies de systèmes répartis <a href="2b2a-distributed-topologies.html">2b2a-distributed-topologies</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="topologies-de-systèmes-répartis"><a class="header" href="#topologies-de-systèmes-répartis">Topologies de systèmes répartis</a></h1>
+<hr />
+<h2 id="topologie-logique"><a class="header" href="#topologie-logique">Topologie logique</a></h2>
+<p>La manière dont la communication entre sites est organisée (structure de contrôle)</p>
+<ul>
+<li><strong>Representation sous forme de graphe</strong>
+<ul>
+<li>sommets -&gt; processus (ou nœuds)</li>
+<li>arêtes -&gt; canaux (ou lien) de communication</li>
+</ul>
+</li>
+<li>Caractéristiques du graphe
+<ul>
+<li>connexes -&gt; chaque paire de nœuds est reliée par un chemin</li>
+<li>fortement connexe (graphe orienté) -&gt; il existe un chemin entre chaque paire de nœuds en respectant le sens des arcs</li>
+<li>incomplet -&gt; tous les processus ne communiquent pas deux à deux directement</li>
+</ul>
+</li>
+<li>Paramétrés définis sur le graphe
+<ul>
+<li>distance entre deux nœuds -&gt; longueur du plus court chemin entre ces deux nœuds</li>
+<li>diamètre du graphe -&gt; la plus longue des distances entre deux nœuds du graphe</li>
+<li>degré d'un nœud -&gt; nombre de voisins du nœud.</li>
+</ul>
+</li>
+</ul>
+<h2 id="topologie-physique"><a class="header" href="#topologie-physique">Topologie physique</a></h2>
+<p>"câblage" du réseau. Sur un topologie physique connexe quelconque, on peut toujours implanter une structure de contrôle en arbre.</p>
+<h2 id="topologies-particulières"><a class="header" href="#topologies-particulières">Topologies particulières</a></h2>
+<ul>
+<li>anneau bidirectionnel</li>
+<li>étoile</li>
+<li>clique (graphe complet)</li>
+<li>hypercube</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #failures #sorbonne</p>
+<h1 id="fautes-en-systèmes-repartis"><a class="header" href="#fautes-en-systèmes-repartis">Fautes en systèmes repartis</a></h1>
+<hr />
+<h2 id="composantes-impactés"><a class="header" href="#composantes-impactés">Composantes impactés</a></h2>
+<ul>
+<li>processus</li>
+<li>machines</li>
+<li>canaux de communication</li>
+</ul>
+<h2 id="origines-des-fautes"><a class="header" href="#origines-des-fautes">Origines des fautes:</a></h2>
+<ul>
+<li><strong>logiciels</strong> (de conception ou programmation)
+<ul>
+<li>quasi-déterministes. très difficiles à traiter à l'execution</li>
+</ul>
+</li>
+<li><strong>matérielles</strong> (ou plus généralement système)
+<ul>
+<li>non-déterministes. transitoires</li>
+<li>corrigées par point de reprise ou masquées par réplication</li>
+</ul>
+</li>
+<li><strong>piratage</strong> <a href="4a-cyber-attaques.html">4a-cyber-attaques</a>
+<ul>
+<li>affecte durablement un sous ensemble de machines</li>
+<li>masqué par réplication</li>
+</ul>
+</li>
+</ul>
+<p>Classification des fautes <a href="2b3a-failure-classification.html">2b3a-failure-classification</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #failures</p>
+<h1 id="classification-des-fautes"><a class="header" href="#classification-des-fautes">Classification des fautes</a></h1>
+<hr />
+<ul>
+<li><strong>faute franche</strong>. arrêt définitif du composant.</li>
+<li><strong>faute d'omission</strong>. un résultat en un message n'est transitoirement pas délivré.</li>
+<li><strong>faute temporelle</strong>. un résultat ou un message est délivré trop tard ou trop tôt.</li>
+<li><strong>faute byzantine</strong>. inclut tous les types de fautes, y compris le fait de délivrer un résultat ou un message erroné (intentionnellement au nom).</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="modèles-temporelles"><a class="header" href="#modèles-temporelles">Modèles temporelles</a></h1>
+<hr />
+<ul>
+<li><strong>Constat</strong>
+<ul>
+<li>vitesses des processus différents.</li>
+<li>délais de transmissions variables</li>
+</ul>
+</li>
+<li>Problème.
+<ul>
+<li>combien de temps attendre avant de reprendre au déclarer l’échec</li>
+</ul>
+</li>
+<li>Démarche.
+<ul>
+<li>élaborer des modèles temporelles pour lesquels on puisse tirer des propriétés.</li>
+</ul>
+</li>
+</ul>
+<p>Problèmes du consensus <a href="2b4a-consensus-problem.html">2b4a-consensus-problem</a></p>
+<p>Horloges <a href="2b4b-clocks.html">2b4b-clocks</a></p>
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #clock</p>
+<h1 id="horloges"><a class="header" href="#horloges">Horloges</a></h1>
+<hr />
+<p>On considere un système réparti comme un ensemble de processus asynchrones s’exécutant sur différents sites. Les proc communiquent uniquement par message. Il y a pas d'horloge globale.</p>
+<h2 id="types-dévénements"><a class="header" href="#types-dévénements">Types d'événements</a></h2>
+<ul>
+<li><strong>événements locaux</strong>. changement de l'état interne d'un processus.
+<code>e_1</code></li>
+<li><strong>emissions de messages</strong>
+<code>send(m)</code></li>
+<li><strong>receptions de messages</strong>
+<code>recv(m)</code></li>
+<li><strong>délivrance de messages</strong>
+<code>delivre(m)</code></li>
+</ul>
+<blockquote>
+<p>On veut pouvoir tracer l'execution et donner une relation de causalité entre événements.</p>
+</blockquote>
+<p>Datation <a href="2b4b5-datation.html">2b4b5-datation</a></p>
+<h2 id="horloges-physiques"><a class="header" href="#horloges-physiques">Horloges physiques</a></h2>
+<ul>
+<li>Problème. ils dérivent au cours de temps et le sens et l'amplitude de la dérive est propre à chaque machine.</li>
+<li>Consequence: la précédence causale n'est pas respectée. <a href="2b4b1-causal-order.html">2b4b1-causal-order</a></li>
+</ul>
+<h2 id="horloges-logiques"><a class="header" href="#horloges-logiques">Horloges logiques</a></h2>
+<blockquote>
+<p><strong>def.</strong>
+\(H\): ensemble des événements de l'application (muni de l'ordre partiel \(\rightarrow\))
+\(T\): domaine de temps (muni de l'ordre partiel \(&lt;\)).
+\[
+\begin{align}
+C: &amp;H \longrightarrow T \
+&amp;e\longmapsto C(e) \text{ tq } e\rightarrow e' \Rightarrow C(e) &lt; C(e')
+\end{align}
+\]
+on dit que l'horloge <em>capture</em> la causalité.
+Si, en plus, \(C(e) &lt; C(e') \Rightarrow e \rightarrow e'\) (consistence forte), on dit que l'horloge <em>caractérise</em> la causalité.</p>
+</blockquote>
+<ul>
+<li><strong>horloges scalaires</strong> <a href="2b4b2-lamport-timestamps.html">2b4b2-lamport-timestamps</a></li>
+<li><strong>horloges vectoriels</strong> <a href="2b4b3-vector-clock.html">2b4b3-vector-clock</a></li>
+<li><strong>horloges matricielles</strong> <a href="2b4b4-matrix-clock.html">2b4b4-matrix-clock</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #clock</p>
+<h1 id="relation-de-précédence---causalité"><a class="header" href="#relation-de-précédence---causalité">Relation de précédence - causalité</a></h1>
+<hr />
+<p>Def. \(a \rightarrow b\) ssi...</p>
+<h2 id="événements-concurrents"><a class="header" href="#événements-concurrents">événements concurrents</a></h2>
+<p>Deux événements qui ne sont pas causalement dépendants l'un de l'autre sont dis concurrents.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="horloge-scalar"><a class="header" href="#horloge-scalar">Horloge scalar</a></h1>
+<hr />
+<ul>
+<li>\(T = \mathbb{N}\)</li>
+<li>Tous les messages portent l'horloge de leur émetteur à l'instant démission (estampillage)</li>
+<li>2 règles de mise à jour:
+<ul>
+<li><strong>R1</strong>. avant tout événement, le processus \(i\) exécute
+\(C_i = C_i + d, d&gt;0\)</li>
+<li><strong>R2</strong>. lorsque le site \(i\) reçoit un message portant une estampille \(C_{msg}\)
+\(C_i = \max(C_i, C_{msg})\)
+Appliquer <strong>R1</strong>
+Délivrer le message</li>
+</ul>
+</li>
+</ul>
+<h2 id="propriétés"><a class="header" href="#propriétés">Propriétés</a></h2>
+<ul>
+<li>\(C\) respecte la causalité</li>
+<li>\(C\) capture la causalité mais ne la caractérise pas.</li>
+<li>\(C(e) = n\) implique que \(n-1\) événements se sont déroulés séquentiellement avant \(e\)</li>
+</ul>
+<blockquote>
+<p>Les horloges scalaires peuvent être utilisées pour définir un <em>ordre total</em> sur les événements.
+On complète la date logique d'un événement par le numéro du processus où il s'est produit \(D(e) = (C_i, i)\)
+\(e_i \ll e_j \Leftrightarrow C(e_i) &lt; C(e_j) \text{ ou } [C(e_i) = C(e_j) \text{ et } i &lt; j]\)</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="horloge-vectoriel"><a class="header" href="#horloge-vectoriel">Horloge vectoriel</a></h1>
+<hr />
+<ul>
+<li>\(T = \mathbb{N}^N\)</li>
+<li>chaque processus \(i\) gère un vecteur \(VC_i\) de taille \(N\).
+<ul>
+<li>\(VC_i[i]\): nombre d'événements du proc \(i\)</li>
+<li>\(VC_i[j]\): connaissance qu'a \(i\) de l'avancement de l'horloge de \(j\)</li>
+</ul>
+</li>
+<li>À tout instant, l'état réel d'avancement du système est donné par \(W=(VC_1[1],...,VC_N[N])\)</li>
+</ul>
+<h2 id="algorithme-de-mise-à-jour"><a class="header" href="#algorithme-de-mise-à-jour">algorithme de mise à jour</a></h2>
+<ul>
+<li>À chaque événement de \(P_i\), le processus exécute
+\(VC_i[i] = VC_i[i] + 1\)</li>
+<li>À l'emission d'un message \(m\): rien à faire.</li>
+<li>À la réception d'un message \(m\) portant un horloge \(m.VC\).</li>
+<li>\(\forall x: VC_i[x] = \max(VC_i[x], m.VC[x])\text{ et } VC_i[i] = VC_i[i] + 1\)</li>
+</ul>
+<h2 id="causalité"><a class="header" href="#causalité">causalité</a></h2>
+<ul>
+<li>on a les relations
+<ul>
+<li>\(VC_i \leq VC_j \Leftrightarrow \forall k: VC_i[k] \leq VC_j[k]\)</li>
+<li>\(VC_i &lt; VC_j \Leftrightarrow VC_i[k] \leq VC_j[k] \text{ et } VC_i \neq VC_j\)</li>
+<li>\(VC_i | VC_j \Leftrightarrow  (VC_i \leq VC_j) \wedge (VC_i \leq VC_j)\)</li>
+</ul>
+</li>
+<li>Les horloges vectorielles définissent un ordre partiel sur les événements</li>
+<li>Les horloges vectorielles <em>caractérisent</em> la causalité (consistence forte)
+\(e\rightarrow e' \Leftrightarrow VC(e) &lt; VC(e')\)
+\(e | e' \Leftrightarrow VC(e) | VC(e')\)</li>
+<li>augmentent la quantité d'info à gérer localement et circulant sur la réseau</li>
+<li>la causalité des événements d'un système réparti avec \(N\) processus ne peut être caractérisée qu'avec des horloges vectorielles ayant au moins \(N\) entrées</li>
+<li>détection à la volée du respect de l'ordre causale impossible et donc délivrance causale non respectée</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="horloge-matricielle"><a class="header" href="#horloge-matricielle">Horloge matricielle</a></h1>
+<hr />
+<ul>
+<li>\(T = \mathbb{N}^{N^2}\)</li>
+<li>chaque processus gère une matrice \(MT_i\) de taille \(N^2\).
+<ul>
+<li>\(MT_i[i,i]\): nombre d'événements du processus \(i\).</li>
+<li>\(MT_i[i,*]\): nombre de messages envoyés par \(i\) aux autres.</li>
+<li>\(\text{diag}(MT_i)\): nombre d'événements locaux des autres sites dont \(i\) a la connaissance = horloge vectoriel du processus \(i\).</li>
+<li>\(MT_i[j,k]\): nombre de messages émis par \(j\) à \(k\) dont \(i\) a connaissance.</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="datation"><a class="header" href="#datation">Datation</a></h1>
+<hr />
+<p>à chaque événement on associé la date d’occurrence</p>
+<p>\[
+a \longmapsto D(a)
+\]</p>
+<p>objectif: trouver un système de datation \(D\) qui <strong>respecte</strong> et <strong>représente</strong> au mieux la relation précédence causal.</p>
+<ul>
+<li><strong>respecte</strong>: \(a \rightarrow b \Rightarrow D(a) &lt; D(b)\)</li>
+<li><strong>représente</strong>: \(a \rightarrow b \Leftarrow D(a) &lt; D(b)\)</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="critères-devaluation"><a class="header" href="#critères-devaluation">Critères d'evaluation</a></h1>
+<hr />
+<p>La complexité en nombre d'operations est peu significative.</p>
+<p>Si la complexité en nombre total de messages échangés est pris, donc on a un critère biaisé si les tailles de messages sont très differentes.</p>
+<h2 id="complexité-en-temps"><a class="header" href="#complexité-en-temps">Complexité en temps</a></h2>
+<p>En l'absence d'horloge globale <a href="2b4-temporal-models.html">2b4-temporal-models</a>, on utilise une notion idéalisée du temps:</p>
+<ul>
+<li>les temps d'execution d'un pas de calcul est nul</li>
+<li>le temps de transmission d'un message nécessite une unité de temps</li>
+</ul>
+<blockquote>
+<p>Alors la complexité en temps = longue de la plus longue chaîne de messages.</p>
+</blockquote>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="verification-dun-algorithme-réparti"><a class="header" href="#verification-dun-algorithme-réparti">Verification d'un algorithme réparti</a></h1>
+<hr />
+<p><strong>Problème</strong>: non déterministe
++ multiplication des traces d'exécution
++ difficulté de reproduire une exécution
++ extrêmement difficile à debugger
+==On utilise donc méthodes inductives basées sur des propriétés invariants et stables.==</p>
+<ul>
+<li><strong>sûreté</strong>. rien de mauvais ne se produit dans l'exécution
+<ul>
+<li>l'exclusion mutuelle: au plus un proc finit en section critique</li>
+<li>détection de la termination: pas de fausse detection</li>
+</ul>
+</li>
+<li><strong>vivacité</strong>. quelque chose de bien finit par se produire dans l'exécution
+<ul>
+<li>exclusion mutuelle: si un proc demande la section critique, donc il fini par l'obtenir</li>
+<li>detection del a termination: si l'application se termine, donc cette termination sera detecté.</li>
+</ul>
+</li>
+</ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#infosec #security #information #sorbonne #fr</p>
 <h1 id="sécurité-des-systèmes-dinformation"><a class="header" href="#sécurité-des-systèmes-dinformation">Sécurité des systèmes d'information</a></h1>
@@ -1072,7 +1427,7 @@ EPT (Extended Page Table) permet d'éviter ces conversions en garantissant la s�
 <li>un recours à des machines plus puissantes</li>
 <li>dégradation des performances</li>
 <li>complexité accrue de l'analyse d'erreurs</li>
-<li>parfois inadapté</li>
+<li>parfois inadapté et avec surcoût</li>
 </ul>
 <h2 id="types"><a class="header" href="#types">types</a></h2>
 <ul>
@@ -1163,6 +1518,13 @@ abandonnée</li>
 </ul>
 </li>
 </ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#math #es</p>
+<h1 id="matemáticas"><a class="header" href="#matemáticas">Matemáticas</a></h1>
+<hr />
+<p>conjuntos</p>
+<p>axiomas</p>
+<p>lógica formal</p>
 <hr />
 
                     </main>
