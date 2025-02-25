@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2b4b4-matrix-clock.md",
+                "file": "2b4b-clocks.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "2b4b4-matrix-clock"
+              "title": "2b4b-clocks"
             }
           }
         ]
@@ -178,12 +178,12 @@
   },
   "active": "adfceac2054f0983",
   "lastOpenFiles": [
-    "2b4b3-vector-clock.md",
-    "2b4b4-matrix-clock.md",
-    "2b4b1-causal-order.md",
-    "2b4b-clocks.md",
-    "2b3a-failure-classification.md",
     "2b4b2-lamport-timestamps.md",
+    "2b4b-clocks.md",
+    "2b4b4-matrix-clock.md",
+    "2b4b3-vector-clock.md",
+    "2b4b1-causal-order.md",
+    "2b3a-failure-classification.md",
     "2b4b5-datation.md",
     "2b5-evaluation-criteria.md",
     "2b4-temporal-models.md",
