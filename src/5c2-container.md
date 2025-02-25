@@ -9,4 +9,7 @@ isolateur ou virtualisation d'OS
 - très performante et très économique en mémoire
 - on isole les systèmes des fichiers aussi
 
+
+
+
 ---

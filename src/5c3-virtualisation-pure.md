@@ -13,7 +13,7 @@ EPT (Extended Page Table) permet d'éviter ces conversions en garantissant la s�
 + un recours à des machines plus puissantes
 + dégradation des performances
 + complexité accrue de l'analyse d'erreurs
-+ parfois inadapté
++ parfois inadapté et avec surcoût
 
 ## types
 + Hyperviseur avec architecture hébergée
