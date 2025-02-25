@@ -15,7 +15,7 @@
               "state": {
                 "file": "2b4b-clocks.md",
                 "mode": "source",
-                "source": true,
+                "source": false,
                 "backlinks": true,
                 "backlinkOpts": {
                   "collapseAll": false,
@@ -178,6 +178,7 @@
   },
   "active": "adfceac2054f0983",
   "lastOpenFiles": [
+    "SUMMARY.md",
     "2b4b2-lamport-timestamps.md",
     "2b4b-clocks.md",
     "2b4b4-matrix-clock.md",
@@ -202,7 +203,6 @@
     "5c4-virtualisation-hybride.md",
     "5c3-virtualisation-pure.md",
     "5c5-saas.md",
-    "1d8e-linux-modules.md",
-    "1d8-linux.md"
+    "1d8e-linux-modules.md"
   ]
 }

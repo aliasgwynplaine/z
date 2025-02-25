@@ -22,16 +22,18 @@ Datation [[2b4b5-datation]]
 
 ## Horloges logiques
  **def.**
+ 
 $H$: ensemble des événements de l'application (muni de l'ordre partiel $\rightarrow$)
 
 $T$: domaine de temps (muni de l'ordre partiel $<$).
 $$
 \begin{align}
-C: &H \longrightarrow T \\
+C: &H \longrightarrow T \\\\
 &e\longmapsto C(e) \text{ tq } e\rightarrow e' \Rightarrow C(e) < C(e')
 \end{align}
 $$
 on dit que l'horloge _capture_ la causalité.
+
 Si, en plus, $C(e) < C(e') \Rightarrow e \rightarrow e'$ (consistence forte), on dit que l'horloge _caractérise_ la causalité.
 
 
