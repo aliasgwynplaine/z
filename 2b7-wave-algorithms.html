@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>2b-distributed-algorithms - zettelkasten</title>
+        <title>2b7-wave-algorithms - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -155,52 +155,45 @@
                 <div id="content" class="content">
                     <main>
                         <p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
-<h1 id="algorithmique-repartie"><a class="header" href="#algorithmique-repartie">Algorithmique repartie</a></h1>
+<h1 id="algorithmes-à-vagues"><a class="header" href="#algorithmes-à-vagues">Algorithmes à vagues</a></h1>
 <hr />
-<p>Système réparti:</p>
+<p>Les algorithmes à vagues sont utilisés pour diffuser une info sur le réseau, découvrir la topologie du réseau, rassembler des informations du réseau.</p>
+<h2 id="types-de-nœuds"><a class="header" href="#types-de-nœuds">Types de nœuds</a></h2>
+<ul>
+<li><strong>initiateur</strong>. le premier événement est interne pour démarrer l'algorithme à vague.</li>
+<li><strong>non-initiateur</strong>. le premier événement est la reception du message.</li>
+</ul>
 <blockquote>
-<p>Ensemble interconnecté d'entités autonomes qui communiquent via un medium de communication
--- G. Tel</p>
+<p>Souvent, il y aura une racine ou <em>initiateur</em>, et <em>les autres</em>. Mais, il n'en reste pas moins qu'il soient plus d'un initiateur.</p>
 </blockquote>
-<p>Canaux de communication <a href="2b2-communication-channels.html">2b2-communication-channels</a></p>
-<h2 id="caractérisation-dun-calcul-réparti"><a class="header" href="#caractérisation-dun-calcul-réparti">Caractérisation d'un calcul réparti</a></h2>
+<h2 id="propriétés"><a class="header" href="#propriétés">Propriétés</a></h2>
 <ul>
-<li><strong>non séquentiel</strong>. deux instructions peuvent être exécutées simultanément.</li>
-<li><strong>non centralisé</strong>. Les paramètres décrivant l'état du système sont répartis.</li>
-<li><strong>non déterministe</strong>. deux actions concurrentes peuvent être exécutées dans n'importe quel ordre.</li>
+<li><strong>terminaison</strong>. toute execution est finie</li>
+<li><strong>décision</strong>. une décision doit être prise à terme par au moins un processus. Typiquement une retourne</li>
+<li><strong>dépendance</strong>. une décision est précédée causalement par un événement de chaque processus</li>
 </ul>
-<h2 id="but-dun-système-réparti"><a class="header" href="#but-dun-système-réparti">But d'un système réparti</a></h2>
-<ul>
-<li><strong>technique</strong>. mise en commun des ressources matérielles de plusieurs machines
-<ul>
-<li>Factorisation des coûts</li>
-<li>Partage de charge</li>
-<li>Tolerance aux pannes <a href="2b3-failures.html">2b3-failures</a></li>
-</ul>
-</li>
-<li><strong>fonctionnel</strong>. mise en commun d'information entre plusieurs utilisateurs en systèmes.
-<ul>
-<li>Travail coopératif entre utilisateurs</li>
-<li>Automatisation de chaînes de traitement</li>
-</ul>
-</li>
-</ul>
-<p>Classification des applications répartis <a href="2b1-distributed-apps-classification.html">2b1-distributed-apps-classification</a></p>
-<p>Modèles temporelles <a href="2b4-temporal-models.html">2b4-temporal-models</a></p>
-<p>Critères d'evaluation <a href="2b5-evaluation-criteria.html">2b5-evaluation-criteria</a></p>
-<p>Verification d'un algorithme réparti <a href="2b6-distributed-algorithms-verification.html">2b6-distributed-algorithms-verification</a></p>
-<p>Algorithmes à vagues <a href="2b7-wave-algorithms.html">2b7-wave-algorithms</a></p>
+<p>anneau <a href="2b7a-wave-algorithm-ring.html">2b7a-wave-algorithm-ring</a></p>
+<p>arbre <a href="2b7b-wave-algorithm-tree.html">2b7b-wave-algorithm-tree</a></p>
+<p>echo <a href="2b7c-wave-algorithm-echo.html">2b7c-wave-algorithm-echo</a></p>
+<p>phase <a href="2b7d-wave-algorithm-phase.html">2b7d-wave-algorithm-phase</a></p>
+<div class="table-wrapper"><table><thead><tr><th>algorithme</th><th>topologie</th><th>type</th><th>Décideur</th><th>Symétrie</th><th>nb. msg</th><th>temps</th></tr></thead><tbody>
+<tr><td>Anneau</td><td>anneau unidirectionnel</td><td>centralisé</td><td>1 - initiateur</td><td>Non</td><td>N</td><td>N</td></tr>
+<tr><td>Arbre</td><td>Arbre bidirectionnel</td><td>pas centralisé et pas décentralisé</td><td>2</td><td>Oui</td><td>N</td><td>O(D)</td></tr>
+<tr><td>Echo</td><td>arbitraire bidirectionnel</td><td>centralisé</td><td>1 - initiateur</td><td>Non</td><td>2 * M</td><td>O(N)</td></tr>
+<tr><td>Phase</td><td>arbitraire</td><td>décentralisé</td><td>Tous</td><td>Oui</td><td>M * D</td><td>O(D²)</td></tr>
+</tbody></table>
+</div>
 <hr />
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="2a1a-ntlm-hash-function.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b6-distributed-algorithms-verification.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="2b1-distributed-apps-classification.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b7a-wave-algorithm-ring.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -210,11 +203,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="2a1a-ntlm-hash-function.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b6-distributed-algorithms-verification.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="2b1-distributed-apps-classification.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b7a-wave-algorithm-ring.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

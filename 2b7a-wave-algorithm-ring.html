@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>2b-distributed-algorithms - zettelkasten</title>
+        <title>2b7a-wave-algorithm-ring - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -155,52 +155,42 @@
                 <div id="content" class="content">
                     <main>
                         <p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
-<h1 id="algorithmique-repartie"><a class="header" href="#algorithmique-repartie">Algorithmique repartie</a></h1>
+<h1 id="lalgorithme-de-lanneau"><a class="header" href="#lalgorithme-de-lanneau">L'algorithme de l'anneau</a></h1>
 <hr />
-<p>Système réparti:</p>
-<blockquote>
-<p>Ensemble interconnecté d'entités autonomes qui communiquent via un medium de communication
--- G. Tel</p>
-</blockquote>
-<p>Canaux de communication <a href="2b2-communication-channels.html">2b2-communication-channels</a></p>
-<h2 id="caractérisation-dun-calcul-réparti"><a class="header" href="#caractérisation-dun-calcul-réparti">Caractérisation d'un calcul réparti</a></h2>
-<ul>
-<li><strong>non séquentiel</strong>. deux instructions peuvent être exécutées simultanément.</li>
-<li><strong>non centralisé</strong>. Les paramètres décrivant l'état du système sont répartis.</li>
-<li><strong>non déterministe</strong>. deux actions concurrentes peuvent être exécutées dans n'importe quel ordre.</li>
-</ul>
-<h2 id="but-dun-système-réparti"><a class="header" href="#but-dun-système-réparti">But d'un système réparti</a></h2>
-<ul>
-<li><strong>technique</strong>. mise en commun des ressources matérielles de plusieurs machines
-<ul>
-<li>Factorisation des coûts</li>
-<li>Partage de charge</li>
-<li>Tolerance aux pannes <a href="2b3-failures.html">2b3-failures</a></li>
-</ul>
-</li>
-<li><strong>fonctionnel</strong>. mise en commun d'information entre plusieurs utilisateurs en systèmes.
-<ul>
-<li>Travail coopératif entre utilisateurs</li>
-<li>Automatisation de chaînes de traitement</li>
-</ul>
-</li>
-</ul>
-<p>Classification des applications répartis <a href="2b1-distributed-apps-classification.html">2b1-distributed-apps-classification</a></p>
-<p>Modèles temporelles <a href="2b4-temporal-models.html">2b4-temporal-models</a></p>
-<p>Critères d'evaluation <a href="2b5-evaluation-criteria.html">2b5-evaluation-criteria</a></p>
-<p>Verification d'un algorithme réparti <a href="2b6-distributed-algorithms-verification.html">2b6-distributed-algorithms-verification</a></p>
-<p>Algorithmes à vagues <a href="2b7-wave-algorithms.html">2b7-wave-algorithms</a></p>
+<h2 id="p-initiateur"><a class="header" href="#p-initiateur">\(p\) initiateur:</a></h2>
+<p>\[
+\begin{align}</p>
+<p>S_p: &amp;\left { \text{ spontanément, une fois }\right} \\
+&amp;\text{envoi } &lt;&gt; \text{ au successor } \\\\</p>
+<p>R_p: &amp;\left { \text{ un message } &lt;&gt; \text{ arrive }\right} \\
+&amp;\text{réception de } &lt;&gt; \\
+&amp;\text{Rec}_p = true\\\</p>
+<p>D_p: &amp;\left { \text{Rec}_p\right} \\
+&amp;\text{décision}
+\end{align}
+$$</p>
+<h2 id="p-non-initiateur"><a class="header" href="#p-non-initiateur">\(p\) non-initiateur:</a></h2>
+<p>$$
+\begin{align}</p>
+<p>S_p: &amp;\left{ \text{ un message } &lt;&gt; \text{ arrive }\right} \\
+&amp;\text{envoi } &lt;&gt; \text{ au successor } \\
+&amp;\text{Rec}_p = true\\\\\</p>
+<p>R_p: &amp;\left { \text{ un message } &lt;&gt; \text{ arrive }\right} \\
+&amp;\text{réception de } &lt;&gt; \\
+&amp;\text{Rec}_p = true</p>
+<p>\end{align}
+\]</p>
 <hr />
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="2a1a-ntlm-hash-function.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b7-wave-algorithms.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="2b1-distributed-apps-classification.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="3-securite-dinformation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -210,11 +200,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="2a1a-ntlm-hash-function.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b7-wave-algorithms.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="2b1-distributed-apps-classification.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="3-securite-dinformation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

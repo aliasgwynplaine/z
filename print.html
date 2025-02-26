@@ -251,7 +251,7 @@
 <p>For detailed info about this you can refer <a href="https://www.kernel.org/doc/Documentation/kbuild/modules.txt">here</a></p>
 <hr />
 <div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
-<p>[[https://stackoverflow.com/questions/57839941/what-is-the-meaning-of-obj-m-in-linux-device-driver-makefile]]</p>
+<p>https://stackoverflow.com/questions/57839941/what-is-the-meaning-of-obj-m-in-linux-device-driver-makefile</p>
 </div>
 <div style="break-before: page; page-break-before: always;"></div><p>#computation #ordinateurs #fr</p>
 <h1 id="systèmes-des-fichiers"><a class="header" href="#systèmes-des-fichiers">Systèmes des fichiers</a></h1>
@@ -775,6 +775,7 @@ x_1 = \frac{1}{0}
 <p>Modèles temporelles <a href="2b4-temporal-models.html">2b4-temporal-models</a></p>
 <p>Critères d'evaluation <a href="2b5-evaluation-criteria.html">2b5-evaluation-criteria</a></p>
 <p>Verification d'un algorithme réparti <a href="2b6-distributed-algorithms-verification.html">2b6-distributed-algorithms-verification</a></p>
+<p>Algorithmes à vagues <a href="2b7-wave-algorithms.html">2b7-wave-algorithms</a></p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
 <h1 id="classification-des-applications-répartis"><a class="header" href="#classification-des-applications-répartis">Classification des applications répartis</a></h1>
@@ -1041,6 +1042,29 @@ On complète la date logique d'un événement par le numéro du processus où il
 </ul>
 </li>
 </ul>
+<h2 id="algorithme-de-mise-à-jour-1"><a class="header" href="#algorithme-de-mise-à-jour-1">algorithme de mise à jour</a></h2>
+<ul>
+<li>Pour le processus \(i\):
+<ul>
+<li>à chaque événement local:
+\(MT_i[i,i] = MT_i[i,i] + 1\)</li>
+<li>à chaque émission d'un message \(m\) vers \(j\):
+\(MT_i[i,i] = MT_i[i,i] + 1\) et \(MT_i[i,j] = MT_i[i,j] + 1\)</li>
+<li>à chaque réception d'un message \(m\) émis par \(j\), il faut s'assurer que:
+<ul>
+<li>tous les messages envoyés antérieurement par \(j\) à \(i\) ont été reçus</li>
+<li>tous les messages reçus par \(i\) et dont l'envoi de \(m\) depend causalement ont bien été reçu</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="considerations"><a class="header" href="#considerations">considerations</a></h2>
+<ul>
+<li>Très coûteux en espace, sur les messages et en calcul</li>
+<li>Le processus \(i\) sait que tous les autres processus \(p_j\) savent que le temps local de chaque \(p_k\) a progressé jusqu'au moins \(t\): \(\min(MT_i[k,l])\geq t\)</li>
+<li>permet d'implementer FIFO.</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
 <h1 id="datation"><a class="header" href="#datation">Datation</a></h1>
 <hr />
@@ -1090,6 +1114,63 @@ a \longmapsto D(a)
 </ul>
 </li>
 </ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="algorithmes-à-vagues"><a class="header" href="#algorithmes-à-vagues">Algorithmes à vagues</a></h1>
+<hr />
+<p>Les algorithmes à vagues sont utilisés pour diffuser une info sur le réseau, découvrir la topologie du réseau, rassembler des informations du réseau.</p>
+<h2 id="types-de-nœuds"><a class="header" href="#types-de-nœuds">Types de nœuds</a></h2>
+<ul>
+<li><strong>initiateur</strong>. le premier événement est interne pour démarrer l'algorithme à vague.</li>
+<li><strong>non-initiateur</strong>. le premier événement est la reception du message.</li>
+</ul>
+<blockquote>
+<p>Souvent, il y aura une racine ou <em>initiateur</em>, et <em>les autres</em>. Mais, il n'en reste pas moins qu'il soient plus d'un initiateur.</p>
+</blockquote>
+<h2 id="propriétés-1"><a class="header" href="#propriétés-1">Propriétés</a></h2>
+<ul>
+<li><strong>terminaison</strong>. toute execution est finie</li>
+<li><strong>décision</strong>. une décision doit être prise à terme par au moins un processus. Typiquement une retourne</li>
+<li><strong>dépendance</strong>. une décision est précédée causalement par un événement de chaque processus</li>
+</ul>
+<p>anneau <a href="2b7a-wave-algorithm-ring.html">2b7a-wave-algorithm-ring</a></p>
+<p>arbre <a href="2b7b-wave-algorithm-tree.html">2b7b-wave-algorithm-tree</a></p>
+<p>echo <a href="2b7c-wave-algorithm-echo.html">2b7c-wave-algorithm-echo</a></p>
+<p>phase <a href="2b7d-wave-algorithm-phase.html">2b7d-wave-algorithm-phase</a></p>
+<div class="table-wrapper"><table><thead><tr><th>algorithme</th><th>topologie</th><th>type</th><th>Décideur</th><th>Symétrie</th><th>nb. msg</th><th>temps</th></tr></thead><tbody>
+<tr><td>Anneau</td><td>anneau unidirectionnel</td><td>centralisé</td><td>1 - initiateur</td><td>Non</td><td>N</td><td>N</td></tr>
+<tr><td>Arbre</td><td>Arbre bidirectionnel</td><td>pas centralisé et pas décentralisé</td><td>2</td><td>Oui</td><td>N</td><td>O(D)</td></tr>
+<tr><td>Echo</td><td>arbitraire bidirectionnel</td><td>centralisé</td><td>1 - initiateur</td><td>Non</td><td>2 * M</td><td>O(N)</td></tr>
+<tr><td>Phase</td><td>arbitraire</td><td>décentralisé</td><td>Tous</td><td>Oui</td><td>M * D</td><td>O(D²)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="lalgorithme-de-lanneau"><a class="header" href="#lalgorithme-de-lanneau">L'algorithme de l'anneau</a></h1>
+<hr />
+<h2 id="p-initiateur"><a class="header" href="#p-initiateur">\(p\) initiateur:</a></h2>
+<p>\[
+\begin{align}</p>
+<p>S_p: &amp;\left { \text{ spontanément, une fois }\right} \\
+&amp;\text{envoi } &lt;&gt; \text{ au successor } \\\\</p>
+<p>R_p: &amp;\left { \text{ un message } &lt;&gt; \text{ arrive }\right} \\
+&amp;\text{réception de } &lt;&gt; \\
+&amp;\text{Rec}_p = true\\\</p>
+<p>D_p: &amp;\left { \text{Rec}_p\right} \\
+&amp;\text{décision}
+\end{align}
+$$</p>
+<h2 id="p-non-initiateur"><a class="header" href="#p-non-initiateur">\(p\) non-initiateur:</a></h2>
+<p>$$
+\begin{align}</p>
+<p>S_p: &amp;\left{ \text{ un message } &lt;&gt; \text{ arrive }\right} \\
+&amp;\text{envoi } &lt;&gt; \text{ au successor } \\
+&amp;\text{Rec}_p = true\\\\\</p>
+<p>R_p: &amp;\left { \text{ un message } &lt;&gt; \text{ arrive }\right} \\
+&amp;\text{réception de } &lt;&gt; \\
+&amp;\text{Rec}_p = true</p>
+<p>\end{align}
+\]</p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#infosec #security #information #sorbonne #fr</p>
 <h1 id="sécurité-des-systèmes-dinformation"><a class="header" href="#sécurité-des-systèmes-dinformation">Sécurité des systèmes d'information</a></h1>

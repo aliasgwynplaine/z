@@ -168,6 +168,29 @@
 </ul>
 </li>
 </ul>
+<h2 id="algorithme-de-mise-à-jour"><a class="header" href="#algorithme-de-mise-à-jour">algorithme de mise à jour</a></h2>
+<ul>
+<li>Pour le processus \(i\):
+<ul>
+<li>à chaque événement local:
+\(MT_i[i,i] = MT_i[i,i] + 1\)</li>
+<li>à chaque émission d'un message \(m\) vers \(j\):
+\(MT_i[i,i] = MT_i[i,i] + 1\) et \(MT_i[i,j] = MT_i[i,j] + 1\)</li>
+<li>à chaque réception d'un message \(m\) émis par \(j\), il faut s'assurer que:
+<ul>
+<li>tous les messages envoyés antérieurement par \(j\) à \(i\) ont été reçus</li>
+<li>tous les messages reçus par \(i\) et dont l'envoi de \(m\) depend causalement ont bien été reçu</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="considerations"><a class="header" href="#considerations">considerations</a></h2>
+<ul>
+<li>Très coûteux en espace, sur les messages et en calcul</li>
+<li>Le processus \(i\) sait que tous les autres processus \(p_j\) savent que le temps local de chaque \(p_k\) a progressé jusqu'au moins \(t\): \(\min(MT_i[k,l])\geq t\)</li>
+<li>permet d'implementer FIFO.</li>
+</ul>
 
                     </main>
 
