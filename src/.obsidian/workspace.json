@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2b4b-clocks.md",
+                "file": "2b-distributed-algorithms.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,10 +28,25 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "2b4b-clocks"
+              "title": "2b-distributed-algorithms"
+            }
+          },
+          {
+            "id": "e5e48ec95354891f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "2b7a-wave-algorithm-ring.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2b7a-wave-algorithm-ring"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -176,33 +191,33 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "adfceac2054f0983",
+  "active": "e5e48ec95354891f",
   "lastOpenFiles": [
-    "SUMMARY.md",
-    "2b4b2-lamport-timestamps.md",
+    "2b7-wave-algorithms.md",
+    "2b7a-wave-algorithm-ring.md",
+    "1a4-make.md",
+    "1m-msdos.md",
+    "2b-distributed-algorithms.md",
+    "2-algorithmes.md",
+    "0-index.md",
+    "2b4-temporal-models.md",
     "2b4b-clocks.md",
     "2b4b4-matrix-clock.md",
+    "SUMMARY.md",
+    "2b4b2-lamport-timestamps.md",
     "2b4b3-vector-clock.md",
     "2b4b1-causal-order.md",
     "2b3a-failure-classification.md",
     "2b4b5-datation.md",
     "2b5-evaluation-criteria.md",
-    "2b4-temporal-models.md",
-    "2b-distributed-algorithms.md",
     "2b1-distributed-apps-classification.md",
     "2b6-distributed-algorithms-verification.md",
     "2b2-communication-channels.md",
     "2b2a-distributed-topologies.md",
     "2b3-failures.md",
     "6-mathematics.md",
-    "0-index.md",
-    "2-algorithmes.md",
     "4a-cyber-attaques.md",
     "5c-virtual-infrastructures.md",
-    "5c2-container.md",
-    "5c4-virtualisation-hybride.md",
-    "5c3-virtualisation-pure.md",
-    "5c5-saas.md",
-    "1d8e-linux-modules.md"
+    "5c2-container.md"
   ]
 }

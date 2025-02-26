@@ -27,4 +27,6 @@ Critères d'evaluation [[2b5-evaluation-criteria]]
 
 Verification d'un algorithme réparti [[2b6-distributed-algorithms-verification]]
 
+Algorithmes à vagues [[2b7-wave-algorithms]]
+
 ---

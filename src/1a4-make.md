@@ -20,5 +20,5 @@ For detailed info about this you can refer [here](https://www.kernel.org/doc/Do
 
 
 ---
-[^1]: [[https://stackoverflow.com/questions/57839941/what-is-the-meaning-of-obj-m-in-linux-device-driver-makefile]]
+[^1]: https://stackoverflow.com/questions/57839941/what-is-the-meaning-of-obj-m-in-linux-device-driver-makefile
 
