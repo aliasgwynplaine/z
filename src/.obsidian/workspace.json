@@ -4,7 +4,7 @@
     "type": "split",
     "children": [
       {
-        "id": "5f1363bd76d0a8a7",
+        "id": "0352e93ac0dab2f5",
         "type": "tabs",
         "children": [
           {
@@ -13,36 +13,22 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2b-distributed-algorithms.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": false
-                }
-              },
-              "icon": "lucide-file",
-              "title": "2b-distributed-algorithms"
-            }
-          },
-          {
-            "id": "e5e48ec95354891f",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2b7a-wave-algorithm-ring.md",
+                "file": "5b1a2-arm.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2b7a-wave-algorithm-ring"
+              "title": "5b1a2-arm"
+            }
+          },
+          {
+            "id": "0005032178f39741",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ],
@@ -191,33 +177,33 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "e5e48ec95354891f",
+  "active": "0005032178f39741",
   "lastOpenFiles": [
-    "2b7-wave-algorithms.md",
-    "2b7a-wave-algorithm-ring.md",
-    "1a4-make.md",
-    "1m-msdos.md",
-    "2b-distributed-algorithms.md",
-    "2-algorithmes.md",
+    "5b1a2-arm.md",
+    "1g-android.md",
+    "1-systemes-dexploitation.md",
+    "5b1a2a1-raspberry-pi-programming.md",
+    "5b1a2a1b-rpi-register-organisation.md",
+    "5b1a2a1a-pi-i2c.md",
+    "5d2-ci-i2c.md",
+    "5d-integrated-circuits.md",
+    "5d1-ci-gpio.md",
+    "5-computers.md",
+    "5b-digital-computers.md",
     "0-index.md",
-    "2b4-temporal-models.md",
-    "2b4b-clocks.md",
-    "2b4b4-matrix-clock.md",
-    "SUMMARY.md",
-    "2b4b2-lamport-timestamps.md",
-    "2b4b3-vector-clock.md",
-    "2b4b1-causal-order.md",
-    "2b3a-failure-classification.md",
-    "2b4b5-datation.md",
-    "2b5-evaluation-criteria.md",
-    "2b1-distributed-apps-classification.md",
-    "2b6-distributed-algorithms-verification.md",
-    "2b2-communication-channels.md",
-    "2b2a-distributed-topologies.md",
-    "2b3-failures.md",
-    "6-mathematics.md",
-    "4a-cyber-attaques.md",
-    "5c-virtual-infrastructures.md",
-    "5c2-container.md"
+    "5b1-procesor.md",
+    "5b1a-risc-architecture.md",
+    "5b1a2a-raspberry-pi.md",
+    "5b2-peripherics.md",
+    "1n-drivers.md",
+    "2b8b-distributed-mutex-non-centralized.md",
+    "2b8b5-susuki-kasami-mutex.md",
+    "Untitled.md",
+    "Untitled 1.md",
+    "2b8b7-naimi-trehel-mutex.md",
+    "2b8b6-raymond-mutex.md",
+    "2b8b2-ricart-agrawala-mutex.md",
+    "2b8b4-martin-mutex.md",
+    "2b8b3-maekawa-mutex.md"
   ]
 }

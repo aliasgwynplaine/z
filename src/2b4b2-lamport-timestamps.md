@@ -19,3 +19,5 @@
 > On complète la date logique d'un événement par le numéro du processus où il s'est produit $D(e) = (C_i, i)$
 > $e_i \ll e_j \Leftrightarrow C(e_i) < C(e_j) \text{ ou } [C(e_i) = C(e_j) \text{ et } i < j]$
 
+> Attention: notez que s'il y a pas d'identité, on n'a pas d'ordre total
+

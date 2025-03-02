@@ -29,4 +29,8 @@ Verification d'un algorithme réparti [[2b6-distributed-algorithms-verification]
 
 Algorithmes à vagues [[2b7-wave-algorithms]]
 
+Exclusion mutuelle [[2b8-distributed-mutex]]
+
+
+
 ---

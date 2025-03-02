@@ -5,7 +5,7 @@ On considere un système réparti comme un ensemble de processus asynchrones s�
 
 ## Types d'événements
 + **événements locaux**. changement de l'état interne d'un processus.
-	`e_1`
+	`e_i`
 + **emissions de messages**
 	`send(m)`
 + **receptions de messages**

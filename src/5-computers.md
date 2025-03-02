@@ -7,6 +7,9 @@ On utilise ordinateur pour faire référence à un dispositif de traitement d'in
 
 
 ordinateurs mécaniques [[5a-mechanic-computers]]
+
+[[5d-integrated-circuits]]
+
 ordinateurs électroniques [[5b-digital-computers]]
 
 infrastructures virtuelles et conteneurs [[5c-virtual-infrastructures]]

@@ -21,6 +21,10 @@ echo [[2b7c-wave-algorithm-echo]]
 
 phase [[2b7d-wave-algorithm-phase]]
 
+depth-first token circulation [[2b7f-wave-algorithm-dftc]]
+
+algorithme d'Awerbuch Circulation de jeton en profondeur d'abord [[2b7e-wave-algorithm-dftc-awerbuch]]
+
 | algorithme | topologie                 | type                               | Décideur       | Symétrie | nb. msg | temps |
 | ---------- | ------------------------- | ---------------------------------- | -------------- | -------- | ------- | ----- |
 | Anneau     | anneau unidirectionnel    | centralisé                         | 1 - initiateur | Non      | N       | N     |
