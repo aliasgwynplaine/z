@@ -651,7 +651,10 @@ EXPORT_SYMBOL_GPL(s) // makes s visible to all modules GPL-compatible licensed
 </code></pre>
 <p>You need to declare your symbol <code>extern</code> and load the module where it is defined.</p>
 <hr />
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><p>#unix #systemesdexploitation #c #fr</p>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><hr />
+<p><a href="5b1a2-arm.html">5b1a2-arm</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#unix #systemesdexploitation #c #fr</p>
 <h1 id="unix"><a class="header" href="#unix">Unix</a></h1>
 <hr />
 <h2 id="histoire"><a class="header" href="#histoire">Histoire</a></h2>
@@ -776,6 +779,7 @@ x_1 = \frac{1}{0}
 <p>Critères d'evaluation <a href="2b5-evaluation-criteria.html">2b5-evaluation-criteria</a></p>
 <p>Verification d'un algorithme réparti <a href="2b6-distributed-algorithms-verification.html">2b6-distributed-algorithms-verification</a></p>
 <p>Algorithmes à vagues <a href="2b7-wave-algorithms.html">2b7-wave-algorithms</a></p>
+<p>Exclusion mutuelle <a href="2b8-distributed-mutex.html">2b8-distributed-mutex</a></p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
 <h1 id="classification-des-applications-répartis"><a class="header" href="#classification-des-applications-répartis">Classification des applications répartis</a></h1>
@@ -920,7 +924,7 @@ x_1 = \frac{1}{0}
 <h2 id="types-dévénements"><a class="header" href="#types-dévénements">Types d'événements</a></h2>
 <ul>
 <li><strong>événements locaux</strong>. changement de l'état interne d'un processus.
-<code>e_1</code></li>
+<code>e_i</code></li>
 <li><strong>emissions de messages</strong>
 <code>send(m)</code></li>
 <li><strong>receptions de messages</strong>
@@ -988,6 +992,9 @@ Délivrer le message</li>
 <p>Les horloges scalaires peuvent être utilisées pour définir un <em>ordre total</em> sur les événements.
 On complète la date logique d'un événement par le numéro du processus où il s'est produit \(D(e) = (C_i, i)\)
 \(e_i \ll e_j \Leftrightarrow C(e_i) &lt; C(e_j) \text{ ou } [C(e_i) = C(e_j) \text{ et } i &lt; j]\)</p>
+</blockquote>
+<blockquote>
+<p>Attention: notez que s'il y a pas d'identité, on n'a pas d'ordre total</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
 <h1 id="horloge-vectoriel"><a class="header" href="#horloge-vectoriel">Horloge vectoriel</a></h1>
@@ -1137,6 +1144,8 @@ a \longmapsto D(a)
 <p>arbre <a href="2b7b-wave-algorithm-tree.html">2b7b-wave-algorithm-tree</a></p>
 <p>echo <a href="2b7c-wave-algorithm-echo.html">2b7c-wave-algorithm-echo</a></p>
 <p>phase <a href="2b7d-wave-algorithm-phase.html">2b7d-wave-algorithm-phase</a></p>
+<p>depth-first token circulation <a href="2b7f-wave-algorithm-dftc.html">2b7f-wave-algorithm-dftc</a></p>
+<p>algorithme d'Awerbuch Circulation de jeton en profondeur d'abord <a href="2b7e-wave-algorithm-dftc-awerbuch.html">2b7e-wave-algorithm-dftc-awerbuch</a></p>
 <div class="table-wrapper"><table><thead><tr><th>algorithme</th><th>topologie</th><th>type</th><th>Décideur</th><th>Symétrie</th><th>nb. msg</th><th>temps</th></tr></thead><tbody>
 <tr><td>Anneau</td><td>anneau unidirectionnel</td><td>centralisé</td><td>1 - initiateur</td><td>Non</td><td>N</td><td>N</td></tr>
 <tr><td>Arbre</td><td>Arbre bidirectionnel</td><td>pas centralisé et pas décentralisé</td><td>2</td><td>Oui</td><td>N</td><td>O(D)</td></tr>
@@ -1171,6 +1180,505 @@ $$</p>
 &amp;\text{Rec}_p = true</p>
 <p>\end{align}
 \]</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
+<h1 id="lalgorithme-de-larbre"><a class="header" href="#lalgorithme-de-larbre">L'algorithme de l'arbre</a></h1>
+<hr />
+<p>algorithme symétrique</p>
+<pre><code>R_p : { un message &lt;&gt; arrive de q }
+	réception de &lt;&gt;;
+	Rec_p[q] = true;
+
+S_p : { exists q in Vois_p : for all r in Vois_p, r != q : Rec_p[r] et !sent_p }
+	envoie &lt;&gt; à q;
+	sent_p = true;
+
+D_p : { forall q in Vois_p : Rec_p[q] }
+	décision
+</code></pre>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="exclusion-mutuelle"><a class="header" href="#exclusion-mutuelle">Exclusion mutuelle</a></h1>
+<hr />
+<p><strong>Objectif</strong>. coordonner des processus se partageant une resource commune.</p>
+<blockquote>
+<p>On va étudier le cas ou les processus sont repartis et ne communiquent que par passage de messages</p>
+</blockquote>
+<h2 id="transitions-dun-processus"><a class="header" href="#transitions-dun-processus">Transitions d'un processus</a></h2>
+<p>états: <code>requesting</code>, <code>not_requesting</code>, <code>critical_section</code></p>
+<pre><code>┌──────────┐   request()   ┌─────────┐
+│ not_req  ├──────────────►│   req   │
+└──────────┘               └────┬────┘
+      ▲                         │     
+      │                         │     
+  release()                  aquire() 
+      │      ┌──────────┐       │     
+      └──────┤ crit_sec │◄──────┘     
+             └──────────┘             
+</code></pre>
+<p>Un algorithme d'exclusion mutuelle doit garantir:</p>
+<ul>
+<li>au plus un processus exécutant la section critique</li>
+<li>pas d’interblocage</li>
+<li>pas de famine</li>
+</ul>
+<p>algorithmes centralisés <a href="2b8a-distributed-mutex-centralized.html">2b8a-distributed-mutex-centralized</a></p>
+<p>algorithmes répartis <a href="2b8b-distributed-mutex-non-centralized.html">2b8b-distributed-mutex-non-centralized</a></p>
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="exclusion-mutuelle-centralisée"><a class="header" href="#exclusion-mutuelle-centralisée">Exclusion mutuelle centralisée</a></h1>
+<hr />
+<ul>
+<li>Le processus coordinateur est le seul à prendre une décision sur l'accès à la section critique</li>
+<li>Tous les infos nécessaires pour l'algorithme sont concentrés dans le coordinateur. <em>e. g.</em> une file d'attente (FA)</li>
+</ul>
+<h2 id="evaluation"><a class="header" href="#evaluation">Evaluation</a></h2>
+<ul>
+<li>On a besoin d'échanger au moins 3 messages par exécution de section critique: request, confirmation d'acquis, sors de la section critique</li>
+<li><strong>equitable</strong>. les requêtes sont traitées par ordre d'arrivée</li>
+<li><strong>inconvénients</strong>:
+<ul>
+<li>goulot d'étranglement sur le coordinateur</li>
+<li>panne du coordinateur relativement complexe à résoudre</li>
+</ul>
+</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="exclusion-mutuelle-répartie"><a class="header" href="#exclusion-mutuelle-répartie">Exclusion mutuelle répartie</a></h1>
+<hr />
+<h2 id="à-base-de-permission"><a class="header" href="#à-base-de-permission">à base de permission</a></h2>
+<ul>
+<li>afin d'entrer en section critique, un processus doit demander la permission à d'autre processus</li>
+<li>le droit d'entrée en section critique est acquis lorsque le processus a obtenu un nombre suffisant de permissions</li>
+</ul>
+<h3 id="algorithmes-1"><a class="header" href="#algorithmes-1">algorithmes</a></h3>
+<p>Lamport <a href="2b8b1-lamport-mutex.html">2b8b1-lamport-mutex</a></p>
+<p>Ricard-Agrawala <a href="2b8b2-ricart-agrawala-mutex.html">2b8b2-ricart-agrawala-mutex</a></p>
+<p>Maekawa <a href="2b8b3-maekawa-mutex.html">2b8b3-maekawa-mutex</a></p>
+<h2 id="à-base-de-jeton"><a class="header" href="#à-base-de-jeton">à base de jeton</a></h2>
+<ul>
+<li>La permission pour rentrer en section critique est réalisée par la possession d'un jeton
+<ul>
+<li>l'unicité du jeton assure la <strong>sûreté</strong></li>
+</ul>
+</li>
+<li>Le mouvement perpétuel du jeton assure la <strong>vivacité</strong></li>
+</ul>
+<h3 id="algorithmes-2"><a class="header" href="#algorithmes-2">algorithmes</a></h3>
+<p>On étudie des algorithmes qui dependent d'une topologie particulière</p>
+<ul>
+<li>anneau. l'algorithme de Martin <a href="2b8b4-martin-mutex.html">2b8b4-martin-mutex</a></li>
+<li>graphe complet. l'algorithme de Susuki-Kasami <a href="2b8b5-susuki-kasami-mutex.html">2b8b5-susuki-kasami-mutex</a></li>
+<li>arbre.
+<ul>
+<li>l'algorithme de Raymond <a href="2b8b6-raymond-mutex.html">2b8b6-raymond-mutex</a></li>
+<li>l'algorithme de Naimi-Trehel <a href="2b8b7-naimi-trehel-mutex.html">2b8b7-naimi-trehel-mutex</a></li>
+</ul>
+</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="lamport-mutex-1978"><a class="header" href="#lamport-mutex-1978">Lamport mutex (1978)</a></h1>
+<hr />
+<h2 id="hypothèse"><a class="header" href="#hypothèse">Hypothèse</a></h2>
+<ul>
+<li>N processus</li>
+<li><strong>Canaux FIFO</strong></li>
+</ul>
+<blockquote>
+<p>Si les canaux ne sont pas FIFO, l'exclusion mutuelle n'est pas garantie</p>
+</blockquote>
+<h2 id="messages"><a class="header" href="#messages">Messages</a></h2>
+<ul>
+<li>types:
+<ul>
+<li><code>REQUEST</code></li>
+<li><code>REPLY</code></li>
+<li><code>RELEASE</code></li>
+</ul>
+</li>
+<li>contenu: <code>(type, (H_i, S_i))</code></li>
+</ul>
+<h2 id="variables-locales-du-processus-i"><a class="header" href="#variables-locales-du-processus-i">Variables locales du processus i</a></h2>
+<ul>
+<li><code>H_i</code>. horloge logique scalaire</li>
+<li><code>FA_i</code>. file d'attente de requêtes
+<ul>
+<li>dans l'ordre induit par la valeur de leurs estampilles</li>
+</ul>
+</li>
+<li><code>At_i</code>. attente de permission</li>
+</ul>
+<h2 id="lalgorithme"><a class="header" href="#lalgorithme">L'algorithme</a></h2>
+<h3 id="variables-locales"><a class="header" href="#variables-locales">Variables locales</a></h3>
+<pre><code>FA_i = {}
+H_i = 0
+At_i = 0
+R_i = {1, 2, ..., N} - {S_i}
+</code></pre>
+<h3 id="request_sc"><a class="header" href="#request_sc">Request_SC</a></h3>
+<pre><code>H_i++;
+Placer sa requête req_i dans la file d'attente;
+Envoyer REQUEST à tous les autres sites (At_i = R_i - S_i)
+Attendre l'accord de tous dles autres sites (REPLY) et que sa propre requête soit la plus ancienne de toutes (At_i = {} et req_i == head(FA_i));
+</code></pre>
+<h3 id="release_scs_j"><a class="header" href="#release_scs_j">Release_SC(S_j)</a></h3>
+<pre><code>H_i++;
+Diffuser un message RELEASE à tous les autres sites (R_i - {S_j});
+Enlever sa requête req_i de la file d'attente FA_i;
+</code></pre>
+<h3 id="receptionmsg-de-s_j"><a class="header" href="#receptionmsg-de-s_j">Reception(msg de S_j)</a></h3>
+<pre><code>Mettre à jour H_i (H_i = max(H_i, H_j) + 1);
+Switch(type msg)
+	REQUEST:
+	    FA_i.push(msg S_j) dans l'ordre des estampilles;
+	    send(REPLY, S_j);
+	REPLY:
+		At_i = At_i - {S_j};
+	RELEASE:
+		FA_i = FA_i - {msg S_j};
+</code></pre>
+<h2 id="evaluation-1"><a class="header" href="#evaluation-1">Evaluation</a></h2>
+<ul>
+<li>\(3(N-1)\) messages par exécution de section critique</li>
+<li><strong>sûreté</strong>. seul le site en tête de la file d'attente <code>FA</code> pourra rentrer en section critique. Les autres attendent que cette demande soit retirée avec un reception de RELEASE</li>
+<li><strong>vivacité</strong>. toute demande finira par avoir la plus petite estampille et donc se trouvera en tête de la file d'attente</li>
+<li><strong>equitable</strong>. par l'ordre total</li>
+<li><strong>avantage</strong>. simplicité (en fonctionnement normal)</li>
+<li><strong>inconvénients</strong>.
+<ul>
+<li>hypothèse de canaux FIFO</li>
+<li>pas extensible</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>amélioré par Ricart-Agrawala <a href="2b8b2-ricart-agrawala-mutex.html">2b8b2-ricart-agrawala-mutex</a></p>
+</blockquote>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="ricart-agrawala-1981"><a class="header" href="#ricart-agrawala-1981">Ricart-Agrawala (1981)</a></h1>
+<hr />
+<p>C'est une amelioration de l'algorithme de Lamport <a href="2b8b1-lamport-mutex.html">2b8b1-lamport-mutex</a></p>
+<ul>
+<li>File d'attente. chaque processus P_i ne conserve dans sa file d'attente FA_i que les requêtes dont l'acquittement a été différé.</li>
+<li><code>RELEASE</code> est remplacé par le message <code>REPLY</code> qui possède le sens 'dune autorisation d'accès, délivrée de façon conditionnelle.</li>
+</ul>
+<h2 id="hypothèse-1"><a class="header" href="#hypothèse-1">Hypothèse</a></h2>
+<ul>
+<li>N processus connu de tous</li>
+<li><strong>communication fiable mais pas FIFO</strong></li>
+</ul>
+<h2 id="messages-1"><a class="header" href="#messages-1">Messages</a></h2>
+<ul>
+<li>types:
+<ul>
+<li><code>REQUEST</code>. demande d'entrer en section critique</li>
+<li><code>REPLY</code>. réponse à la reception d'un message <code>REQUEST</code></li>
+<li><del><code>RELEASE</code></del></li>
+</ul>
+</li>
+<li>contenu: <code>(type, (H_i, S_i))</code></li>
+</ul>
+<h2 id="variables-locales-du-processus-i-1"><a class="header" href="#variables-locales-du-processus-i-1">Variables locales du processus i</a></h2>
+<ul>
+<li><code>H_i</code>. horloge logique scalaire</li>
+<li><code>FA_i</code>. file d'attente de requêtes
+<ul>
+<li>dans l'ordre induit par la valeur de leurs estampilles</li>
+</ul>
+</li>
+<li><code>At_i</code>. attente de permission</li>
+<li><code>Etat_i</code>. <code>req</code>, <code>not_req</code>, <code>crit_sec</code></li>
+</ul>
+<h2 id="lalgorithme-1"><a class="header" href="#lalgorithme-1">L'algorithme</a></h2>
+<h3 id="variables-locales-1"><a class="header" href="#variables-locales-1">Variables locales</a></h3>
+<pre><code>FA_i = {}
+H_i = 0
+At_i = 0
+R_i = {1, 2, ..., N} - {S_i}
+</code></pre>
+<h3 id="request_sc-1"><a class="header" href="#request_sc-1">Request_SC</a></h3>
+<pre><code>H_i++;
+Envoyer REQUEST à tous les autres sites (At_i = R_i - S_i)
+Attendre l'accord de tous dles autres sites (REPLY);
+</code></pre>
+<h3 id="release_scs_j-1"><a class="header" href="#release_scs_j-1">Release_SC(S_j)</a></h3>
+<pre><code>H_i++;
+Diffuser un message REPLY à tous les autres sites differés dans la FA_i;
+</code></pre>
+<h3 id="receptionmsg-de-s_j-1"><a class="header" href="#receptionmsg-de-s_j-1">Reception(msg de S_j)</a></h3>
+<pre><code>Mettre à jour H_i (H_i = max(H_i, H_j) + 1);
+&lt;...&gt;
+</code></pre>
+<h2 id="evaluation-2"><a class="header" href="#evaluation-2">Evaluation</a></h2>
+<ul>
+<li>\(2(N-1)\) messages par exécution de section critique</li>
+<li><strong>sûreté</strong>. seul le site en tête de la file d'attente <code>FA</code> pourra rentrer en section critique. Les autres attendent que cette demande soit retirée avec un reception de RELEASE</li>
+<li><strong>vivacité</strong>. toute demande finira par avoir la plus petite estampille et donc se trouvera en tête de la file d'attente</li>
+<li><strong>equitable</strong>. par l'ordre total</li>
+<li><strong>avantage</strong>s.
+<ul>
+<li>hypothèse de canaux FIFO plus nécessaire</li>
+<li>taille de la file d'attente <code>FA</code> plus petite</li>
+<li>moins de messages envoyés par rapport Lamport</li>
+</ul>
+</li>
+<li><strong>inconvénients</strong>.
+<ul>
+<li>pas extensible</li>
+</ul>
+</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="maekawa-1985"><a class="header" href="#maekawa-1985">Maekawa (1985)</a></h1>
+<hr />
+<ul>
+<li>Chaque site ne peut donner sa permission qu'a un seul site à la fois</li>
+<li>Chaque site S_i appartient à un ensemble (quorum) RS_i (Request Set) dont il doit obtenir l'accord (msg LOCKED) de tous les membres pour pouvoir entrer en section critique</li>
+<li>Il doit y a voir au moins un site commun entre deux ensembles RS_i et RS_j. Ce site arbitre les conflits. C'est-à-dire:
+\(\forall i,j ¸in \left{1,...,N\right} \text{ tq } i\neq j, \text{RS}_i \cap \text{RS}_j \neq \emptyset\)</li>
+</ul>
+<p>Afin de minimiser le trafic des messages et de demander le même effort à tous les sites:</p>
+<ul>
+<li>Soit
+<ul>
+<li>N : nombre de sites</li>
+<li>K_i = |RS_i|</li>
+<li>D : nombre d'ensembles auquel chaque site appartient</li>
+</ul>
+</li>
+<li>K_i= K, pour tout i dans { 1, ..., N}</li>
+<li>S_i est dans RS_i, pour tout S_i dans { S_1, ...,S_n }</li>
+<li>Pour tous i != j dans { 1,..., N}, S_i et S_j appartiennent à D ensembles RS</li>
+<li>D = K est une possibilité</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="lalgorithme-de-martin"><a class="header" href="#lalgorithme-de-martin">L'algorithme de Martin</a></h1>
+<hr />
+<p>Le jeton circule dans le sens inverse des requêtes
+Quand S_i veut entrer en section critique, il envoie une requête à son successeur et attend le jeton. En recevant une requête de son prédécesseur, si S_j ne possède pas le jeton, il retransmet la requête à son successeur. Sinon, s'il le possède et ne l'utilise pas, il l'envoie à son prédécesseur.</p>
+<h2 id="evaluation-3"><a class="header" href="#evaluation-3">Evaluation</a></h2>
+<ul>
+<li>Nombre de messages: \(2(K+1)\), dont K est le nombre de sites entre le demandeur et le site en possession du jeton</li>
+<li>avantages
+<ul>
+<li>simplicité</li>
+<li>pas de diffusion</li>
+</ul>
+</li>
+<li>inconvénients
+<ul>
+<li>pas extensible</li>
+<li>un site qui n'est pas intéressé par la section critique est souvent solicité à transmettre les requêtes et le jeton</li>
+</ul>
+</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="lalgorithme-de-susuki-kasami"><a class="header" href="#lalgorithme-de-susuki-kasami">L'algorithme de Susuki-Kasami</a></h1>
+<hr />
+<p>À chaque envoi du jeton, le processus expéditeur envoie aussi la file d'attente et un tableau qu'a l'information de la dernière demande d'entrée en section critique.</p>
+<h2 id="types-de-message"><a class="header" href="#types-de-message">Types de message</a></h2>
+<ul>
+<li><code>REQUEST (S_j, k)</code>. indique que site <code>S_j</code> est en train de faire sa <code>k</code>-ème demande d'entrée en section critique</li>
+<li><code>TOKEN (Q, LN)</code>
+<ul>
+<li><code>Q</code>. une file d'attente de demandes pour entrer en section critique</li>
+<li><code>LN</code>. <code>LN[i]</code> indique le numéro de la dernière demande d'entrée en section critique du site <code>S_i</code> qui a été satisfaite</li>
+</ul>
+</li>
+</ul>
+<h2 id="lalgorithme-2"><a class="header" href="#lalgorithme-2">l'algorithme</a></h2>
+<h3 id="variables"><a class="header" href="#variables">variables</a></h3>
+<ul>
+<li><code>etat_i</code>. <code>req</code>, <code>not_req</code>, <code>crit_seq</code></li>
+<li><code>token_i</code></li>
+<li><code>RN_i</code>
+<ul>
+<li><code>RN_i[j]</code> est le numéro de la dernière requête reçue de la part du site <code>S_j</code></li>
+<li><code>RN_i[i]</code> correspond au nombre de requêtes faites par le site <code>S_i</code></li>
+</ul>
+</li>
+<li><code>LN_i</code>. vecteur de N positions de requêtes satisfaites</li>
+</ul>
+<h3 id="initialisation-s_i"><a class="header" href="#initialisation-s_i">initialisation (S_i)</a></h3>
+<pre><code>token = S_i == S_1
+etat = not_req
+RN = [ 0 for j in 1...N ]
+LN = [ 0 for j in 1...N ]
+Q = {}
+</code></pre>
+<h3 id="request_csi"><a class="header" href="#request_csi">Request_CS(i)</a></h3>
+<pre><code>etat = req
+
+if token == false
+	RN[i]++
+	diffuser (REQUEST (S_i, RN[i]))
+	/* attendre token == true */
+
+etat = crit_sec
+</code></pre>
+<h3 id="release_csi"><a class="header" href="#release_csi">Release_CS(i)</a></h3>
+<pre><code>LN[i] = RN[i]
+
+for site in [ 1,...,N ]
+	if site != i et not site dans Q and RN[site] &gt; LN[site]
+		Q.push_back(site)
+
+if Q not empty
+	token = false
+	site = Q.pop()
+	send(TOKEN(Q, LN)) à site
+
+etat = not_req
+</code></pre>
+<h3 id="receive_request_css_j-requestj-k"><a class="header" href="#receive_request_css_j-requestj-k">Receive_request_CS(S_j, REQUEST(j, k))</a></h3>
+<pre><code>RN[j] = max(RN[j], k)
+
+if token == true and etat == not_req and RN[j] &gt; LN[j]
+	token = false
+	send(TOKEN(Q, LN)) à S_j
+</code></pre>
+<h3 id="receive_tokentokenq-ln"><a class="header" href="#receive_tokentokenq-ln">Receive_token(TOKEN(Q, LN))</a></h3>
+<pre><code>token = true
+LN = TOKEN.LN
+Q = TOKEN.Q
+</code></pre>
+<h2 id="evaluation-4"><a class="header" href="#evaluation-4">Evaluation</a></h2>
+<ul>
+<li>Nombre de messages par exécution de section critique
+<ul>
+<li>N, si le processus n'a pas le jeton</li>
+<li>0, si le processus a le jeton</li>
+</ul>
+</li>
+<li>vivacité. garantie par l'ordre FIFO de la file Q</li>
+<li>inconvenient. pas extensible</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="lalgorithme-de-raymond"><a class="header" href="#lalgorithme-de-raymond">L'algorithme de Raymond</a></h1>
+<hr />
+<p>Les processus sont organisés en <strong>arbre</strong> ayant pour racine le site qui possède le jeton. Les arêtes sont orientés vers la racine</p>
+<p>Les demandes du jeton sont propagées vers la racine et sont enregistrées dans une file local sur chaque site du trajet</p>
+<p>Chaque nœud possède</p>
+<ul>
+<li>une variable <code>holder</code> qui pointe en direction du nœud racine.</li>
+<li>file FIFO pour sauvegarde les requêtes pendantes de ses voisins
+L'arbre est modifié (inversion du pointeur) à chaque transmission su jeton</li>
+</ul>
+<h2 id="lalgorithme-3"><a class="header" href="#lalgorithme-3">l'algorithme</a></h2>
+<ul>
+<li>Lorsqu'un nœud demande le jeton ou reçoit une requête pour le jeton de ses voisins, le nœud ajoute la requête dans sa file locale. Si la file était vide, il renvoie un requête à son <code>holder</code>.</li>
+<li>En recevant une requête, le nœud qui possède le jeton le libère lorsqu'il ne l'utilise plus. À chaque libération du jeton, un nœud inverse la direction de <code>holder</code>.</li>
+<li>Lorsqu'un nœud reçoit le jeton, il enlève le premier élément (<code>first</code>) de sa file.
+<ul>
+<li>Si <code>first</code> est le propre nœud, il rentre en section critique</li>
+<li>Sinon, le jeton est renvoyé à <code>first</code></li>
+</ul>
+</li>
+<li>Si la file n'est pas vide, une requête pour le jeton est renvoyé au voisin</li>
+</ul>
+<blockquote>
+<p>si on ignore les directions des arcs, la topologie de l'arbre n'est pas modifié.</p>
+</blockquote>
+<h2 id="evaluation-5"><a class="header" href="#evaluation-5">Evaluation</a></h2>
+<ul>
+<li>Entre 0 et N messages par demande de section critique</li>
+<li>moyenne de O(log(N)) messages par exécution de section critique</li>
+<li><strong>avantages</strong>.
+<ul>
+<li>extensibilité</li>
+</ul>
+</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="lalgorithme-de-naimi-trehel"><a class="header" href="#lalgorithme-de-naimi-trehel">L'algorithme de Naimi-Trehel</a></h1>
+<hr />
+<p>On a deux estructures de données:</p>
+<ul>
+<li>File de requêtes (<code>next</code>)
+<ul>
+<li>Le processus en tête de la file possède le jeton</li>
+<li>Le processus à la fin de la file est le dernier processus qui a fait une requête pour entrer en section critique</li>
+<li>Une nouvelle requête est toujours placée en fin de la file</li>
+</ul>
+</li>
+<li>Arbre de chemins vers le dernier demandeur (<code>father</code>)
+<ul>
+<li>Le dernier demandeur est la racine de l'arbre</li>
+<li>Une nouvelle requête est transmise à travers un chemin de pointeurs <code>father</code> jusqu'à la racine de l'arbre (<code>father</code> == nil)
+<ul>
+<li>Reconfiguration <strong>dynamique</strong> de l'arbre. Le nouveau demandeur devient la nouvelle racine de l'arbre</li>
+<li>Les sites dans le chemin compris entre la nouvelle et l'ancienne racine changent leur pointeur <code>father</code> vers la nouvelle racine</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="lalgorithme-4"><a class="header" href="#lalgorithme-4">L'algorithme</a></h2>
+<h3 id="variables-locales-2"><a class="header" href="#variables-locales-2">variables locales</a></h3>
+<pre><code>token
+requesting
+next
+father
+</code></pre>
+<h3 id="initialisation-de-s_i"><a class="header" href="#initialisation-de-s_i">initialisation de S_i</a></h3>
+<pre><code>father = S_1;
+next = nil;
+requesting = false;
+token = (father == S_i);
+
+if father == S_i
+	father = nil;
+</code></pre>
+<h3 id="request_css_i"><a class="header" href="#request_css_i">Request_CS(S_i)</a></h3>
+<pre><code>requesting = true;
+
+if father != nil
+	send(REQUEST, S_i) à father;
+	father = nil;
+
+/* attendre token == true */
+</code></pre>
+<h3 id="release_css_i"><a class="header" href="#release_css_i">Release_CS(S_i)</a></h3>
+<pre><code>requesting = true;
+
+if next != nil 
+	send(token) à next;
+	token = false;
+	next = nil;
+</code></pre>
+<h3 id="receive_request_css_j"><a class="header" href="#receive_request_css_j">Receive_request_CS(S_j)</a></h3>
+<pre><code>if father == nil;
+	if requesting
+		next = S_j;
+	else
+		token = false;
+		send(token) à S_j;
+else
+	send(REQUEST, S_j) à father;
+
+father = S_j
+</code></pre>
+<h3 id="receive_tokens_j"><a class="header" href="#receive_tokens_j">Receive_token(S_j)</a></h3>
+<pre><code>token = true
+</code></pre>
+<h2 id="evaluation-6"><a class="header" href="#evaluation-6">Evaluation</a></h2>
+<ul>
+<li>Entre 0 et N messages par demande de section critique</li>
+<li>moyenne de O(log(N)) messages par exécution de section critique</li>
+<li><strong>avantages</strong>.
+<ul>
+<li>extensibilité</li>
+<li><strong>adaptativité</strong>. un site qui n'est pas intéressé par la section critique ne sera plus sollicité après quelques transferts de requêtes.</li>
+</ul>
+</li>
+</ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#infosec #security #information #sorbonne #fr</p>
 <h1 id="sécurité-des-systèmes-dinformation"><a class="header" href="#sécurité-des-systèmes-dinformation">Sécurité des systèmes d'information</a></h1>
@@ -1425,21 +1933,53 @@ La compte de service du KDC est <code>krbtgt</code> <a href="3b3b2-kerberos-krbt
 <blockquote>
 <p>Attention: a l'anglais et a l'espagnol, on souvent fait pas la difference entres les ordinateurs et les calculateurs (<em>computers</em>, <em>computadoras</em>). De ce que je vois, on utilise le terme 'ordinateur' pour ces qu'en anglais on appelle <em>digital computers</em>.</p>
 </blockquote>
-<p>ordinateurs mécaniques <a href="5a-mechanic-computers.html">5a-mechanic-computers</a>
-ordinateurs électroniques <a href="5b-digital-computers.html">5b-digital-computers</a></p>
+<p>ordinateurs mécaniques <a href="5a-mechanic-computers.html">5a-mechanic-computers</a></p>
+<p><a href="5d-integrated-circuits.html">5d-integrated-circuits</a></p>
+<p>ordinateurs électroniques <a href="5b-digital-computers.html">5b-digital-computers</a></p>
 <p>infrastructures virtuelles et conteneurs <a href="5c-virtual-infrastructures.html">5c-virtual-infrastructures</a></p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr</p>
 <h1 id="digital-computers"><a class="header" href="#digital-computers">Digital computers</a></h1>
 <hr />
-<p><a href="5b1-procesor.html">5b1-procesor</a>
-<a href="5b1-risc-architecture.html">5b1-risc-architecture</a>
-<a href="5b2-cisc-architecture.html">5b2-cisc-architecture</a></p>
-<p>mpis32 <a href="5b2-mips32.html">5b2-mips32</a></p>
+<p><a href="5b1-procesor.html">5b1-procesor</a></p>
+<p><a href="5b2-peripherics.html">5b2-peripherics</a></p>
 <div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr</p>
 <h1 id="processeur"><a class="header" href="#processeur">Processeur</a></h1>
 <hr />
+<p><a href="5b1a-risc-architecture.html">5b1a-risc-architecture</a>
+<a href="5b3-cisc-architecture.html">5b3-cisc-architecture</a></p>
 <hr />
+<div style="break-before: page; page-break-before: always;"></div><p>mpis32 <a href="5b1a1-mips32.html">5b1a1-mips32</a></p>
+<p>arm <a href="5b1a2-arm.html">5b1a2-arm</a></p>
+<div style="break-before: page; page-break-before: always;"></div><p><a href="5b1a2a-raspberry-pi.html">5b1a2a-raspberry-pi</a></p>
+<p><a href="1g-android.html">1g-android</a></p>
+<div style="break-before: page; page-break-before: always;"></div><p><a href="5b1a2a1-raspberry-pi-programming.html">5b1a2a1-raspberry-pi-programming</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="gpios"><a class="header" href="#gpios">GPIOs</a></h2>
+<p>Les GPIOs sont associés a l'espace mémoire. Par example, dans la raspberry pi 1B, la direction base commence à <code>0x20200000</code> <a href="5b1a2a1b-rpi-register-organisation.html">5b1a2a1b-rpi-register-organisation</a></p>
+<p>I2C <a href="5b1a2a1a-pi-i2c.html">5b1a2a1a-pi-i2c</a></p>
+<div style="break-before: page; page-break-before: always;"></div><p>#i2c #peripherics #arm #raspberrypi #drivers #gpio #programming</p>
+<h1 id="raspberry-pi-i2c"><a class="header" href="#raspberry-pi-i2c">Raspberry pi I2C</a></h1>
+<hr />
+<p>Pour information especifique par rapport le bus I2C <a href="5d2-ci-i2c.html">5d2-ci-i2c</a></p>
+<p>On a besoin d’installer le package i2c-toolfs pour utiliser l’i2c de la carte Raspberry pi :</p>
+<pre><code class="language-bash">sudo apt install -y i2c-tools 
+</code></pre>
+<pre><code class="language-bash">sudo raspi-config
+</code></pre>
+<pre><code>i2cdetect
+</code></pre>
+<hr />
+<p>https://arduinofactory.fr/raspberry-pi-i2c/</p>
+<div style="break-before: page; page-break-before: always;"></div><p>Cada <code>GPFSELn</code> es un registro de 32 bits, donde cada pin usa <strong>3 bits</strong> para su configuración:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Función</th></tr></thead><tbody>
+<tr><td><code>000</code></td><td>Input</td></tr>
+<tr><td><code>001</code></td><td>Output</td></tr>
+<tr><td><code>100</code></td><td>Fonction alternative 0</td></tr>
+<tr><td><code>101</code></td><td>Fonction alternative 1</td></tr>
+<tr><td><code>110</code></td><td>Fonction alternative 2</td></tr>
+<tr><td><code>111</code></td><td>Fonction alternative 3</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><p><a href="1n-drivers.html">1n-drivers</a></p>
 <div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne</p>
 <h1 id="infrastructures-virtuelles-et-conteneurs"><a class="header" href="#infrastructures-virtuelles-et-conteneurs">Infrastructures Virtuelles et Conteneurs</a></h1>
 <hr />
@@ -1597,6 +2137,22 @@ abandonnée</li>
 </ul>
 </li>
 </ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#electronics #integratedcircuits</p>
+<h1 id="circuit-integré"><a class="header" href="#circuit-integré">Circuit integré</a></h1>
+<hr />
+<h2 id="communications"><a class="header" href="#communications">communications</a></h2>
+<p><a href="5d1-ci-gpio.html">5d1-ci-gpio</a></p>
+<p><a href="5d2-ci-i2c.html">5d2-ci-i2c</a></p>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><p>#integratedcircuits #protocol #serialport #pin</p>
+<h1 id="i2c"><a class="header" href="#i2c">I2C</a></h1>
+<hr />
+<p>L'Inter-Integrated Circuit (I2C) est un protocole de communication série utilisé pour connecter des composants électroniques sur un même circuit imprimé ou entre différents périphériques.</p>
+<ul>
+<li>SDA: Serial Data Line</li>
+<li>SCL: Serial Clock Line</li>
+</ul>
+<p><a href="5b1a2a1a-pi-i2c.html">5b1a2a1a-pi-i2c</a></p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#math #es</p>
 <h1 id="matemáticas"><a class="header" href="#matemáticas">Matemáticas</a></h1>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5b-digital-computers - zettelkasten</title>
+        <title>2b8b-distributed-mutex-non-centralized - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,21 +154,50 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#computers #computerscience #fr</p>
-<h1 id="digital-computers"><a class="header" href="#digital-computers">Digital computers</a></h1>
+                        <p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="exclusion-mutuelle-répartie"><a class="header" href="#exclusion-mutuelle-répartie">Exclusion mutuelle répartie</a></h1>
 <hr />
-<p><a href="5b1-procesor.html">5b1-procesor</a></p>
-<p><a href="5b2-peripherics.html">5b2-peripherics</a></p>
+<h2 id="à-base-de-permission"><a class="header" href="#à-base-de-permission">à base de permission</a></h2>
+<ul>
+<li>afin d'entrer en section critique, un processus doit demander la permission à d'autre processus</li>
+<li>le droit d'entrée en section critique est acquis lorsque le processus a obtenu un nombre suffisant de permissions</li>
+</ul>
+<h3 id="algorithmes"><a class="header" href="#algorithmes">algorithmes</a></h3>
+<p>Lamport <a href="2b8b1-lamport-mutex.html">2b8b1-lamport-mutex</a></p>
+<p>Ricard-Agrawala <a href="2b8b2-ricart-agrawala-mutex.html">2b8b2-ricart-agrawala-mutex</a></p>
+<p>Maekawa <a href="2b8b3-maekawa-mutex.html">2b8b3-maekawa-mutex</a></p>
+<h2 id="à-base-de-jeton"><a class="header" href="#à-base-de-jeton">à base de jeton</a></h2>
+<ul>
+<li>La permission pour rentrer en section critique est réalisée par la possession d'un jeton
+<ul>
+<li>l'unicité du jeton assure la <strong>sûreté</strong></li>
+</ul>
+</li>
+<li>Le mouvement perpétuel du jeton assure la <strong>vivacité</strong></li>
+</ul>
+<h3 id="algorithmes-1"><a class="header" href="#algorithmes-1">algorithmes</a></h3>
+<p>On étudie des algorithmes qui dependent d'une topologie particulière</p>
+<ul>
+<li>anneau. l'algorithme de Martin <a href="2b8b4-martin-mutex.html">2b8b4-martin-mutex</a></li>
+<li>graphe complet. l'algorithme de Susuki-Kasami <a href="2b8b5-susuki-kasami-mutex.html">2b8b5-susuki-kasami-mutex</a></li>
+<li>arbre.
+<ul>
+<li>l'algorithme de Raymond <a href="2b8b6-raymond-mutex.html">2b8b6-raymond-mutex</a></li>
+<li>l'algorithme de Naimi-Trehel <a href="2b8b7-naimi-trehel-mutex.html">2b8b7-naimi-trehel-mutex</a></li>
+</ul>
+</li>
+</ul>
+<hr />
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="5-computers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b8a-distributed-mutex-centralized.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="5b1-procesor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b8b1-lamport-mutex.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -178,11 +207,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="5-computers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b8a-distributed-mutex-centralized.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="5b1-procesor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b8b1-lamport-mutex.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

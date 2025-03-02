@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5b-digital-computers - zettelkasten</title>
+        <title>2b8a-distributed-mutex-centralized - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,21 +154,35 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#computers #computerscience #fr</p>
-<h1 id="digital-computers"><a class="header" href="#digital-computers">Digital computers</a></h1>
+                        <p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="exclusion-mutuelle-centralisée"><a class="header" href="#exclusion-mutuelle-centralisée">Exclusion mutuelle centralisée</a></h1>
 <hr />
-<p><a href="5b1-procesor.html">5b1-procesor</a></p>
-<p><a href="5b2-peripherics.html">5b2-peripherics</a></p>
+<ul>
+<li>Le processus coordinateur est le seul à prendre une décision sur l'accès à la section critique</li>
+<li>Tous les infos nécessaires pour l'algorithme sont concentrés dans le coordinateur. <em>e. g.</em> une file d'attente (FA)</li>
+</ul>
+<h2 id="evaluation"><a class="header" href="#evaluation">Evaluation</a></h2>
+<ul>
+<li>On a besoin d'échanger au moins 3 messages par exécution de section critique: request, confirmation d'acquis, sors de la section critique</li>
+<li><strong>equitable</strong>. les requêtes sont traitées par ordre d'arrivée</li>
+<li><strong>inconvénients</strong>:
+<ul>
+<li>goulot d'étranglement sur le coordinateur</li>
+<li>panne du coordinateur relativement complexe à résoudre</li>
+</ul>
+</li>
+</ul>
+<hr />
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="5-computers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b8-distributed-mutex.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="5b1-procesor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b8b-distributed-mutex-non-centralized.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -178,11 +192,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="5-computers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b8-distributed-mutex.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="5b1-procesor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b8b-distributed-mutex-non-centralized.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

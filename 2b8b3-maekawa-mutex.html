@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5b-digital-computers - zettelkasten</title>
+        <title>2b8b3-maekawa-mutex - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,21 +154,40 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#computers #computerscience #fr</p>
-<h1 id="digital-computers"><a class="header" href="#digital-computers">Digital computers</a></h1>
+                        <p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="maekawa-1985"><a class="header" href="#maekawa-1985">Maekawa (1985)</a></h1>
 <hr />
-<p><a href="5b1-procesor.html">5b1-procesor</a></p>
-<p><a href="5b2-peripherics.html">5b2-peripherics</a></p>
+<ul>
+<li>Chaque site ne peut donner sa permission qu'a un seul site à la fois</li>
+<li>Chaque site S_i appartient à un ensemble (quorum) RS_i (Request Set) dont il doit obtenir l'accord (msg LOCKED) de tous les membres pour pouvoir entrer en section critique</li>
+<li>Il doit y a voir au moins un site commun entre deux ensembles RS_i et RS_j. Ce site arbitre les conflits. C'est-à-dire:
+\(\forall i,j ¸in \left{1,...,N\right} \text{ tq } i\neq j, \text{RS}_i \cap \text{RS}_j \neq \emptyset\)</li>
+</ul>
+<p>Afin de minimiser le trafic des messages et de demander le même effort à tous les sites:</p>
+<ul>
+<li>Soit
+<ul>
+<li>N : nombre de sites</li>
+<li>K_i = |RS_i|</li>
+<li>D : nombre d'ensembles auquel chaque site appartient</li>
+</ul>
+</li>
+<li>K_i= K, pour tout i dans { 1, ..., N}</li>
+<li>S_i est dans RS_i, pour tout S_i dans { S_1, ...,S_n }</li>
+<li>Pour tous i != j dans { 1,..., N}, S_i et S_j appartiennent à D ensembles RS</li>
+<li>D = K est une possibilité</li>
+</ul>
+<hr />
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="5-computers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b8b2-ricart-agrawala-mutex.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="5b1-procesor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b8b4-martin-mutex.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -178,11 +197,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="5-computers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b8b2-ricart-agrawala-mutex.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="5b1-procesor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b8b4-martin-mutex.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

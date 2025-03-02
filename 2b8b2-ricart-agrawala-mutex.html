@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5b-digital-computers - zettelkasten</title>
+        <title>2b8b2-ricart-agrawala-mutex - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,21 +154,91 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#computers #computerscience #fr</p>
-<h1 id="digital-computers"><a class="header" href="#digital-computers">Digital computers</a></h1>
+                        <p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="ricart-agrawala-1981"><a class="header" href="#ricart-agrawala-1981">Ricart-Agrawala (1981)</a></h1>
 <hr />
-<p><a href="5b1-procesor.html">5b1-procesor</a></p>
-<p><a href="5b2-peripherics.html">5b2-peripherics</a></p>
+<p>C'est une amelioration de l'algorithme de Lamport <a href="2b8b1-lamport-mutex.html">2b8b1-lamport-mutex</a></p>
+<ul>
+<li>File d'attente. chaque processus P_i ne conserve dans sa file d'attente FA_i que les requêtes dont l'acquittement a été différé.</li>
+<li><code>RELEASE</code> est remplacé par le message <code>REPLY</code> qui possède le sens 'dune autorisation d'accès, délivrée de façon conditionnelle.</li>
+</ul>
+<h2 id="hypothèse"><a class="header" href="#hypothèse">Hypothèse</a></h2>
+<ul>
+<li>N processus connu de tous</li>
+<li><strong>communication fiable mais pas FIFO</strong></li>
+</ul>
+<h2 id="messages"><a class="header" href="#messages">Messages</a></h2>
+<ul>
+<li>types:
+<ul>
+<li><code>REQUEST</code>. demande d'entrer en section critique</li>
+<li><code>REPLY</code>. réponse à la reception d'un message <code>REQUEST</code></li>
+<li><del><code>RELEASE</code></del></li>
+</ul>
+</li>
+<li>contenu: <code>(type, (H_i, S_i))</code></li>
+</ul>
+<h2 id="variables-locales-du-processus-i"><a class="header" href="#variables-locales-du-processus-i">Variables locales du processus i</a></h2>
+<ul>
+<li><code>H_i</code>. horloge logique scalaire</li>
+<li><code>FA_i</code>. file d'attente de requêtes
+<ul>
+<li>dans l'ordre induit par la valeur de leurs estampilles</li>
+</ul>
+</li>
+<li><code>At_i</code>. attente de permission</li>
+<li><code>Etat_i</code>. <code>req</code>, <code>not_req</code>, <code>crit_sec</code></li>
+</ul>
+<h2 id="lalgorithme"><a class="header" href="#lalgorithme">L'algorithme</a></h2>
+<h3 id="variables-locales"><a class="header" href="#variables-locales">Variables locales</a></h3>
+<pre><code>FA_i = {}
+H_i = 0
+At_i = 0
+R_i = {1, 2, ..., N} - {S_i}
+</code></pre>
+<h3 id="request_sc"><a class="header" href="#request_sc">Request_SC</a></h3>
+<pre><code>H_i++;
+Envoyer REQUEST à tous les autres sites (At_i = R_i - S_i)
+Attendre l'accord de tous dles autres sites (REPLY);
+</code></pre>
+<h3 id="release_scs_j"><a class="header" href="#release_scs_j">Release_SC(S_j)</a></h3>
+<pre><code>H_i++;
+Diffuser un message REPLY à tous les autres sites differés dans la FA_i;
+</code></pre>
+<h3 id="receptionmsg-de-s_j"><a class="header" href="#receptionmsg-de-s_j">Reception(msg de S_j)</a></h3>
+<pre><code>Mettre à jour H_i (H_i = max(H_i, H_j) + 1);
+&lt;...&gt;
+</code></pre>
+<h2 id="evaluation"><a class="header" href="#evaluation">Evaluation</a></h2>
+<ul>
+<li>\(2(N-1)\) messages par exécution de section critique</li>
+<li><strong>sûreté</strong>. seul le site en tête de la file d'attente <code>FA</code> pourra rentrer en section critique. Les autres attendent que cette demande soit retirée avec un reception de RELEASE</li>
+<li><strong>vivacité</strong>. toute demande finira par avoir la plus petite estampille et donc se trouvera en tête de la file d'attente</li>
+<li><strong>equitable</strong>. par l'ordre total</li>
+<li><strong>avantage</strong>s.
+<ul>
+<li>hypothèse de canaux FIFO plus nécessaire</li>
+<li>taille de la file d'attente <code>FA</code> plus petite</li>
+<li>moins de messages envoyés par rapport Lamport</li>
+</ul>
+</li>
+<li><strong>inconvénients</strong>.
+<ul>
+<li>pas extensible</li>
+</ul>
+</li>
+</ul>
+<hr />
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="5-computers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b8b1-lamport-mutex.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="5b1-procesor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b8b3-maekawa-mutex.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -178,11 +248,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="5-computers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b8b1-lamport-mutex.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="5b1-procesor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b8b3-maekawa-mutex.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

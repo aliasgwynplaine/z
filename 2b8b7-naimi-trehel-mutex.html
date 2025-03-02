@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5b-digital-computers - zettelkasten</title>
+        <title>2b8b7-naimi-trehel-mutex - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,21 +154,100 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#computers #computerscience #fr</p>
-<h1 id="digital-computers"><a class="header" href="#digital-computers">Digital computers</a></h1>
+                        <p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="lalgorithme-de-naimi-trehel"><a class="header" href="#lalgorithme-de-naimi-trehel">L'algorithme de Naimi-Trehel</a></h1>
 <hr />
-<p><a href="5b1-procesor.html">5b1-procesor</a></p>
-<p><a href="5b2-peripherics.html">5b2-peripherics</a></p>
+<p>On a deux estructures de données:</p>
+<ul>
+<li>File de requêtes (<code>next</code>)
+<ul>
+<li>Le processus en tête de la file possède le jeton</li>
+<li>Le processus à la fin de la file est le dernier processus qui a fait une requête pour entrer en section critique</li>
+<li>Une nouvelle requête est toujours placée en fin de la file</li>
+</ul>
+</li>
+<li>Arbre de chemins vers le dernier demandeur (<code>father</code>)
+<ul>
+<li>Le dernier demandeur est la racine de l'arbre</li>
+<li>Une nouvelle requête est transmise à travers un chemin de pointeurs <code>father</code> jusqu'à la racine de l'arbre (<code>father</code> == nil)
+<ul>
+<li>Reconfiguration <strong>dynamique</strong> de l'arbre. Le nouveau demandeur devient la nouvelle racine de l'arbre</li>
+<li>Les sites dans le chemin compris entre la nouvelle et l'ancienne racine changent leur pointeur <code>father</code> vers la nouvelle racine</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="lalgorithme"><a class="header" href="#lalgorithme">L'algorithme</a></h2>
+<h3 id="variables-locales"><a class="header" href="#variables-locales">variables locales</a></h3>
+<pre><code>token
+requesting
+next
+father
+</code></pre>
+<h3 id="initialisation-de-s_i"><a class="header" href="#initialisation-de-s_i">initialisation de S_i</a></h3>
+<pre><code>father = S_1;
+next = nil;
+requesting = false;
+token = (father == S_i);
+
+if father == S_i
+	father = nil;
+</code></pre>
+<h3 id="request_css_i"><a class="header" href="#request_css_i">Request_CS(S_i)</a></h3>
+<pre><code>requesting = true;
+
+if father != nil
+	send(REQUEST, S_i) à father;
+	father = nil;
+
+/* attendre token == true */
+</code></pre>
+<h3 id="release_css_i"><a class="header" href="#release_css_i">Release_CS(S_i)</a></h3>
+<pre><code>requesting = true;
+
+if next != nil 
+	send(token) à next;
+	token = false;
+	next = nil;
+</code></pre>
+<h3 id="receive_request_css_j"><a class="header" href="#receive_request_css_j">Receive_request_CS(S_j)</a></h3>
+<pre><code>if father == nil;
+	if requesting
+		next = S_j;
+	else
+		token = false;
+		send(token) à S_j;
+else
+	send(REQUEST, S_j) à father;
+
+father = S_j
+</code></pre>
+<h3 id="receive_tokens_j"><a class="header" href="#receive_tokens_j">Receive_token(S_j)</a></h3>
+<pre><code>token = true
+</code></pre>
+<h2 id="evaluation"><a class="header" href="#evaluation">Evaluation</a></h2>
+<ul>
+<li>Entre 0 et N messages par demande de section critique</li>
+<li>moyenne de O(log(N)) messages par exécution de section critique</li>
+<li><strong>avantages</strong>.
+<ul>
+<li>extensibilité</li>
+<li><strong>adaptativité</strong>. un site qui n'est pas intéressé par la section critique ne sera plus sollicité après quelques transferts de requêtes.</li>
+</ul>
+</li>
+</ul>
+<hr />
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="5-computers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b8b6-raymond-mutex.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="5b1-procesor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="3-securite-dinformation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -178,11 +257,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="5-computers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b8b6-raymond-mutex.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="5b1-procesor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="3-securite-dinformation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

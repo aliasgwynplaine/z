@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5b-digital-computers - zettelkasten</title>
+        <title>2b8-distributed-mutex - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,21 +154,43 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#computers #computerscience #fr</p>
-<h1 id="digital-computers"><a class="header" href="#digital-computers">Digital computers</a></h1>
+                        <p>#algorithmes #fr #distributedalgorithms #sorbonne #mutex</p>
+<h1 id="exclusion-mutuelle"><a class="header" href="#exclusion-mutuelle">Exclusion mutuelle</a></h1>
 <hr />
-<p><a href="5b1-procesor.html">5b1-procesor</a></p>
-<p><a href="5b2-peripherics.html">5b2-peripherics</a></p>
+<p><strong>Objectif</strong>. coordonner des processus se partageant une resource commune.</p>
+<blockquote>
+<p>On va étudier le cas ou les processus sont repartis et ne communiquent que par passage de messages</p>
+</blockquote>
+<h2 id="transitions-dun-processus"><a class="header" href="#transitions-dun-processus">Transitions d'un processus</a></h2>
+<p>états: <code>requesting</code>, <code>not_requesting</code>, <code>critical_section</code></p>
+<pre><code>┌──────────┐   request()   ┌─────────┐
+│ not_req  ├──────────────►│   req   │
+└──────────┘               └────┬────┘
+      ▲                         │     
+      │                         │     
+  release()                  aquire() 
+      │      ┌──────────┐       │     
+      └──────┤ crit_sec │◄──────┘     
+             └──────────┘             
+</code></pre>
+<p>Un algorithme d'exclusion mutuelle doit garantir:</p>
+<ul>
+<li>au plus un processus exécutant la section critique</li>
+<li>pas d’interblocage</li>
+<li>pas de famine</li>
+</ul>
+<p>algorithmes centralisés <a href="2b8a-distributed-mutex-centralized.html">2b8a-distributed-mutex-centralized</a></p>
+<p>algorithmes répartis <a href="2b8b-distributed-mutex-non-centralized.html">2b8b-distributed-mutex-non-centralized</a></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="5-computers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b7b-wave-algorithm-tree.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="5b1-procesor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b8a-distributed-mutex-centralized.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -178,11 +200,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="5-computers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b7b-wave-algorithm-tree.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="5b1-procesor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b8a-distributed-mutex-centralized.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
