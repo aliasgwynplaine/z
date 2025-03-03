@@ -20,19 +20,8 @@
               "icon": "lucide-file",
               "title": "5b1a2-arm"
             }
-          },
-          {
-            "id": "0005032178f39741",
-            "type": "leaf",
-            "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -177,7 +166,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "0005032178f39741",
+  "active": "adfceac2054f0983",
   "lastOpenFiles": [
     "5b1a2-arm.md",
     "1g-android.md",
