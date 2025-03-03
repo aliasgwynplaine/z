@@ -1,7 +1,8 @@
 #computers #computerscience #fr 
-# Digital computers
+# Ordinateur electronique
 ---
 
+## Parties d'un ordinateur
 
 [[5b1-procesor]] 
 
