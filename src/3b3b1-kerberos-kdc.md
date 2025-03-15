@@ -1,4 +1,4 @@
-#kerberos #fr #infosec #cybersec  #activedirectory 
+l#kerberos #fr #infosec #cybersec  #activedirectory 
 # KDC
 ---
 Si on parle d'Active Directory, c'est installé dans le Domain Controller.

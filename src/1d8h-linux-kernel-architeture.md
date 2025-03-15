@@ -16,7 +16,7 @@ through five abstraction layers:
     
     System calls, procfs, sysfs, device files, …
     
-2. Virtual subsystems
+2. Virtual subsystems [[1d8h1-pseudo-file-systems]]
     
     Virtual memory, virtual filesystem, network protocols, …
     

@@ -18,4 +18,7 @@
 
 Classification des fautes [[2b3a-failure-classification]]
 
+Detection de la terminaison [[2b3b-termination-detection]]
+
+
 ---
