@@ -1,0 +1,336 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>1e-gnu-linux - zettelkasten</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">zettelkasten</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="démarrage"><a class="header" href="#démarrage">Démarrage</a></h2>
+<h3 id="etape-1-firmware-bios--uefi"><a class="header" href="#etape-1-firmware-bios--uefi">Etape 1: Firmware: BIOS / (U)EFI</a></h3>
+<ul>
+<li>
+<p>BIOS. code qui lance le bootloader</p>
+</li>
+<li>
+<p>MBR (Master Boot Recorder). table de description des partitions sur les disques</p>
+</li>
+<li>
+<p>Le BIOS charge le MBR</p>
+<ul>
+<li>Bootstrap.</li>
+<li>Va voir les quelques octets au début de la partition marqué comme bootable</li>
+<li>chargeur de démarrage. LILO. GRUB</li>
+<li>Très peu de place. Très peu de sécurité</li>
+</ul>
+</li>
+<li>
+<p>Les BIOS a des limitations</p>
+<ul>
+<li>Il ne peut gérer des disques de plus de 2.3 To (Table de partition), 1Mo de RAM</li>
+<li>Legacy mais encore utilisé pour IOT/Android</li>
+<li>Entre 200 et 500 octets pour le bootloader dans le premier secteur du disque</li>
+</ul>
+</li>
+<li>
+<p>Couple: (U)EFI/GPT</p>
+</li>
+<li>
+<p>Gestion plus poussée par modules</p>
+</li>
+<li>
+<p>Ajout de la sécurité (signatures des modules EFI)</p>
+<ul>
+<li>Utilisation des GUID Partition Table (max 8Zio)</li>
+<li>Permet un boot sécurisé des MAJ sécurisés, un stockage des noyaux systèmes (utilisation de code signé)</li>
+<li>Inclus la gestion réseau</li>
+</ul>
+</li>
+<li>
+<p>Chaque disque peut avoir sa partition EFI</p>
+<ul>
+<li>~100Mo à ~1Gio pour y stocker le bootloader</li>
+<li>Formater en FAT32. Certains EFI support exFAT/NTFS ou autre</li>
+</ul>
+</li>
+<li>
+<p>La cohabitation est difficile</p>
+</li>
+</ul>
+<h4 id="sécurité-uefi"><a class="header" href="#sécurité-uefi">Sécurité uEFI</a></h4>
+<ul>
+<li>Protection du bootloader. Pas forcement des noyaux</li>
+<li>Peut s'appliquer au boot par le réseau et périphériques externes
+Plataform key (PK)</li>
+<li>Stockée dans la variable EFI nommée PK.</li>
+<li>Format: x509 (clef publique dans certificat)</li>
+<li>Mise à jour: uniquement une nouvelle clef signée avec l'ancienne clef PK</li>
+<li>MAJ: directement dans l'interface physique EFI possible
+<ul>
+<li>en général protégé par mot de passe</li>
+<li>en général suppression seulement</li>
+</ul>
+</li>
+<li>Si on détruit la PK, on passe a mode config</li>
+<li>N'est pas utiliser pour signé des binaires
+<ul>
+<li>La plupart des ordinateurs viennent avec 2 clefs microsoft pré-installes
+KEY EXCHANGE KEY (KEK)</li>
+</ul>
+</li>
+<li>Stockée dans KEK</li>
+<li>format: X509 OU RSA
+...</li>
+</ul>
+<p>The Signature Database (db)</p>
+<ul>
+<li>Stockée dans la variable db
+Machine Owner Key (MOK)</li>
+</ul>
+<h2 id="etape-2-exéction-du-bookloader-du-bios"><a class="header" href="#etape-2-exéction-du-bookloader-du-bios">Etape 2: Exéction du BookLoader du BIOS</a></h2>
+<ul>
+<li>charge une carte (map)  du disque pour le système</li>
+<li>Charge le noyaux des OS (Linux, Windows, etc)</li>
+<li>Pour l'EFI
+...</li>
+</ul>
+<h2 id="etape-3-optionnel"><a class="header" href="#etape-3-optionnel">Etape 3 (optionnel)</a></h2>
+<ul>
+<li>Si le noyaux contient tous les drivers nécessaire, initrd peut être ignoré</li>
+<li>...</li>
+</ul>
+<h2 id="etape-4-exécution-du-noyau"><a class="header" href="#etape-4-exécution-du-noyau">Etape 4: Exécution du noyau</a></h2>
+<p>Le bootloader exécute le noyau en transmettant les arguments</p>
+<h2 id="etape-5-création-du-premier-processus"><a class="header" href="#etape-5-création-du-premier-processus">Etape 5: Création du premier processus</a></h2>
+<ul>
+<li>init ou systemd en Linux</li>
+</ul>
+<h2 id="etape-6-interprétation-des-fichiers-de-configurations-du-system-par-les-fils-du-processus-1"><a class="header" href="#etape-6-interprétation-des-fichiers-de-configurations-du-system-par-les-fils-du-processus-1">Etape 6: Interprétation des fichiers de configurations du system par les fils du processus 1</a></h2>
+<ul>
+<li>Niveaux d'exécution (runlevel) -&gt; <code>/etc/inittab</code>
+<ul>
+<li>
+<ol start="0">
+<li></li>
+</ol>
+</li>
+<li>
+<ol>
+<li>Utilisateur</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>Multiutilisateur</li>
+</ol>
+</li>
+<li>3</li>
+<li>4</li>
+<li>5</li>
+<li>6
+<code>/etc/rc.d/rc</code></li>
+</ul>
+</li>
+</ul>
+<p><code>/etc/init.d/</code></p>
+<h2 id="etape-7"><a class="header" href="#etape-7">Etape 7:</a></h2>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="1d9-windows-nt-kernel.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="1g-android.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="1d9-windows-nt-kernel.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="1g-android.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

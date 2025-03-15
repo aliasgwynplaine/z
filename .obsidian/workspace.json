@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "0352e93ac0dab2f5",
+        "id": "c70f03d5805e42a8",
         "type": "tabs",
         "children": [
           {
-            "id": "adfceac2054f0983",
+            "id": "d1a84992bd6cf394",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "5b1a2-arm.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "5b1a2-arm"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -166,33 +162,34 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "adfceac2054f0983",
+  "active": "d1a84992bd6cf394",
   "lastOpenFiles": [
-    "5b1a2-arm.md",
-    "1g-android.md",
-    "1-systemes-dexploitation.md",
-    "5b1a2a1-raspberry-pi-programming.md",
-    "5b1a2a1b-rpi-register-organisation.md",
-    "5b1a2a1a-pi-i2c.md",
-    "5d2-ci-i2c.md",
-    "5d-integrated-circuits.md",
-    "5d1-ci-gpio.md",
-    "5-computers.md",
+    "1d8-linux.md",
+    "1d8h1a2b-sysfs-files.md",
+    "1d8h1a-ramfs.md",
+    "1d8h1a4-debugfs.md",
+    "1d8h1a3-configfs.md",
+    "1d8h1-pseudo-file-systems.md",
+    "1d8h-linux-kernel-architeture.md",
+    "1d8h1a1-procfs.md",
+    "1d8h1a2-sysfs.md",
+    "1d8h1a2a-sysfs-folders.md",
+    "1d8a-linux-drivers.md",
+    "5b4a3-mqtt-protocol.md",
+    "3b3b1-kerberos-kdc.md",
+    "5b4a-communication-protocols.md",
+    "5b4-networks.md",
     "5b-digital-computers.md",
-    "0-index.md",
-    "5b1-procesor.md",
-    "5b1a-risc-architecture.md",
-    "5b1a2a-raspberry-pi.md",
+    "2025-03-13.md",
     "5b2-peripherics.md",
     "1n-drivers.md",
-    "2b8b-distributed-mutex-non-centralized.md",
-    "2b8b5-susuki-kasami-mutex.md",
-    "Untitled.md",
-    "Untitled 1.md",
-    "2b8b7-naimi-trehel-mutex.md",
-    "2b8b6-raymond-mutex.md",
-    "2b8b2-ricart-agrawala-mutex.md",
-    "2b8b4-martin-mutex.md",
-    "2b8b3-maekawa-mutex.md"
+    "5-computers.md",
+    "0-index.md",
+    "1e-gnu-linux.md",
+    "1-systemes-dexploitation.md",
+    "1d-kernel.md",
+    "5b3-cisc-architecture.md",
+    "2025-03-12.md",
+    "templates"
   ]
 }
