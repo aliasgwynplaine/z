@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>2b3b-termination-detection - zettelkasten</title>
+        <title>3b5a-attacks-integrity - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,254 +154,22 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#en #distributedalgorithms #sorbonne #failures</p>
-<h1 id="detection-de-la-termination"><a class="header" href="#detection-de-la-termination">Detection de la termination</a></h1>
+                        <p>#sorbonne #infosec #attack #integrity</p>
+<h1 id="attaques-sur-lintégrité"><a class="header" href="#attaques-sur-lintégrité">Attaques sur l'intégrité</a></h1>
 <hr />
-<h2 id="definition"><a class="header" href="#definition">Definition</a></h2>
-<p>Construction d'une couche de contrôle afin de détecter la terminaison d'une application répartie</p>
+<h2 id="intégrité-des-données"><a class="header" href="#intégrité-des-données">intégrité des données</a></h2>
 <ul>
-<li>Distinguer l'algorithme de détection de terminaison de l'algorithm de l'appli</li>
+<li>Modification des données.</li>
 </ul>
-<p>Configuration terminale</p>
+<h2 id="intégrité-des-protocoles"><a class="header" href="#intégrité-des-protocoles">intégrité des protocoles</a></h2>
 <ul>
-<li>aucune action supplémentaire de l'appli ne peut être exécutée</li>
-<li>tous les canaux de communication sont vides</li>
+<li>répétition de l'opération pour obtenir une fraude.</li>
 </ul>
-<p>Etat</p>
+<h2 id="intégrité-des-programmes"><a class="header" href="#intégrité-des-programmes">intégrité des programmes</a></h2>
 <ul>
-<li>actif. si une action interne ou l'action emmètre est applicable</li>
-<li>inactif. dans le cas contraire
-Message</li>
-<li>applicatif</li>
-<li>contrôle. mssg de l'algorithme de detection de la terminaison
-Un modèle est défini pour un exécution réparie en définissant les actions des processus actifs et inactifs</li>
-</ul>
-<p>Les processus suivent les ègles suivantes</p>
-<ol>
-<li>initialement chaque proc p peut etre dans l'etat actif ou inactif</li>
-<li>un proc p peut passer spontanément de l'etat actif a innactif</li>
-<li>seul les proc actifs peuvent envoyer des msgs applis</li>
-<li>losrs de la réception d'un message appli, un proc p inactif passe a actif
-<ul>
-<li>seule facon pour un processus inactif de passer actif
-observations</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li>un message de contrôle émis lorsque le proc est inactif ne le rend pas actif</li>
-<li>la reception d'un messaeg de control non plus
-Terminaison</li>
-<li>P: ensemble de processsus</li>
-<li>C ensemblde de canaux</li>
-<li>Prédicat TERM
-<ul>
-<li>TERM &lt;-&gt; forall p in P: p inactif et forall c in c : c vide
-<ul>
-<li>TERM est un predicat stable
-<ul>
-<li>...
-Propriétés</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>sûreté. si un proc detecte la terminaison a l'instant t, alors TERM(t) = true
-<ul>
-<li>pas de fausse detection</li>
-</ul>
-</li>
-<li>vivacité. si a un instant t TERM(t) = true, alors l'algo de detection finira par d+etecter cette terminaison</li>
-</ul>
-<blockquote>
-<p>Example d'un mauvais algo:</p>
-</blockquote>
-<ul>
-<li>les sites se trouve soit dans l'état inactif soit dans l'état actif</li>
-<li>algo
-<ul>
-<li>faire circuler un jeton (msg contrôle) selon une structure d'anneau, envoyé initialement par P_0</li>
-<li>Lorsq'un site est inactif et possède le jeton, il l'envoie au site suivant</li>
-<li>lorsque le jeton revient à P_0, la terminaison est détectée</li>
-</ul>
-</li>
-</ul>
-<h2 id="algorithmes"><a class="header" href="#algorithmes">Algorithmes</a></h2>
-<h3 id="algorithme-de-misra-1983"><a class="header" href="#algorithme-de-misra-1983">algorithme de Misra (1983)</a></h3>
-<ul>
-<li>Anneau logique
-<ul>
-<li>canaux FIFO unidirectionnels</li>
-</ul>
-</li>
-<li>chaque site une couleur noir ou blanc
-<ul>
-<li>noir -&gt; actif</li>
-<li>blanc -&gt; inactif</li>
-</ul>
-</li>
-<li>jeton porte un compteur</li>
-<li>...</li>
-<li>Terminaison
-<ul>
-<li>tous les sites sont blanc</li>
-</ul>
-</li>
-</ul>
-<pre><code>init:
-	state = actif
-	color = black
-	if i == 0 :
-		
-</code></pre>
-<h3 id="modèle-à-communication-instantanée"><a class="header" href="#modèle-à-communication-instantanée">Modèle à communication instantanée</a></h3>
-<ul>
-<li>A communication instantanée
-<ul>
-<li>communication synchrone: exemple CSP</li>
-<li>TERMP &lt;-&gt; forall p in P : p inactif</li>
-</ul>
-</li>
-<li>Atomique
-<ul>
-<li>le moment d'actividte de procesus est négligeable
-<ul>
-<li>TERM &lt;-&gt; forall c in C: c vide</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="algorithme-de-rana-1983"><a class="header" href="#algorithme-de-rana-1983">Algorithme de Rana (1983)</a></h4>
-<ul>
-<li>Communication instantanée (e.g. CSP)</li>
-<li>N sites organisés dans un anneau logique unidirectionnel
-<ul>
-<li>messages transmis sur l'anneau</li>
-</ul>
-</li>
-<li>A chaque fois qu'un processus recoit soit un message applicatif soit un message de controle, il met son horloge logique local a jour</li>
-<li>Les messages de controles circulent sur l'anneau</li>
-<li>...</li>
-<li>...</li>
-</ul>
-<h5 id="lalgo"><a class="header" href="#lalgo">l'algo</a></h5>
-<ul>
-<li>lorsqu'un proc devien inactif, il enregistre la valeur de son horloge local (H_ina) et envoie le message de control &lt;H_ina, 1&gt; a son succ</li>
-<li>lors de la réception d'un message de controle:
-<ul>
-<li>si le site est actif, il ignore le message</li>
-<li>sinon
-<ul>
-<li>si compteur != N
-<ul>
-<li>si la valeur de son passage a inactif H_ina &gt; H_msg du message de control recu, le message est ignoré</li>
-<li>Sinon, le message est envoye...</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="algorithme-de-dijkstra-1983"><a class="header" href="#algorithme-de-dijkstra-1983">Algorithme de Dijkstra (1983)</a></h4>
-<ul>
-<li>modele a communication instantanée</li>
-<li>N sites organisés dans un anneau logique</li>
-<li>Existence d'un jeton</li>
-<li>Les sites peuvent etre de couleur blanc ou noire ainsi que le jeton
-<ul>
-<li>initialement tous les sites et le jeton son blancs</li>
-</ul>
-</li>
-</ul>
-<h5 id="lalgo-1"><a class="header" href="#lalgo-1">l'algo</a></h5>
-<ul>
-<li>il  y a un site initiateur P_0
-<ul>
-<li>quand P_0 devient inactif, il envoie le jeton couleur blanche a P_N-1</li>
-</ul>
-</li>
-<li>lorsque le site P_i, qui detient le jeton, devient inactif, P_i envoie le jeton au site P_i-2
-<ul>
-<li>Si P_i est blanc
-<ul>
-<li>P_i envoie a P_i-1 le jeton sans changer la couleur du jeotn</li>
-</ul>
-</li>
-<li>sinon
-<ul>
-<li>P_i change la couleur du jeton a noire avant de l'envoyer a P_i-1</li>
-<li>P_i devient blanc</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Un site P_i devient noire en envoyant un message applicatif au site P_j</li>
-<li>Lorsque P_o recoit le jeton
-<ul>
-<li>si le jeton est blanc et P_o est blanc et dans l'etat inactif
-<ul>
-<li>terminaison détectée</li>
-<li>sinon
-<ul>
-<li>lorsque P_0 devient inactif, il renvoie le jeton couleur blanche a P_N-1</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h5 id="lalgo-en-utilisant-un-arbre-couvrant"><a class="header" href="#lalgo-en-utilisant-un-arbre-couvrant">l'algo en utilisant un arbre couvrant</a></h5>
-<ul>
-<li>Racine informe aux feuilles de commencer la détection
-<ul>
-<li>chaque feuille a un jeton blanc</li>
-<li>un site P_i devient noire en envoyant un message applicatif au site P_j</li>
-<li>Si P_i est noir:
-<ul>
-<li>P_i change la couleur du jeton a noire avant de l'envoyaer a son pere</li>
-<li>P_i devient blanc</li>
-</ul>
-</li>
-<li>Si P_i a recu un jeton noir d'un de ses enfants, il envoie un jeton tnoir a son pere</li>
-<li>...</li>
-</ul>
-</li>
-</ul>
-<h3 id="modèle-atomique"><a class="header" href="#modèle-atomique">Modèle atomique</a></h3>
-<p>L'algorithme de détection ne voit jamais un processus local dans l'état actif: l'algorithme n'est activé que lorsque le procsssus est inactif</p>
-<p>Ex: mauvaise solution avec deux compteurs</p>
-<ul>
-<li>N procs</li>
-<li>supposons qu'un processus i veut savoir si le systeme se trouve dans un etat terminal: tous les canaux vides
-<ul>
-<li>i envoie un message de controle a tous les N-1 autres procs a un instant t</li>
-</ul>
-</li>
-<li>Chaque processus j répond a i avec le nombre de messages recus r_j(t) et nombre de messages envoyés s_j(t)</li>
-<li>en recevant tous les messages, le site i calcule
-+
-<ul>
-<li>...</li>
-<li></li>
-</ul>
-</li>
-</ul>
-<h3 id="lalgorithme-de-quatre-compteurs"><a class="header" href="#lalgorithme-de-quatre-compteurs">L'algorithme de quatre compteurs</a></h3>
-<ul>
-<li>Mattern (1987)</li>
-<li>Compteur deux fois
-<ul>
-<li>fin de la premiere vague de controle. l'initiateur accumule les valeurs de s_i(t_i) et r_i(t_i) forall i: 1 &lt;= i &lt;= N dans S et R</li>
-<li>fin de la deuxieme vague de controle. l'initiateur accumule les valeurs de s_i(t_i) et r_i(t_i) forall i: 1&lt;=i&lt;=N dans S' et R'</li>
-</ul>
-</li>
-<li>Si R=S', alors, l'exécution s'est terminée à la fin de la premiere vague (à prouver)
-il faut bien reviser les preuves</li>
+<li>modifications à caractère frauduleux ou de sabotage</li>
+<li>infections à caractère unique: introduction d'un comportement illicite avec un trigger</li>
+<li>infections auto-reproductrices: virus, ver, rootkit, etc</li>
 </ul>
 <hr />
 
@@ -409,11 +177,11 @@ il faut bien reviser les preuves</li>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="2b3a-failure-classification.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="3b5-integrite.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="2b4-temporal-models.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="3b5b-digital-signature.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -423,11 +191,11 @@ il faut bien reviser les preuves</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="2b3a-failure-classification.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="3b5-integrite.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="2b4-temporal-models.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="3b5b-digital-signature.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

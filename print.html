@@ -594,8 +594,8 @@ clean:
 <hr />
 <p>Linux offers six main functions</p>
 <ul>
-<li>Process management</li>
-<li>Memory management</li>
+<li>Process management <a href="1d8h2-linux-process.html">1d8h2-linux-process</a></li>
+<li>Memory management <a href="1d8h3-linux-memory-management.html">1d8h3-linux-memory-management</a></li>
 <li>Network management</li>
 <li>Storage management</li>
 <li>System interface</li>
@@ -812,6 +812,185 @@ Cons</li>
 <li>only for debugging purposes !</li>
 </ul>
 <hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#tag #tagg</p>
+<h1 id="1d8h2-linux-process"><a class="header" href="#1d8h2-linux-process">1d8h2-linux-process</a></h1>
+<hr />
+<h2 id="pid"><a class="header" href="#pid">PID</a></h2>
+<pre><code class="language-c">struct pid
+{
+	refcount_t count;
+	unsigned int level;
+	spinlock_t lock;
+	struct dentry *stashed;
+	u64 ino;
+	/* lists of tasks that use this pid */
+	struct hlist_head tasks[PIDTYPE_MAX];
+	struct hlist_head inodes;
+	/* wait queue for pidfd notifications */
+	wait_queue_head_t wait_pidfd;
+	struct rcu_head rcu;
+	struct upid numbers[];
+};
+</code></pre>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#kernel #linux #fr #todo #en #sorbonne #memory</p>
+<h1 id="memory-management"><a class="header" href="#memory-management">Memory Management</a></h1>
+<hr />
+<h2 id="memory-organisation"><a class="header" href="#memory-organisation">Memory organisation</a></h2>
+<p>The smallest management unit is the page, even if the memory is byte addressable.</p>
+<ul>
+<li>a page (virtual page) is a fixed-size block of contiguous <strong>virtual</strong> memory.</li>
+<li>a page frame (physical page) is a fixed-size block of contiguous <strong>physical</strong> memory.
+The size depends on the architecture.</li>
+</ul>
+<blockquote>
+<p>page frame -&gt; cadre de page</p>
+</blockquote>
+<h2 id="kernel-representation-of-pages"><a class="header" href="#kernel-representation-of-pages">Kernel representation of pages</a></h2>
+<p>The kernel maintains a <code>struct page</code> for each <strong>page frame</strong> available on the system.</p>
+<pre><code class="language-c">struct page {
+	unsigned long flags;		/* Atomic flags, some possibly
+					 * updated asynchronously */
+	union {
+		struct {	/* Page cache and anonymous pages */
+			union {
+				struct list_head lru;
+				/* Or, for the Unevictable "LRU list" slot */
+				struct {
+					/* Always even, to negate PageTail */
+					void *__filler;
+					/* Count page's or folio's mlocks */
+					unsigned int mlock_count;
+				};
+				/* Or, free page */
+				struct list_head buddy_list;
+				struct list_head pcp_list;
+			};
+			/* See page-flags.h for PAGE_MAPPING_FLAGS */
+			struct address_space *mapping;
+			union {
+				pgoff_t index;		/* Our offset within mapping. */
+				unsigned long share;	/* share count for fsdax */
+			};
+			unsigned long private;
+		};
+		struct {	/* page_pool used by netstack */
+			unsigned long pp_magic;
+			struct page_pool *pp;
+			unsigned long _pp_mapping_pad;
+			unsigned long dma_addr;
+			atomic_long_t pp_ref_count;
+		};
+		struct {	/* Tail pages of compound page */
+			unsigned long compound_head;	/* Bit zero is set */
+		};
+		struct {	/* ZONE_DEVICE pages */
+			struct dev_pagemap *pgmap;
+			void *zone_device_data;
+		};
+		struct rcu_head rcu_head;
+	};
+
+	union {		/* This union is 4 bytes in size. */
+		unsigned int page_type;
+		atomic_t _mapcount;
+	};
+	/* Usage count. *DO NOT USE DIRECTLY*. See page_ref.h */
+	atomic_t _refcount;
+
+#ifdef CONFIG_MEMCG
+	unsigned long memcg_data;
+#elif defined(CONFIG_SLAB_OBJ_EXT)
+	unsigned long _unused_slab_obj_exts;
+#endif
+#if defined(WANT_PAGE_VIRTUAL)
+	void *virtual;			/* Kernel virtual address (NULL if
+					   not kmapped, ie. highmem) */
+#endif /* WANT_PAGE_VIRTUAL */
+#ifdef LAST_CPUPID_NOT_IN_PAGE_FLAGS
+	int _last_cpupid;
+#endif
+#ifdef CONFIG_KMSAN
+	struct page *kmsan_shadow;
+	struct page *kmsan_origin;
+#endif
+} _struct_page_alignment;
+</code></pre>
+<p><code>struct page</code> is around 40 bytes. So we have 40 bytes for every 4Kib. You can increase the page size in order to reduce the metadata footprint</p>
+<h2 id="zones"><a class="header" href="#zones">Zones</a></h2>
+<p>The kernel separates pages in multiple zones with different properties. But:</p>
+<ul>
+<li>some hardware can only do Direct Memory Accesses (DMA) to certain addresses.</li>
+<li>some architectures have a physical address space larger than their virtual address space, which means that some frames are not permanently mapped into the kernel address space.</li>
+<li><code>ZONE_DMA</code></li>
+<li><code>ZONE_DMA32</code></li>
+<li><code>ZONE_NORMAL</code></li>
+<li><code>ZONE_HIGHMEM</code></li>
+</ul>
+<h2 id="memory-api"><a class="header" href="#memory-api">Memory API</a></h2>
+<blockquote>
+<p>internal fragmentation: when we store way less information than needed.
+external information: when we have blocks of free memory interspersed by allocated memory.</p>
+</blockquote>
+<h2 id="buddy-allocator"><a class="header" href="#buddy-allocator">Buddy allocator</a></h2>
+<p>We have a page size of 4KiB and we allocate in "buddies" of powers-of-two contiguous pages.</p>
+<p>Limitations: we can't allocate less than one page. If you ask for 513B, you'll get 1KiB allocated (external fragmentation).</p>
+<h2 id="slab-layer"><a class="header" href="#slab-layer">slab layer</a></h2>
+<p>The slab layer create caches, each of which contains a certain type of objects, <em>e.g</em>, <code>struct inode</code>.</p>
+<p>Each cache is then divided into <strong>slabs</strong>, blocks of contiguous memory that contain a certain number of instances of the object stored by this cache.</p>
+<p>A slab contains the actual data and maintain their proper status (used or free). When the slab is full, the slab layer will allocate a new one.</p>
+<blockquote>
+<p>NUMA: Non-uniform Memory Access.</p>
+</blockquote>
+<h3 id="slab-allocator"><a class="header" href="#slab-allocator">SLAB Allocator</a></h3>
+<p>Frame layout</p>
+<h3 id="slub-allocator"><a class="header" href="#slub-allocator">SLUB Allocator</a></h3>
+<p>Introduced in 2007. Locality by having per-cpu slabs, still NUMA aware.</p>
+<p>Frame layout:</p>
+<h3 id="slob-allocator"><a class="header" href="#slob-allocator">SLOB Allocator</a></h3>
+<h2 id="memory-pools"><a class="header" href="#memory-pools">Memory Pools</a></h2>
+<p>Used when you need a guarantee that memory will be available.</p>
+<h3 id="creation--destruction"><a class="header" href="#creation--destruction">Creation / Destruction</a></h3>
+<pre><code class="language-c">/**
+ * mempool_create - create a memory pool
+ * @min_nr:    the minimum number of elements guaranteed to be
+ *             allocated for this pool.
+ * @alloc_fn:  user-defined element-allocation function.
+ * @free_fn:   user-defined element-freeing function.
+ * @pool_data: optional private data available to the user-defined functions.
+ */
+mempool_t *mempool_create(int min_nr, mempool_alloc_t *alloc_fn, mempool_free_t *free_fn, void *pool_data);
+void mempool_destroy(mempool_t *pool)
+
+typedef void * (mempool_alloc_t)(gfp_t gfp_mask, void *pool_data);
+typedef void (mempool_free_t)(void *element, void *pool_data);
+</code></pre>
+<h3 id="freeing-memory"><a class="header" href="#freeing-memory">Freeing memory</a></h3>
+<h3 id="reference-counter"><a class="header" href="#reference-counter">Reference counter</a></h3>
+<p>They keep track of the number of users using an object.
+Whenever the counter reaches 0, the object is not in use anymore and can be freed.</p>
+<p>To use a reference counter, add a <code>struct kref</code> into your structure:</p>
+<pre><code class="language-c">struct kref {
+	refcount_t refcount;
+};
+
+void kref_get(struct kref *kref); // increments the kref
+
+
+/**
+ * kref_put - decrement refcount for object.
+ * @kref: object.
+ * @release: pointer to the function that will clean up the object when the
+ *       last reference to the object is released.
+ *       This pointer is required, and it is not acceptable to pass kfree
+ *       in as this function.  If the caller does pass kfree to this
+ *       function, you will be publicly mocked mercilessly by the kref
+ *       maintainer, and anyone else who happens to notice it.  You have
+ *       been warned.
+ */
+int kref_put(struct kref *kref, void (*release)(struct kref *kref));
+</code></pre>
+<hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#kernel #linux #fr #todo #en</p>
 <h1 id="linux-kernel-development"><a class="header" href="#linux-kernel-development">Linux kernel development</a></h1>
 <hr />
@@ -834,7 +1013,11 @@ EXPORT_SYMBOL_GPL(s) // makes s visible to all modules GPL-compatible licensed
 </code></pre>
 <p>You need to declare your symbol <code>extern</code> and load the module where it is defined.</p>
 <hr />
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h2 id="démarrage"><a class="header" href="#démarrage">Démarrage</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><p>#todo #gnu #gnulinux</p>
+<h1 id="gnu-linux"><a class="header" href="#gnu-linux">GNU-Linux</a></h1>
+<hr />
+<p>Uses the linux kernel <a href="1d8-linux.html">1d8-linux</a></p>
+<h2 id="démarrage"><a class="header" href="#démarrage">Démarrage</a></h2>
 <h3 id="etape-1-firmware-bios--uefi"><a class="header" href="#etape-1-firmware-bios--uefi">Etape 1: Firmware: BIOS / (U)EFI</a></h3>
 <ul>
 <li>
@@ -1117,6 +1300,9 @@ x_1 = \frac{1}{0}
 <p>Verification d'un algorithme réparti <a href="2b6-distributed-algorithms-verification.html">2b6-distributed-algorithms-verification</a></p>
 <p>Algorithmes à vagues <a href="2b7-wave-algorithms.html">2b7-wave-algorithms</a></p>
 <p>Exclusion mutuelle <a href="2b8-distributed-mutex.html">2b8-distributed-mutex</a></p>
+<p>Detection de la terminaison <a href="2b9-termination-detection.html">2b9-termination-detection</a></p>
+<p>P2P <a href="2b10-peer-to-peer.html">2b10-peer-to-peer</a></p>
+<p>table d'hachage distribuée <a href="2b11-hash-table.html">2b11-hash-table</a></p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
 <h1 id="classification-des-applications-répartis"><a class="header" href="#classification-des-applications-répartis">Classification des applications répartis</a></h1>
@@ -1133,6 +1319,36 @@ x_1 = \frac{1}{0}
 <blockquote>
 <p>gérer l'échange de la connaissance.</p>
 </blockquote>
+<div style="break-before: page; page-break-before: always;"></div><p>#p2p #distributedalgorithms #activedirectory #sorbonne #en</p>
+<h1 id="systèmes-pair-à-pair"><a class="header" href="#systèmes-pair-à-pair">Systèmes pair-à-pair</a></h1>
+<hr />
+<h2 id="napster"><a class="header" href="#napster">Napster</a></h2>
+<p>The first simple but successful P2P-application.</p>
+<ul>
+<li>File retrieval: the requesting peer contacts the peer having the file directly and downloads it</li>
+</ul>
+<p>def. A p2p computer network is a network that relies primarily on the copmuting power and bandwidth of the participants in the network rather than concentrating it in a relatively small number</p>
+<ul>
+<li>Bootstrapping</li>
+<li>Service discovery</li>
+<li>Overlay structure maintenance</li>
+<li>Neighbour status tracking</li>
+<li>Application layer routing</li>
+<li>Resilience, handling link and node failures</li>
+<li>...</li>
+</ul>
+<h2 id="taxonomy-of-p2p-apps"><a class="header" href="#taxonomy-of-p2p-apps">Taxonomy of p2p-apps</a></h2>
+<foto>
+:P
+</foto>
+<h3 id="p2p-structured"><a class="header" href="#p2p-structured">P2P structured</a></h3>
+<h3 id="p2p-non-structured"><a class="header" href="#p2p-non-structured">P2P non-structured</a></h3>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#distributedalgorithms #hashtable #sorbonne</p>
+<h1 id="hash-table"><a class="header" href="#hash-table">Hash Table</a></h1>
+<hr />
+<h2 id="principe-table-hachage"><a class="header" href="#principe-table-hachage">Principe table hachage</a></h2>
+<hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
 <h1 id="canaux-de-communication"><a class="header" href="#canaux-de-communication">Canaux de communication</a></h1>
 <hr />
@@ -1220,7 +1436,6 @@ x_1 = \frac{1}{0}
 </li>
 </ul>
 <p>Classification des fautes <a href="2b3a-failure-classification.html">2b3a-failure-classification</a></p>
-<p>Detection de la terminaison <a href="2b3b-termination-detection.html">2b3b-termination-detection</a></p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #failures</p>
 <h1 id="classification-des-fautes"><a class="header" href="#classification-des-fautes">Classification des fautes</a></h1>
@@ -1230,256 +1445,6 @@ x_1 = \frac{1}{0}
 <li><strong>faute d'omission</strong>. un résultat en un message n'est transitoirement pas délivré.</li>
 <li><strong>faute temporelle</strong>. un résultat ou un message est délivré trop tard ou trop tôt.</li>
 <li><strong>faute byzantine</strong>. inclut tous les types de fautes, y compris le fait de délivrer un résultat ou un message erroné (intentionnellement au nom).</li>
-</ul>
-<hr />
-<div style="break-before: page; page-break-before: always;"></div><p>#en #distributedalgorithms #sorbonne #failures</p>
-<h1 id="detection-de-la-termination"><a class="header" href="#detection-de-la-termination">Detection de la termination</a></h1>
-<hr />
-<h2 id="definition"><a class="header" href="#definition">Definition</a></h2>
-<p>Construction d'une couche de contrôle afin de détecter la terminaison d'une application répartie</p>
-<ul>
-<li>Distinguer l'algorithme de détection de terminaison de l'algorithm de l'appli</li>
-</ul>
-<p>Configuration terminale</p>
-<ul>
-<li>aucune action supplémentaire de l'appli ne peut être exécutée</li>
-<li>tous les canaux de communication sont vides</li>
-</ul>
-<p>Etat</p>
-<ul>
-<li>actif. si une action interne ou l'action emmètre est applicable</li>
-<li>inactif. dans le cas contraire
-Message</li>
-<li>applicatif</li>
-<li>contrôle. mssg de l'algorithme de detection de la terminaison
-Un modèle est défini pour un exécution réparie en définissant les actions des processus actifs et inactifs</li>
-</ul>
-<p>Les processus suivent les ègles suivantes</p>
-<ol>
-<li>initialement chaque proc p peut etre dans l'etat actif ou inactif</li>
-<li>un proc p peut passer spontanément de l'etat actif a innactif</li>
-<li>seul les proc actifs peuvent envoyer des msgs applis</li>
-<li>losrs de la réception d'un message appli, un proc p inactif passe a actif
-<ul>
-<li>seule facon pour un processus inactif de passer actif
-observations</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li>un message de contrôle émis lorsque le proc est inactif ne le rend pas actif</li>
-<li>la reception d'un messaeg de control non plus
-Terminaison</li>
-<li>P: ensemble de processsus</li>
-<li>C ensemblde de canaux</li>
-<li>Prédicat TERM
-<ul>
-<li>TERM &lt;-&gt; forall p in P: p inactif et forall c in c : c vide
-<ul>
-<li>TERM est un predicat stable
-<ul>
-<li>...
-Propriétés</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>sûreté. si un proc detecte la terminaison a l'instant t, alors TERM(t) = true
-<ul>
-<li>pas de fausse detection</li>
-</ul>
-</li>
-<li>vivacité. si a un instant t TERM(t) = true, alors l'algo de detection finira par d+etecter cette terminaison</li>
-</ul>
-<blockquote>
-<p>Example d'un mauvais algo:</p>
-</blockquote>
-<ul>
-<li>les sites se trouve soit dans l'état inactif soit dans l'état actif</li>
-<li>algo
-<ul>
-<li>faire circuler un jeton (msg contrôle) selon une structure d'anneau, envoyé initialement par P_0</li>
-<li>Lorsq'un site est inactif et possède le jeton, il l'envoie au site suivant</li>
-<li>lorsque le jeton revient à P_0, la terminaison est détectée</li>
-</ul>
-</li>
-</ul>
-<h2 id="algorithmes-1"><a class="header" href="#algorithmes-1">Algorithmes</a></h2>
-<h3 id="algorithme-de-misra-1983"><a class="header" href="#algorithme-de-misra-1983">algorithme de Misra (1983)</a></h3>
-<ul>
-<li>Anneau logique
-<ul>
-<li>canaux FIFO unidirectionnels</li>
-</ul>
-</li>
-<li>chaque site une couleur noir ou blanc
-<ul>
-<li>noir -&gt; actif</li>
-<li>blanc -&gt; inactif</li>
-</ul>
-</li>
-<li>jeton porte un compteur</li>
-<li>...</li>
-<li>Terminaison
-<ul>
-<li>tous les sites sont blanc</li>
-</ul>
-</li>
-</ul>
-<pre><code>init:
-	state = actif
-	color = black
-	if i == 0 :
-		
-</code></pre>
-<h3 id="modèle-à-communication-instantanée"><a class="header" href="#modèle-à-communication-instantanée">Modèle à communication instantanée</a></h3>
-<ul>
-<li>A communication instantanée
-<ul>
-<li>communication synchrone: exemple CSP</li>
-<li>TERMP &lt;-&gt; forall p in P : p inactif</li>
-</ul>
-</li>
-<li>Atomique
-<ul>
-<li>le moment d'actividte de procesus est négligeable
-<ul>
-<li>TERM &lt;-&gt; forall c in C: c vide</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="algorithme-de-rana-1983"><a class="header" href="#algorithme-de-rana-1983">Algorithme de Rana (1983)</a></h4>
-<ul>
-<li>Communication instantanée (e.g. CSP)</li>
-<li>N sites organisés dans un anneau logique unidirectionnel
-<ul>
-<li>messages transmis sur l'anneau</li>
-</ul>
-</li>
-<li>A chaque fois qu'un processus recoit soit un message applicatif soit un message de controle, il met son horloge logique local a jour</li>
-<li>Les messages de controles circulent sur l'anneau</li>
-<li>...</li>
-<li>...</li>
-</ul>
-<h5 id="lalgo"><a class="header" href="#lalgo">l'algo</a></h5>
-<ul>
-<li>lorsqu'un proc devien inactif, il enregistre la valeur de son horloge local (H_ina) et envoie le message de control &lt;H_ina, 1&gt; a son succ</li>
-<li>lors de la réception d'un message de controle:
-<ul>
-<li>si le site est actif, il ignore le message</li>
-<li>sinon
-<ul>
-<li>si compteur != N
-<ul>
-<li>si la valeur de son passage a inactif H_ina &gt; H_msg du message de control recu, le message est ignoré</li>
-<li>Sinon, le message est envoye...</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="algorithme-de-dijkstra-1983"><a class="header" href="#algorithme-de-dijkstra-1983">Algorithme de Dijkstra (1983)</a></h4>
-<ul>
-<li>modele a communication instantanée</li>
-<li>N sites organisés dans un anneau logique</li>
-<li>Existence d'un jeton</li>
-<li>Les sites peuvent etre de couleur blanc ou noire ainsi que le jeton
-<ul>
-<li>initialement tous les sites et le jeton son blancs</li>
-</ul>
-</li>
-</ul>
-<h5 id="lalgo-1"><a class="header" href="#lalgo-1">l'algo</a></h5>
-<ul>
-<li>il  y a un site initiateur P_0
-<ul>
-<li>quand P_0 devient inactif, il envoie le jeton couleur blanche a P_N-1</li>
-</ul>
-</li>
-<li>lorsque le site P_i, qui detient le jeton, devient inactif, P_i envoie le jeton au site P_i-2
-<ul>
-<li>Si P_i est blanc
-<ul>
-<li>P_i envoie a P_i-1 le jeton sans changer la couleur du jeotn</li>
-</ul>
-</li>
-<li>sinon
-<ul>
-<li>P_i change la couleur du jeton a noire avant de l'envoyer a P_i-1</li>
-<li>P_i devient blanc</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Un site P_i devient noire en envoyant un message applicatif au site P_j</li>
-<li>Lorsque P_o recoit le jeton
-<ul>
-<li>si le jeton est blanc et P_o est blanc et dans l'etat inactif
-<ul>
-<li>terminaison détectée</li>
-<li>sinon
-<ul>
-<li>lorsque P_0 devient inactif, il renvoie le jeton couleur blanche a P_N-1</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h5 id="lalgo-en-utilisant-un-arbre-couvrant"><a class="header" href="#lalgo-en-utilisant-un-arbre-couvrant">l'algo en utilisant un arbre couvrant</a></h5>
-<ul>
-<li>Racine informe aux feuilles de commencer la détection
-<ul>
-<li>chaque feuille a un jeton blanc</li>
-<li>un site P_i devient noire en envoyant un message applicatif au site P_j</li>
-<li>Si P_i est noir:
-<ul>
-<li>P_i change la couleur du jeton a noire avant de l'envoyaer a son pere</li>
-<li>P_i devient blanc</li>
-</ul>
-</li>
-<li>Si P_i a recu un jeton noir d'un de ses enfants, il envoie un jeton tnoir a son pere</li>
-<li>...</li>
-</ul>
-</li>
-</ul>
-<h3 id="modèle-atomique"><a class="header" href="#modèle-atomique">Modèle atomique</a></h3>
-<p>L'algorithme de détection ne voit jamais un processus local dans l'état actif: l'algorithme n'est activé que lorsque le procsssus est inactif</p>
-<p>Ex: mauvaise solution avec deux compteurs</p>
-<ul>
-<li>N procs</li>
-<li>supposons qu'un processus i veut savoir si le systeme se trouve dans un etat terminal: tous les canaux vides
-<ul>
-<li>i envoie un message de controle a tous les N-1 autres procs a un instant t</li>
-</ul>
-</li>
-<li>Chaque processus j répond a i avec le nombre de messages recus r_j(t) et nombre de messages envoyés s_j(t)</li>
-<li>en recevant tous les messages, le site i calcule
-+
-<ul>
-<li>...</li>
-<li></li>
-</ul>
-</li>
-</ul>
-<h3 id="lalgorithme-de-quatre-compteurs"><a class="header" href="#lalgorithme-de-quatre-compteurs">L'algorithme de quatre compteurs</a></h3>
-<ul>
-<li>Mattern (1987)</li>
-<li>Compteur deux fois
-<ul>
-<li>fin de la premiere vague de controle. l'initiateur accumule les valeurs de s_i(t_i) et r_i(t_i) forall i: 1 &lt;= i &lt;= N dans S et R</li>
-<li>fin de la deuxieme vague de controle. l'initiateur accumule les valeurs de s_i(t_i) et r_i(t_i) forall i: 1&lt;=i&lt;=N dans S' et R'</li>
-</ul>
-</li>
-<li>Si R=S', alors, l'exécution s'est terminée à la fin de la premiere vague (à prouver)
-il faut bien reviser les preuves</li>
 </ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#algorithmes #fr #distributedalgorithms #sorbonne</p>
@@ -1694,7 +1659,7 @@ a \longmapsto D(a)
 + multiplication des traces d'exécution
 + difficulté de reproduire une exécution
 + extrêmement difficile à debugger
-==On utilise donc méthodes inductives basées sur des propriétés invariants et stables.==</p>
+<strong>On utilise donc méthodes inductives basées sur des propriétés invariants et stables.</strong></p>
 <ul>
 <li><strong>sûreté</strong>. rien de mauvais ne se produit dans l'exécution
 <ul>
@@ -1839,7 +1804,7 @@ D_p : { forall q in Vois_p : Rec_p[q] }
 <li>afin d'entrer en section critique, un processus doit demander la permission à d'autre processus</li>
 <li>le droit d'entrée en section critique est acquis lorsque le processus a obtenu un nombre suffisant de permissions</li>
 </ul>
-<h3 id="algorithmes-2"><a class="header" href="#algorithmes-2">algorithmes</a></h3>
+<h3 id="algorithmes-1"><a class="header" href="#algorithmes-1">algorithmes</a></h3>
 <p>Lamport <a href="2b8b1-lamport-mutex.html">2b8b1-lamport-mutex</a></p>
 <p>Ricard-Agrawala <a href="2b8b2-ricart-agrawala-mutex.html">2b8b2-ricart-agrawala-mutex</a></p>
 <p>Maekawa <a href="2b8b3-maekawa-mutex.html">2b8b3-maekawa-mutex</a></p>
@@ -1852,7 +1817,7 @@ D_p : { forall q in Vois_p : Rec_p[q] }
 </li>
 <li>Le mouvement perpétuel du jeton assure la <strong>vivacité</strong></li>
 </ul>
-<h3 id="algorithmes-3"><a class="header" href="#algorithmes-3">algorithmes</a></h3>
+<h3 id="algorithmes-2"><a class="header" href="#algorithmes-2">algorithmes</a></h3>
 <p>On étudie des algorithmes qui dependent d'une topologie particulière</p>
 <ul>
 <li>anneau. l'algorithme de Martin <a href="2b8b4-martin-mutex.html">2b8b4-martin-mutex</a></li>
@@ -2268,6 +2233,283 @@ father = S_j
 </li>
 </ul>
 <hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#fr #distributedalgorithms #sorbonne</p>
+<h1 id="detection-de-la-termination"><a class="header" href="#detection-de-la-termination">Detection de la termination</a></h1>
+<hr />
+<h2 id="definition"><a class="header" href="#definition">Definition</a></h2>
+<p>Construction d'une couche de contrôle afin de détecter la terminaison d'une application répartie.</p>
+<p>Le <em>but</em> c'est de distinguer l'algorithme de détection de terminaison de l'algorithm de l'application. Il a pas d'influence dans l'exécution de l'application</p>
+<ul>
+<li>Configuration terminale
+<ul>
+<li>aucune action supplémentaire de l'appli ne peut être exécutée</li>
+<li>tous les canaux de communication sont vides</li>
+</ul>
+</li>
+<li>Etat
+<ul>
+<li>actif. si une action interne ou l'action emmètre est applicable</li>
+<li>inactif. dans le cas contraire</li>
+</ul>
+</li>
+<li>Message
+<ul>
+<li>applicatif.</li>
+<li>contrôle. message de l'algorithme de detection de la terminaison</li>
+</ul>
+</li>
+</ul>
+<p>Un modèle est défini pour un exécution répartie en définissant les actions des processus actifs et inactifs</p>
+<p>Les processus suivent les <strong>règles</strong> suivantes</p>
+<ol>
+<li>initialement chaque processus \(p\) peut être dans l’état <em>actif</em> ou <em>inactif</em></li>
+<li>un processus \(p\) peut passer spontanément de l’état actif a inactif</li>
+<li>seul les processus actifs peuvent envoyer des messages application</li>
+<li>lors de la réception d'un message application, un proc \(p\) inactif passe a actif
+<ul>
+<li>seule façon pour un processus inactif de passer actif
+observations</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>un message de contrôle émis lorsque le processus est inactif ne le rend pas actif.</li>
+<li>la reception d'un message de contrôle non plus.</li>
+</ul>
+<h2 id="terminaison"><a class="header" href="#terminaison">Terminaison</a></h2>
+<ul>
+<li>\(P\): ensemble de processus</li>
+<li>\(C\): ensemble de canaux</li>
+<li>Prédicat TERM
+<ul>
+<li>TERM &lt;-&gt; (\(\forall p \in P: p \text{ inactif}) \text{ et } (\forall c \in c : C \text{ vide})\)
+<ul>
+<li>TERM est un prédicat stable:
+<ul>
+<li>\(\text{TERM}(t) = \text{true} \Rightarrow \forall t' &gt; t: \text{TERM}(t') = \text{true}\)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="propriétés-2"><a class="header" href="#propriétés-2">Propriétés</a></h2>
+<ul>
+<li><strong>sûreté</strong>. si un proc detecte la terminaison a l'instant \(t\), alors\(\text{TERM}(t) = \text{true}\)
+<ul>
+<li>pas de fausse detection.</li>
+</ul>
+</li>
+<li><strong>vivacité</strong>. si a un instant \(t, \text{TERM}(t) = \text{true}\), alors l'algorithme de detection finira par détecter cette terminaison.</li>
+</ul>
+<blockquote>
+<p>Example d'un mauvais algo:</p>
+</blockquote>
+<ul>
+<li>les sites se trouve soit dans l'état <em>inactif</em> soit dans l'état <em>actif</em></li>
+<li>algo
+<ul>
+<li>faire circuler un jeton (message contrôle) selon une structure d'anneau, envoyé initialement par \(P_0\)</li>
+<li>Lorsqu'un site est inactif et possède le jeton, il l'envoie au site suivant.</li>
+<li>lorsque le jeton revient à \(P_0\), la terminaison est détectée</li>
+</ul>
+</li>
+</ul>
+<h2 id="algorithmes-3"><a class="header" href="#algorithmes-3">Algorithmes</a></h2>
+<ul>
+<li>algorithme de Misra (1983) <a href="2b91-algorithme-misra.html">2b91-algorithme-misra</a></li>
+</ul>
+<h3 id="modèle-à-communication-instantanée"><a class="header" href="#modèle-à-communication-instantanée">Modèle à communication instantanée</a></h3>
+<ul>
+<li>A communication instantanée
+<ul>
+<li>communication synchrone: exemple CSP</li>
+<li>TERMP &lt;-&gt; forall p in P : p inactif</li>
+</ul>
+</li>
+<li>Atomique
+<ul>
+<li>le moment d'actividte de procesus est négligeable
+<ul>
+<li>TERM &lt;-&gt; forall c in C: c vide</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="algorithme-de-rana-1983"><a class="header" href="#algorithme-de-rana-1983">Algorithme de Rana (1983)</a></h4>
+<ul>
+<li>Communication instantanée (e.g. CSP)</li>
+<li>N sites organisés dans un anneau logique unidirectionnel
+<ul>
+<li>messages transmis sur l'anneau</li>
+</ul>
+</li>
+<li>A chaque fois qu'un processus recoit soit un message applicatif soit un message de controle, il met son horloge logique local a jour</li>
+<li>Les messages de controles circulent sur l'anneau</li>
+<li>...</li>
+<li>...</li>
+</ul>
+<h5 id="lalgo"><a class="header" href="#lalgo">l'algo</a></h5>
+<ul>
+<li>lorsqu'un proc devien inactif, il enregistre la valeur de son horloge local (H_ina) et envoie le message de control &lt;H_ina, 1&gt; a son succ</li>
+<li>lors de la réception d'un message de controle:
+<ul>
+<li>si le site est actif, il ignore le message</li>
+<li>sinon
+<ul>
+<li>si compteur != N
+<ul>
+<li>si la valeur de son passage a inactif H_ina &gt; H_msg du message de control recu, le message est ignoré</li>
+<li>Sinon, le message est envoye...</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="algorithme-de-dijkstra-1983"><a class="header" href="#algorithme-de-dijkstra-1983">Algorithme de Dijkstra (1983)</a></h4>
+<ul>
+<li>modele a communication instantanée</li>
+<li>N sites organisés dans un anneau logique</li>
+<li>Existence d'un jeton</li>
+<li>Les sites peuvent etre de couleur blanc ou noire ainsi que le jeton
+<ul>
+<li>initialement tous les sites et le jeton son blancs</li>
+</ul>
+</li>
+</ul>
+<h5 id="lalgo-1"><a class="header" href="#lalgo-1">l'algo</a></h5>
+<ul>
+<li>il  y a un site initiateur P_0
+<ul>
+<li>quand P_0 devient inactif, il envoie le jeton couleur blanche a P_N-1</li>
+</ul>
+</li>
+<li>lorsque le site P_i, qui detient le jeton, devient inactif, P_i envoie le jeton au site P_i-2
+<ul>
+<li>Si P_i est blanc
+<ul>
+<li>P_i envoie a P_i-1 le jeton sans changer la couleur du jeotn</li>
+</ul>
+</li>
+<li>sinon
+<ul>
+<li>P_i change la couleur du jeton a noire avant de l'envoyer a P_i-1</li>
+<li>P_i devient blanc</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Un site P_i devient noire en envoyant un message applicatif au site P_j</li>
+<li>Lorsque P_o recoit le jeton
+<ul>
+<li>si le jeton est blanc et P_o est blanc et dans l'etat inactif
+<ul>
+<li>terminaison détectée</li>
+<li>sinon
+<ul>
+<li>lorsque P_0 devient inactif, il renvoie le jeton couleur blanche a P_N-1</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="lalgo-en-utilisant-un-arbre-couvrant"><a class="header" href="#lalgo-en-utilisant-un-arbre-couvrant">l'algo en utilisant un arbre couvrant</a></h5>
+<ul>
+<li>Racine informe aux feuilles de commencer la détection
+<ul>
+<li>chaque feuille a un jeton blanc</li>
+<li>un site P_i devient noire en envoyant un message applicatif au site P_j</li>
+<li>Si P_i est noir:
+<ul>
+<li>P_i change la couleur du jeton a noire avant de l'envoyaer a son pere</li>
+<li>P_i devient blanc</li>
+</ul>
+</li>
+<li>Si P_i a recu un jeton noir d'un de ses enfants, il envoie un jeton tnoir a son pere</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+<h3 id="modèle-atomique"><a class="header" href="#modèle-atomique">Modèle atomique</a></h3>
+<p>L'algorithme de détection ne voit jamais un processus local dans l'état actif: l'algorithme n'est activé que lorsque le procsssus est inactif</p>
+<p>Ex: mauvaise solution avec deux compteurs</p>
+<ul>
+<li>N procs</li>
+<li>supposons qu'un processus i veut savoir si le systeme se trouve dans un etat terminal: tous les canaux vides
+<ul>
+<li>i envoie un message de controle a tous les N-1 autres procs a un instant t</li>
+</ul>
+</li>
+<li>Chaque processus j répond a i avec le nombre de messages recus r_j(t) et nombre de messages envoyés s_j(t)</li>
+<li>en recevant tous les messages, le site i calcule
++
+<ul>
+<li>...</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<h3 id="lalgorithme-de-quatre-compteurs"><a class="header" href="#lalgorithme-de-quatre-compteurs">L'algorithme de quatre compteurs</a></h3>
+<ul>
+<li>Mattern (1987)</li>
+<li>Compteur deux fois
+<ul>
+<li>fin de la premiere vague de controle. l'initiateur accumule les valeurs de s_i(t_i) et r_i(t_i) forall i: 1 &lt;= i &lt;= N dans S et R</li>
+<li>fin de la deuxieme vague de controle. l'initiateur accumule les valeurs de s_i(t_i) et r_i(t_i) forall i: 1&lt;=i&lt;=N dans S' et R'</li>
+</ul>
+</li>
+<li>Si R=S', alors, l'exécution s'est terminée à la fin de la premiere vague (à prouver)
+il faut bien reviser les preuves</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#fr #distributedalgorithms #sorbonne</p>
+<h1 id="algorithme-de-misra-1983"><a class="header" href="#algorithme-de-misra-1983">algorithme de Misra (1983)</a></h1>
+<hr />
+<ul>
+<li>Anneau logique
+<ul>
+<li>canaux FIFO unidirectionnels</li>
+</ul>
+</li>
+<li>chaque site une couleur noir ou blanc
+<ul>
+<li>noir -&gt; actif</li>
+<li>blanc -&gt; inactif</li>
+</ul>
+</li>
+<li>jeton porte un compteur</li>
+<li>N sites</li>
+<li>Terminaison: tous les sites sont blanc après un tour</li>
+</ul>
+<pre><code>init:
+	state = actif
+	color = black
+	if i == 0 :
+		token = true
+	else
+		token = false
+
+Upon fin:
+	state = inactif
+
+Upon reception applictation message:
+	etat = actif
+	color = black
+
+Upon reception TOKEN(count):
+	token = true
+	nb = count
+	if nb == N and color == white
+		termination detection
+
+
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><p>#infosec #security #information #sorbonne #fr</p>
 <h1 id="sécurité-des-systèmes-dinformation"><a class="header" href="#sécurité-des-systèmes-dinformation">Sécurité des systèmes d'information</a></h1>
 <hr />
@@ -2318,10 +2560,45 @@ Elle est liée à la disponibilité  (<a href="3a1-disponibilit%C3%A9.html">3a1-
 <li>auditabilité <a href="3b7-auditabilite.html">3b7-auditabilite</a>
 on considere aussi la vie privée et l'anonymat <a href="3b8-vie-privee.html">3b8-vie-privee</a>, <a href="3b9-anonymat.html">3b9-anonymat</a></li>
 </ul>
+<p>Les politiques de sécurité <a href="3b10-security-policies.html">3b10-security-policies</a></p>
 <div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #fr #infosec</p>
 <h1 id="safety"><a class="header" href="#safety">Safety</a></h1>
 <hr />
 <p>évitement des situations catastrophiques.</p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#infosec #sorbonne #securitypolicy</p>
+<h1 id="les-politiques-de-sécurité"><a class="header" href="#les-politiques-de-sécurité">Les politiques de sécurité</a></h1>
+<hr />
+<h2 id="Étapes-pour-une-politique-de-sécurité"><a class="header" href="#Étapes-pour-une-politique-de-sécurité">Étapes pour une politique de sécurité</a></h2>
+<ol>
+<li>Definition de la politique</li>
+<li>Identification des vulnérabilités.</li>
+<li>Évaluation des probabilités associées à chacune des menaces</li>
+<li>Évaluation du coût d'une intrusion réussie</li>
+<li>Choix des contre mesures</li>
+<li>Évaluation des coûts et de l'adéquation des contres mesures</li>
+<li>Décision. Application et mis en place de solution.</li>
+</ol>
+<p>La réalisation d'une politique de sécurité résulte de la mise en oeuvre <strong>cohérente</strong> de</p>
+<ul>
+<li>moyens physiques</li>
+<li>moyens informatiques</li>
+<li>règles d'organisation et moyens procéduraux
+Ces moyens doivent être</li>
+<li>complets</li>
+<li>non contradictoires et raisonnablement contraignants</li>
+<li>homogènes par rapport aux risques et aux attaques considérés</li>
+<li>respectés
+La base de la réalisation de la sécurité sont</li>
+<li><strong>le confinement</strong></li>
+<li><strong>le principe du moindre privilège</strong></li>
+</ul>
+<h2 id="mèthodes"><a class="header" href="#mèthodes">Mèthodes</a></h2>
+<ul>
+<li>MEHARI. Methode Harmonisée d'Analyse de RIsques</li>
+<li>EBIOS. Expression des Besoins et Identification des Objectifs de Sécurité</li>
+<li>ISO/CEI 27XXX</li>
+</ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #infosec #fr</p>
 <h1 id="security"><a class="header" href="#security">Security</a></h1>
@@ -2442,12 +2719,17 @@ La compte de service du KDC est <code>krbtgt</code> <a href="3b3b2-kerberos-krbt
 <h1 id="déguisement-mascarade"><a class="header" href="#déguisement-mascarade">déguisement (mascarade)</a></h1>
 <hr />
 <p>Pour rentrer dans un système, on essaye de piéger des usagers et de se faire passer pour quelqu'un d'autre (usurpation d’identité)</p>
+<h2 id="exemples-5"><a class="header" href="#exemples-5">Exemples</a></h2>
+<ul>
+<li>simulation d'interface système sur écran</li>
+<li>simulation de terminal à carte bancaire</li>
+</ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #fr #infosec</p>
 <h1 id="confidentialité"><a class="header" href="#confidentialité">confidentialité</a></h1>
 <hr />
 <p>C'est la propriété qui assure qu'une information ne peut être lue que par des entités habilitées (selon des contraintes précises)</p>
-<h2 id="méthodes-pour-sauvegarder-la-confidentialité"><a class="header" href="#méthodes-pour-sauvegarder-la-confidentialité">méthodes pour sauvegarder la confidentialité</a></h2>
+<h2 id="méthodes--et-outils-pour-sauvegarder-la-confidentialité"><a class="header" href="#méthodes--et-outils-pour-sauvegarder-la-confidentialité">méthodes  et outils pour sauvegarder la confidentialité</a></h2>
 <ul>
 <li>cryptographie. <a href="3b4a-cryptographie.html">3b4a-cryptographie</a></li>
 <li></li>
@@ -2455,18 +2737,116 @@ La compte de service du KDC est <code>krbtgt</code> <a href="3b3b2-kerberos-krbt
 <h2 id="attaques-à-la-confidentialité"><a class="header" href="#attaques-à-la-confidentialité">attaques à la confidentialité</a></h2>
 <ul>
 <li>man in the middle.</li>
+<li>analyse de trafic</li>
+<li>inférence.</li>
+</ul>
+<h3 id="attaques-par-violation-de-protocole"><a class="header" href="#attaques-par-violation-de-protocole">attaques par violation de protocole</a></h3>
+<ul>
+<li>envoie de données non prévues (trames mal-formées, séquence non prévues)</li>
+</ul>
+<h3 id="attaque-par-saturation"><a class="header" href="#attaque-par-saturation">attaque par saturation</a></h3>
+<ul>
+<li>envoie des messages trop nombreux provoquant un écroulement des systèmes et réseaux. DDoS.</li>
+</ul>
+<h3 id="attaques-sociales"><a class="header" href="#attaques-sociales">attaques sociales</a></h3>
+<ul>
+<li>arnaques</li>
+<li>extorsion</li>
 </ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#crypto #infosec #fr #sorbonne</p>
 <h1 id="cryptographie"><a class="header" href="#cryptographie">Cryptographie</a></h1>
 <hr />
+<p>Crypto-système symétrique <a href="3b4a1-symmetric-key-algorithms.html">3b4a1-symmetric-key-algorithms</a></p>
+<p>Crypto-système asymétrique <a href="3b4a2-asymmetric-key-algorithm.html">3b4a2-asymmetric-key-algorithm</a></p>
+<p>L'efficacité général du cryptage dépend</p>
+<ul>
+<li>de la confidentialité des secrets</li>
+<li>de la difficulté à deviner les secrets ou à essayer toutes les possibilités</li>
+<li>de la difficulté de l'inversion de l'algorithme sans connaître la clé</li>
+<li>de l'existence de portes par derrière</li>
+<li>possibilité de déchiffrement par attaque à text partiellement connu</li>
+</ul>
+<h2 id="fonctions-à-sens-unique"><a class="header" href="#fonctions-à-sens-unique">Fonctions à sens unique</a></h2>
+<p>#todo
+C'est une fonction \(f(M)\) facile à calculer mais telle qu'il est extrêmement difficile de déduire \(M\) de \(f(M)\).</p>
+<ul>
+<li>\(h\) est à collision faible difficile: il est calculatoirement difficile de trouver M significatif tel que \(h(M) = K\) pour un signature \(K\).</li>
+<li>\(h\) est à collision forte difficile: il est calculatoirement difficile de trouver deux \(M\) et \(M'\) tel que \(h(M) = h(M')\)
+Une fonction de hachage est avec clef si son calcul dépend aussi d'une info secrète.
+C'est-à-dire, \(k \neq k' \Rightarrow H_k(M)\neq H_k(M)\) . Voir HMAC (code d'authentification de message de hachage à clé).</li>
+</ul>
 <p>fonction d'hachage cryptographic <a href="2a1-cryptographic-hash-function.html">2a1-cryptographic-hash-function</a></p>
+<h2 id="glossaire"><a class="header" href="#glossaire">Glossaire</a></h2>
+<ul>
+<li><strong>Décrypter</strong> ou <strong>casser</strong> un code</li>
+<li>L'art de définir des codes (de chiffrement) est la <strong>cryptographie</strong></li>
+<li>L'art de casser des codes est appelé <strong>cryptanalyse</strong> ou <strong>cryptologie</strong></li>
+<li>Le <strong>chiffrement</strong> est donc une transformation d'un texte pour en cacher le sens</li>
+<li>Le <strong>déchiffrement</strong> est l'opération inverse permettant de récupérer le text en clair à partir du texte chiffré</li>
+<li>Un <strong>crypto-système</strong> est l'ensemble des deux méthodes de chiffrement et de déchiffrement utilisable en sécurité</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#crypto #infosec #fr #sorbonne</p>
+<h1 id="crypto-système-symétrique"><a class="header" href="#crypto-système-symétrique">Crypto-système symétrique</a></h1>
+<hr />
+<p>On prefers les crypto-système symétriques à cause de son effectivité pratique pour chiffrer l'info</p>
+<h2 id="exemples-6"><a class="header" href="#exemples-6">exemples</a></h2>
+<ul>
+<li>substitution como alphabétique</li>
+<li>substitutions de polygrammes</li>
+<li>par transposition</li>
+<li>ECB</li>
+<li>CBC</li>
+<li>DES <a href="3b4a1a-DES.html">3b4a1a-DES</a></li>
+<li></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#crypto #infosec #fr #sorbonne</p>
+<h1 id="crypto-système-symétrique-1"><a class="header" href="#crypto-système-symétrique-1">Crypto-système symétrique</a></h1>
+<hr />
+<p>On a une clef publique et une clef privée: deux morceaux du secret.</p>
+<h2 id="exemples-7"><a class="header" href="#exemples-7">Exemples</a></h2>
+<ul>
+<li>RSA <a href="3b4a2a-RSA.html">3b4a2a-RSA</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#todo</p>
+<h1 id="rsa"><a class="header" href="#rsa">RSA</a></h1>
+<hr />
+<h2 id="histoire-1"><a class="header" href="#histoire-1">histoire</a></h2>
+<h2 id="algorithme"><a class="header" href="#algorithme">algorithme</a></h2>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #infosec #fr</p>
 <h1 id="intégrité"><a class="header" href="#intégrité">intégrité</a></h1>
 <hr />
 <p>C'est la propriété qui assure qu'une information n'est modifiée que par des entités habilitées (selon des contraintes précises)</p>
-<p>L’intégrité peut être vérifiée avec une signature ou avec l'empreinte numérique d'une fonction d'hachage cryptographique (<a href="2a1-cryptographic-hash-function.html">2a1-cryptographic-hash-function</a>).</p>
+<p>L’intégrité peut être vérifiée avec une <strong>signature</strong> ou avec l'<strong>empreinte numérique</strong> d'une fonction d'hachage cryptographique (<a href="2a1-cryptographic-hash-function.html">2a1-cryptographic-hash-function</a>).</p>
+<p>fonction signature <a href="3b5b-digital-signature.html">3b5b-digital-signature</a></p>
+<p>attaques sur l'intégrité <a href="3b5a-attacks-integrity.html">3b5a-attacks-integrity</a></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#sorbonne #infosec #attack #integrity</p>
+<h1 id="attaques-sur-lintégrité"><a class="header" href="#attaques-sur-lintégrité">Attaques sur l'intégrité</a></h1>
+<hr />
+<h2 id="intégrité-des-données"><a class="header" href="#intégrité-des-données">intégrité des données</a></h2>
+<ul>
+<li>Modification des données.</li>
+</ul>
+<h2 id="intégrité-des-protocoles"><a class="header" href="#intégrité-des-protocoles">intégrité des protocoles</a></h2>
+<ul>
+<li>répétition de l'opération pour obtenir une fraude.</li>
+</ul>
+<h2 id="intégrité-des-programmes"><a class="header" href="#intégrité-des-programmes">intégrité des programmes</a></h2>
+<ul>
+<li>modifications à caractère frauduleux ou de sabotage</li>
+<li>infections à caractère unique: introduction d'un comportement illicite avec un trigger</li>
+<li>infections auto-reproductrices: virus, ver, rootkit, etc</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#todo #sorbonne #infosec #fr</p>
+<h1 id="3b5b-digital-signature"><a class="header" href="#3b5b-digital-signature">3b5b-digital-signature</a></h1>
+<hr />
+<p>content</p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#infosec #sorbonne #fr</p>
 <h1 id="non-repudiation"><a class="header" href="#non-repudiation">non repudiation</a></h1>
@@ -2581,13 +2961,100 @@ La compte de service du KDC est <code>krbtgt</code> <a href="3b3b2-kerberos-krbt
 <hr />
 <p><a href="1g-android.html">1g-android</a></p>
 <hr />
-<div style="break-before: page; page-break-before: always;"></div><p>#tag #tagg</p>
-<h1 id="5b4-networks"><a class="header" href="#5b4-networks">5b4-networks</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><p>#network #en #sorbonne #fr</p>
+<h1 id="computer-networks"><a class="header" href="#computer-networks">Computer networks</a></h1>
 <hr />
 <p><a href="5b4b-osi-model.html">5b4b-osi-model</a></p>
 <p><a href="5b4d-tcp-ip-model.html">5b4d-tcp-ip-model</a></p>
 <p><a href="5b4a-communication-protocols.html">5b4a-communication-protocols</a></p>
-<p>content</p>
+<h2 id="types-de-réseau"><a class="header" href="#types-de-réseau">types de réseau</a></h2>
+<ul>
+<li>Topologie
+<ul>
+<li>peer to peer <a href="2b10-peer-to-peer.html">2b10-peer-to-peer</a></li>
+<li>star</li>
+<li>cluster tree</li>
+<li>mesh</li>
+</ul>
+</li>
+</ul>
+<h2 id="solutions-grand-public"><a class="header" href="#solutions-grand-public">Solutions grand public</a></h2>
+<ul>
+<li>
+<p>ZigBee -&gt; réseau d'objets</p>
+<ul>
+<li>64k noeuds : star, cluster, mesh</li>
+<li>autonomie plusieurs années</li>
+<li>250 kbs</li>
+<li>portée 100m</li>
+</ul>
+</li>
+<li>
+<p>Bluetooth -&gt; remplacement de câbles</p>
+<ul>
+<li>
+<ul>
+<li>7 noeuds actifs</li>
+</ul>
+</li>
+<li>0.7 à 2 Mbs</li>
+<li>portée 10m</li>
+</ul>
+</li>
+<li>
+<p>Wi-Fi -&gt; internet</p>
+<ul>
+<li>32 nœuds : star + roaming</li>
+<li>autonomie en heures</li>
+<li>11 - x100 Mbs</li>
+</ul>
+</li>
+<li>
+<p>Bluetooth Low Energy <a href="5b4a-ble.html">5b4a-ble</a> -&gt; IOT</p>
+<ul>
+<li>autonomie en années</li>
+<li>P2P ou Star nb de nœuds illimité</li>
+<li>300 kbs</li>
+<li>10 - 100m</li>
+</ul>
+</li>
+<li>
+<p>LoRaWAN -&gt; IOT grandes distances</p>
+<ul>
+<li>5 - 15 km</li>
+<li>autonomie en années</li>
+<li>star nb de noeuds illimité</li>
+<li>50 kbs</li>
+</ul>
+</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><p>#network #ble #bluetooth</p>
+<h1 id="bluetooth-low-energy"><a class="header" href="#bluetooth-low-energy">Bluetooth Low Energy</a></h1>
+<hr />
+<p>BLE est une norme différente du bluetooth classique. Les usages sont très différents, mais les clients BT sont souvent compatibles avec les deux normes.</p>
+<p><strong>Objectif</strong>: fonctionner très longtemps sur une pile bouton plusieurs mois ou plusieurs années.</p>
+<ul>
+<li>BLE fonctionne sur la bande ISM de 2.4GHz sur 40 bandes espacés chacune de 2MHz.</li>
+<li>Utilise FHSS</li>
+<li>10kBs de vitesse de transmission</li>
+<li>Portée a 3m - 50m théorique mais 3 - 5m en pratique</li>
+<li>Paquets courts (~20B) =&gt; moins de mémoire</li>
+</ul>
+<p>The Host protocol layers and the Controller protocol layer are connected by a Host-Controller Interface (HCI).</p>
+<p>Roles:</p>
+<ul>
+<li>Broadcaster</li>
+<li>Observer</li>
+<li>Peripheral</li>
+<li>Central</li>
+</ul>
+<h2 id="host-protocol-layers"><a class="header" href="#host-protocol-layers">Host protocol layers</a></h2>
+<h2 id="controller-protocol-layers"><a class="header" href="#controller-protocol-layers">Controller protocol layers</a></h2>
+<h3 id="couche-liaison-ll"><a class="header" href="#couche-liaison-ll">Couche Liaison (LL)</a></h3>
+<p>Manage the state of the LE Radio.</p>
+<p>Les paquets sont identifiés par leur numéro de transaction (Access Address) et pas par le couple d'identifiants (émetteur-destinataire). Cet solution permet d'économiser des octets.</p>
+<p>Ce numéro est créé aléatoirement au moment de la connexion entre un master et un slave.</p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#tag #tagg</p>
 <h1 id="5b4a-communication-protocols"><a class="header" href="#5b4a-communication-protocols">5b4a-communication-protocols</a></h1>
@@ -2624,7 +3091,7 @@ Les clients doivent s'abonner et après ils reçoivent que l'information venant 
 │client├──────────┘                   
 └──────┘                                                
 </code></pre>
-<h2 id="glossaire"><a class="header" href="#glossaire">glossaire</a></h2>
+<h2 id="glossaire-1"><a class="header" href="#glossaire-1">glossaire</a></h2>
 <ul>
 <li>broker. distribue les informations aux clients intéressés</li>
 <li>client. connecté au broker pour envoyer ou recevoir ldes informations</li>
@@ -2708,6 +3175,17 @@ Les clients doivent s'abonner et après ils reçoivent que l'information venant 
 <li>très performante et très économique en mémoire</li>
 <li>on isole les systèmes des fichiers aussi</li>
 </ul>
+<h2 id="précurseurs"><a class="header" href="#précurseurs">Précurseurs</a></h2>
+<p>Toutes les fonctionnalités des conteneurs reposent sur des services noyaux.</p>
+<ul>
+<li>ulimit</li>
+<li>chroot</li>
+<li>pivot_root</li>
+<li>mount</li>
+<li>namespace</li>
+<li>cgroups
+#todo</li>
+</ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne #container</p>
 <h1 id="virtualisation-pure"><a class="header" href="#virtualisation-pure">Virtualisation pure</a></h1>
@@ -2741,6 +3219,7 @@ utilisable avec les instructions spécifiques des CPU
 souvent impracticable pour les systèmes non libres
 exemples: Vmware Vsphere, XEN, MicrosoP Hyper-V server, KVM</li>
 </ul>
+<p>#todo</p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne</p>
 <h1 id="hybride"><a class="header" href="#hybride">Hybride</a></h1>
@@ -2753,6 +3232,7 @@ pas de couche d'isolation
 exemple: UML (User Mode Linux)
 abandonnée</li>
 </ul>
+<p>#todo</p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne #cloud</p>
 <h1 id="software-as-a-service-saas"><a class="header" href="#software-as-a-service-saas">Software as a Service (SaaS)</a></h1>
@@ -2783,7 +3263,7 @@ abandonnée</li>
 </ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne</p>
-<h1 id="glossaire-1"><a class="header" href="#glossaire-1">Glossaire</a></h1>
+<h1 id="glossaire-2"><a class="header" href="#glossaire-2">Glossaire</a></h1>
 <hr />
 <ul>
 <li><strong>le système hôte</strong>. Os principal de l'ordinateur</li>
@@ -2795,7 +3275,7 @@ abandonnée</li>
 </ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><p>#computers #computerscience #fr #sorbonne</p>
-<h1 id="histoire-1"><a class="header" href="#histoire-1">Histoire</a></h1>
+<h1 id="histoire-2"><a class="header" href="#histoire-2">Histoire</a></h1>
 <hr />
 <ul>
 <li>1979 - 1982. UNIX <code>chroot</code> pour UNIX v7 et BSD</li>

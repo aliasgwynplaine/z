@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>3b4a-cryptographie - zettelkasten</title>
+        <title>2b10-peer-to-peer - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,49 +154,41 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#crypto #infosec #fr #sorbonne</p>
-<h1 id="cryptographie"><a class="header" href="#cryptographie">Cryptographie</a></h1>
+                        <p>#p2p #distributedalgorithms #activedirectory #sorbonne #en</p>
+<h1 id="systèmes-pair-à-pair"><a class="header" href="#systèmes-pair-à-pair">Systèmes pair-à-pair</a></h1>
 <hr />
-<p>Crypto-système symétrique <a href="3b4a1-symmetric-key-algorithms.html">3b4a1-symmetric-key-algorithms</a></p>
-<p>Crypto-système asymétrique <a href="3b4a2-asymmetric-key-algorithm.html">3b4a2-asymmetric-key-algorithm</a></p>
-<p>L'efficacité général du cryptage dépend</p>
+<h2 id="napster"><a class="header" href="#napster">Napster</a></h2>
+<p>The first simple but successful P2P-application.</p>
 <ul>
-<li>de la confidentialité des secrets</li>
-<li>de la difficulté à deviner les secrets ou à essayer toutes les possibilités</li>
-<li>de la difficulté de l'inversion de l'algorithme sans connaître la clé</li>
-<li>de l'existence de portes par derrière</li>
-<li>possibilité de déchiffrement par attaque à text partiellement connu</li>
+<li>File retrieval: the requesting peer contacts the peer having the file directly and downloads it</li>
 </ul>
-<h2 id="fonctions-à-sens-unique"><a class="header" href="#fonctions-à-sens-unique">Fonctions à sens unique</a></h2>
-<p>#todo
-C'est une fonction \(f(M)\) facile à calculer mais telle qu'il est extrêmement difficile de déduire \(M\) de \(f(M)\).</p>
+<p>def. A p2p computer network is a network that relies primarily on the copmuting power and bandwidth of the participants in the network rather than concentrating it in a relatively small number</p>
 <ul>
-<li>\(h\) est à collision faible difficile: il est calculatoirement difficile de trouver M significatif tel que \(h(M) = K\) pour un signature \(K\).</li>
-<li>\(h\) est à collision forte difficile: il est calculatoirement difficile de trouver deux \(M\) et \(M'\) tel que \(h(M) = h(M')\)
-Une fonction de hachage est avec clef si son calcul dépend aussi d'une info secrète.
-C'est-à-dire, \(k \neq k' \Rightarrow H_k(M)\neq H_k(M)\) . Voir HMAC (code d'authentification de message de hachage à clé).</li>
+<li>Bootstrapping</li>
+<li>Service discovery</li>
+<li>Overlay structure maintenance</li>
+<li>Neighbour status tracking</li>
+<li>Application layer routing</li>
+<li>Resilience, handling link and node failures</li>
+<li>...</li>
 </ul>
-<p>fonction d'hachage cryptographic <a href="2a1-cryptographic-hash-function.html">2a1-cryptographic-hash-function</a></p>
-<h2 id="glossaire"><a class="header" href="#glossaire">Glossaire</a></h2>
-<ul>
-<li><strong>Décrypter</strong> ou <strong>casser</strong> un code</li>
-<li>L'art de définir des codes (de chiffrement) est la <strong>cryptographie</strong></li>
-<li>L'art de casser des codes est appelé <strong>cryptanalyse</strong> ou <strong>cryptologie</strong></li>
-<li>Le <strong>chiffrement</strong> est donc une transformation d'un texte pour en cacher le sens</li>
-<li>Le <strong>déchiffrement</strong> est l'opération inverse permettant de récupérer le text en clair à partir du texte chiffré</li>
-<li>Un <strong>crypto-système</strong> est l'ensemble des deux méthodes de chiffrement et de déchiffrement utilisable en sécurité</li>
-</ul>
+<h2 id="taxonomy-of-p2p-apps"><a class="header" href="#taxonomy-of-p2p-apps">Taxonomy of p2p-apps</a></h2>
+<foto>
+:P
+</foto>
+<h3 id="p2p-structured"><a class="header" href="#p2p-structured">P2P structured</a></h3>
+<h3 id="p2p-non-structured"><a class="header" href="#p2p-non-structured">P2P non-structured</a></h3>
 <hr />
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="3b4-confidentialite.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b1-distributed-apps-classification.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="3b4a1-symmetric-key-algorithms.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b11-hash-table.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -206,11 +198,11 @@ C'est-à-dire, \(k \neq k' \Rightarrow H_k(M)\neq H_k(M)\) . Voir HMAC (code d'a
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="3b4-confidentialite.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b1-distributed-apps-classification.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="3b4a1-symmetric-key-algorithms.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b11-hash-table.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

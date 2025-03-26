@@ -4,11 +4,35 @@
     "type": "split",
     "children": [
       {
-        "id": "c70f03d5805e42a8",
+        "id": "a6df678862535931",
         "type": "tabs",
         "children": [
           {
-            "id": "d1a84992bd6cf394",
+            "id": "9f2fd474dd862d50",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "5c-virtual-infrastructures.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "5c-virtual-infrastructures"
+            }
+          },
+          {
+            "id": "e51b6a229f1c5838",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -49,7 +73,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "conteneur",
                 "matchingCase": true,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -70,7 +94,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -162,34 +187,34 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d1a84992bd6cf394",
+  "active": "9f2fd474dd862d50",
   "lastOpenFiles": [
-    "1d8-linux.md",
-    "1d8h1a2b-sysfs-files.md",
-    "1d8h1a-ramfs.md",
-    "1d8h1a4-debugfs.md",
-    "1d8h1a3-configfs.md",
-    "1d8h1-pseudo-file-systems.md",
-    "1d8h-linux-kernel-architeture.md",
-    "1d8h1a1-procfs.md",
-    "1d8h1a2-sysfs.md",
-    "1d8h1a2a-sysfs-folders.md",
-    "1d8a-linux-drivers.md",
-    "5b4a3-mqtt-protocol.md",
-    "3b3b1-kerberos-kdc.md",
-    "5b4a-communication-protocols.md",
-    "5b4-networks.md",
-    "5b-digital-computers.md",
-    "2025-03-13.md",
-    "5b2-peripherics.md",
-    "1n-drivers.md",
+    "5c9-virtual-infrastructures-history.md",
+    "5c-virtual-infrastructures.md",
+    "5c5-saas.md",
+    "5c2-container.md",
+    "5c8-virtual-infrastructures-glossary.md",
     "5-computers.md",
+    "1d8h-linux-kernel-architeture.md",
+    "1d8h3-linux-memory-management.md",
+    "2b11-hash-table.md",
+    "5c4-virtualisation-hybride.md",
+    "5c3-virtualisation-pure.md",
     "0-index.md",
-    "1e-gnu-linux.md",
-    "1-systemes-dexploitation.md",
-    "1d-kernel.md",
-    "5b3-cisc-architecture.md",
-    "2025-03-12.md",
+    "3b5b-digital-signature.md",
+    "3b5-integrite.md",
+    "3-securite-dinformation.md",
+    "3b-securite.md",
+    "3b4-confidentialite.md",
+    "3b4a-cryptographie.md",
+    "2a1-cryptographic-hash-function.md",
+    "3b4a2-asymmetric-key-algorithm.md",
+    "templates/zettle.md",
+    "Untitled.md",
+    "3b4a2a-RSA.md",
+    "3b4a1-symmetric-key-algorithms.md",
+    "3b10-security-policies.md",
+    "3b3a-kerberos.md",
     "templates"
   ]
 }

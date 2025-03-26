@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5b4-networks - zettelkasten</title>
+        <title>2b9-termination-detection - zettelkasten</title>
 
 
         <!-- Custom HTML head -->
@@ -154,72 +154,239 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>#network #en #sorbonne #fr</p>
-<h1 id="computer-networks"><a class="header" href="#computer-networks">Computer networks</a></h1>
+                        <p>#fr #distributedalgorithms #sorbonne</p>
+<h1 id="detection-de-la-termination"><a class="header" href="#detection-de-la-termination">Detection de la termination</a></h1>
 <hr />
-<p><a href="5b4b-osi-model.html">5b4b-osi-model</a></p>
-<p><a href="5b4d-tcp-ip-model.html">5b4d-tcp-ip-model</a></p>
-<p><a href="5b4a-communication-protocols.html">5b4a-communication-protocols</a></p>
-<h2 id="types-de-réseau"><a class="header" href="#types-de-réseau">types de réseau</a></h2>
+<h2 id="definition"><a class="header" href="#definition">Definition</a></h2>
+<p>Construction d'une couche de contrôle afin de détecter la terminaison d'une application répartie.</p>
+<p>Le <em>but</em> c'est de distinguer l'algorithme de détection de terminaison de l'algorithm de l'application. Il a pas d'influence dans l'exécution de l'application</p>
 <ul>
-<li>Topologie
+<li>Configuration terminale
 <ul>
-<li>peer to peer <a href="2b10-peer-to-peer.html">2b10-peer-to-peer</a></li>
-<li>star</li>
-<li>cluster tree</li>
-<li>mesh</li>
+<li>aucune action supplémentaire de l'appli ne peut être exécutée</li>
+<li>tous les canaux de communication sont vides</li>
+</ul>
+</li>
+<li>Etat
+<ul>
+<li>actif. si une action interne ou l'action emmètre est applicable</li>
+<li>inactif. dans le cas contraire</li>
+</ul>
+</li>
+<li>Message
+<ul>
+<li>applicatif.</li>
+<li>contrôle. message de l'algorithme de detection de la terminaison</li>
 </ul>
 </li>
 </ul>
-<h2 id="solutions-grand-public"><a class="header" href="#solutions-grand-public">Solutions grand public</a></h2>
+<p>Un modèle est défini pour un exécution répartie en définissant les actions des processus actifs et inactifs</p>
+<p>Les processus suivent les <strong>règles</strong> suivantes</p>
+<ol>
+<li>initialement chaque processus \(p\) peut être dans l’état <em>actif</em> ou <em>inactif</em></li>
+<li>un processus \(p\) peut passer spontanément de l’état actif a inactif</li>
+<li>seul les processus actifs peuvent envoyer des messages application</li>
+<li>lors de la réception d'un message application, un proc \(p\) inactif passe a actif
 <ul>
-<li>
-<p>ZigBee -&gt; réseau d'objets</p>
-<ul>
-<li>64k noeuds : star, cluster, mesh</li>
-<li>autonomie plusieurs années</li>
-<li>250 kbs</li>
-<li>portée 100m</li>
+<li>seule façon pour un processus inactif de passer actif
+observations</li>
 </ul>
 </li>
-<li>
-<p>Bluetooth -&gt; remplacement de câbles</p>
+</ol>
 <ul>
-<li>
+<li>un message de contrôle émis lorsque le processus est inactif ne le rend pas actif.</li>
+<li>la reception d'un message de contrôle non plus.</li>
+</ul>
+<h2 id="terminaison"><a class="header" href="#terminaison">Terminaison</a></h2>
 <ul>
-<li>7 noeuds actifs</li>
+<li>\(P\): ensemble de processus</li>
+<li>\(C\): ensemble de canaux</li>
+<li>Prédicat TERM
+<ul>
+<li>TERM &lt;-&gt; (\(\forall p \in P: p \text{ inactif}) \text{ et } (\forall c \in c : C \text{ vide})\)
+<ul>
+<li>TERM est un prédicat stable:
+<ul>
+<li>\(\text{TERM}(t) = \text{true} \Rightarrow \forall t' &gt; t: \text{TERM}(t') = \text{true}\)</li>
 </ul>
 </li>
-<li>0.7 à 2 Mbs</li>
-<li>portée 10m</li>
 </ul>
 </li>
-<li>
-<p>Wi-Fi -&gt; internet</p>
+</ul>
+</li>
+</ul>
+<h2 id="propriétés"><a class="header" href="#propriétés">Propriétés</a></h2>
 <ul>
-<li>32 nœuds : star + roaming</li>
-<li>autonomie en heures</li>
-<li>11 - x100 Mbs</li>
-</ul>
-</li>
-<li>
-<p>Bluetooth Low Energy <a href="5b4a-ble.html">5b4a-ble</a> -&gt; IOT</p>
+<li><strong>sûreté</strong>. si un proc detecte la terminaison a l'instant \(t\), alors\(\text{TERM}(t) = \text{true}\)
 <ul>
-<li>autonomie en années</li>
-<li>P2P ou Star nb de nœuds illimité</li>
-<li>300 kbs</li>
-<li>10 - 100m</li>
+<li>pas de fausse detection.</li>
 </ul>
 </li>
-<li>
-<p>LoRaWAN -&gt; IOT grandes distances</p>
+<li><strong>vivacité</strong>. si a un instant \(t, \text{TERM}(t) = \text{true}\), alors l'algorithme de detection finira par détecter cette terminaison.</li>
+</ul>
+<blockquote>
+<p>Example d'un mauvais algo:</p>
+</blockquote>
 <ul>
-<li>5 - 15 km</li>
-<li>autonomie en années</li>
-<li>star nb de noeuds illimité</li>
-<li>50 kbs</li>
+<li>les sites se trouve soit dans l'état <em>inactif</em> soit dans l'état <em>actif</em></li>
+<li>algo
+<ul>
+<li>faire circuler un jeton (message contrôle) selon une structure d'anneau, envoyé initialement par \(P_0\)</li>
+<li>Lorsqu'un site est inactif et possède le jeton, il l'envoie au site suivant.</li>
+<li>lorsque le jeton revient à \(P_0\), la terminaison est détectée</li>
 </ul>
 </li>
+</ul>
+<h2 id="algorithmes"><a class="header" href="#algorithmes">Algorithmes</a></h2>
+<ul>
+<li>algorithme de Misra (1983) <a href="2b91-algorithme-misra.html">2b91-algorithme-misra</a></li>
+</ul>
+<h3 id="modèle-à-communication-instantanée"><a class="header" href="#modèle-à-communication-instantanée">Modèle à communication instantanée</a></h3>
+<ul>
+<li>A communication instantanée
+<ul>
+<li>communication synchrone: exemple CSP</li>
+<li>TERMP &lt;-&gt; forall p in P : p inactif</li>
+</ul>
+</li>
+<li>Atomique
+<ul>
+<li>le moment d'actividte de procesus est négligeable
+<ul>
+<li>TERM &lt;-&gt; forall c in C: c vide</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="algorithme-de-rana-1983"><a class="header" href="#algorithme-de-rana-1983">Algorithme de Rana (1983)</a></h4>
+<ul>
+<li>Communication instantanée (e.g. CSP)</li>
+<li>N sites organisés dans un anneau logique unidirectionnel
+<ul>
+<li>messages transmis sur l'anneau</li>
+</ul>
+</li>
+<li>A chaque fois qu'un processus recoit soit un message applicatif soit un message de controle, il met son horloge logique local a jour</li>
+<li>Les messages de controles circulent sur l'anneau</li>
+<li>...</li>
+<li>...</li>
+</ul>
+<h5 id="lalgo"><a class="header" href="#lalgo">l'algo</a></h5>
+<ul>
+<li>lorsqu'un proc devien inactif, il enregistre la valeur de son horloge local (H_ina) et envoie le message de control &lt;H_ina, 1&gt; a son succ</li>
+<li>lors de la réception d'un message de controle:
+<ul>
+<li>si le site est actif, il ignore le message</li>
+<li>sinon
+<ul>
+<li>si compteur != N
+<ul>
+<li>si la valeur de son passage a inactif H_ina &gt; H_msg du message de control recu, le message est ignoré</li>
+<li>Sinon, le message est envoye...</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="algorithme-de-dijkstra-1983"><a class="header" href="#algorithme-de-dijkstra-1983">Algorithme de Dijkstra (1983)</a></h4>
+<ul>
+<li>modele a communication instantanée</li>
+<li>N sites organisés dans un anneau logique</li>
+<li>Existence d'un jeton</li>
+<li>Les sites peuvent etre de couleur blanc ou noire ainsi que le jeton
+<ul>
+<li>initialement tous les sites et le jeton son blancs</li>
+</ul>
+</li>
+</ul>
+<h5 id="lalgo-1"><a class="header" href="#lalgo-1">l'algo</a></h5>
+<ul>
+<li>il  y a un site initiateur P_0
+<ul>
+<li>quand P_0 devient inactif, il envoie le jeton couleur blanche a P_N-1</li>
+</ul>
+</li>
+<li>lorsque le site P_i, qui detient le jeton, devient inactif, P_i envoie le jeton au site P_i-2
+<ul>
+<li>Si P_i est blanc
+<ul>
+<li>P_i envoie a P_i-1 le jeton sans changer la couleur du jeotn</li>
+</ul>
+</li>
+<li>sinon
+<ul>
+<li>P_i change la couleur du jeton a noire avant de l'envoyer a P_i-1</li>
+<li>P_i devient blanc</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Un site P_i devient noire en envoyant un message applicatif au site P_j</li>
+<li>Lorsque P_o recoit le jeton
+<ul>
+<li>si le jeton est blanc et P_o est blanc et dans l'etat inactif
+<ul>
+<li>terminaison détectée</li>
+<li>sinon
+<ul>
+<li>lorsque P_0 devient inactif, il renvoie le jeton couleur blanche a P_N-1</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="lalgo-en-utilisant-un-arbre-couvrant"><a class="header" href="#lalgo-en-utilisant-un-arbre-couvrant">l'algo en utilisant un arbre couvrant</a></h5>
+<ul>
+<li>Racine informe aux feuilles de commencer la détection
+<ul>
+<li>chaque feuille a un jeton blanc</li>
+<li>un site P_i devient noire en envoyant un message applicatif au site P_j</li>
+<li>Si P_i est noir:
+<ul>
+<li>P_i change la couleur du jeton a noire avant de l'envoyaer a son pere</li>
+<li>P_i devient blanc</li>
+</ul>
+</li>
+<li>Si P_i a recu un jeton noir d'un de ses enfants, il envoie un jeton tnoir a son pere</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+<h3 id="modèle-atomique"><a class="header" href="#modèle-atomique">Modèle atomique</a></h3>
+<p>L'algorithme de détection ne voit jamais un processus local dans l'état actif: l'algorithme n'est activé que lorsque le procsssus est inactif</p>
+<p>Ex: mauvaise solution avec deux compteurs</p>
+<ul>
+<li>N procs</li>
+<li>supposons qu'un processus i veut savoir si le systeme se trouve dans un etat terminal: tous les canaux vides
+<ul>
+<li>i envoie un message de controle a tous les N-1 autres procs a un instant t</li>
+</ul>
+</li>
+<li>Chaque processus j répond a i avec le nombre de messages recus r_j(t) et nombre de messages envoyés s_j(t)</li>
+<li>en recevant tous les messages, le site i calcule
++
+<ul>
+<li>...</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<h3 id="lalgorithme-de-quatre-compteurs"><a class="header" href="#lalgorithme-de-quatre-compteurs">L'algorithme de quatre compteurs</a></h3>
+<ul>
+<li>Mattern (1987)</li>
+<li>Compteur deux fois
+<ul>
+<li>fin de la premiere vague de controle. l'initiateur accumule les valeurs de s_i(t_i) et r_i(t_i) forall i: 1 &lt;= i &lt;= N dans S et R</li>
+<li>fin de la deuxieme vague de controle. l'initiateur accumule les valeurs de s_i(t_i) et r_i(t_i) forall i: 1&lt;=i&lt;=N dans S' et R'</li>
+</ul>
+</li>
+<li>Si R=S', alors, l'exécution s'est terminée à la fin de la premiere vague (à prouver)
+il faut bien reviser les preuves</li>
 </ul>
 <hr />
 
@@ -227,11 +394,11 @@
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="5b3-smartphones.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="2b8b7-naimi-trehel-mutex.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="5b4a-ble.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="2b91-algorithme-misra.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -241,11 +408,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="5b3-smartphones.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="2b8b7-naimi-trehel-mutex.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="5b4a-ble.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="2b91-algorithme-misra.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
