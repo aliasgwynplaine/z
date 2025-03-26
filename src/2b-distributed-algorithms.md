@@ -31,6 +31,12 @@ Algorithmes à vagues [[2b7-wave-algorithms]]
 
 Exclusion mutuelle [[2b8-distributed-mutex]]
 
+Detection de la terminaison [[2b9-termination-detection]]
+
+P2P [[2b10-peer-to-peer]]
+
+table d'hachage distribuée [[2b11-hash-table]]
+
 
 
 ---

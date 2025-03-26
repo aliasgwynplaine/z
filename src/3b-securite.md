@@ -13,3 +13,6 @@ Selon le cours SAS, il faut retenir _les 5 piliers de la sécurité_:
 - non répudiation [3b6-non-repudiation](3b6-non-repudiation.md)
 - auditabilité [3b7-auditabilite](3b7-auditabilite.md)
 on considere aussi la vie privée et l'anonymat [3b8-vie-privee](3b8-vie-privee.md), [3b9-anonymat](3b9-anonymat.md)
+
+Les politiques de sécurité [[3b10-security-policies]]
+

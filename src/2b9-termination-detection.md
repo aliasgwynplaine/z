@@ -1,66 +1,52 @@
-#en #distributedalgorithms #sorbonne #failures 
+#fr #distributedalgorithms #sorbonne 
 # Detection de la termination
 ---
 ## Definition
-Construction d'une couche de contrôle afin de détecter la terminaison d'une application répartie
-+ Distinguer l'algorithme de détection de terminaison de l'algorithm de l'appli
+Construction d'une couche de contrôle afin de détecter la terminaison d'une application répartie.
 
-Configuration terminale
-+ aucune action supplémentaire de l'appli ne peut être exécutée
-+ tous les canaux de communication sont vides
+Le *but* c'est de distinguer l'algorithme de détection de terminaison de l'algorithm de l'application. Il a pas d'influence dans l'exécution de l'application
 
-Etat
-+ actif. si une action interne ou l'action emmètre est applicable
-+ inactif. dans le cas contraire
-Message
-+ applicatif
-+ contrôle. mssg de l'algorithme de detection de la terminaison
-Un modèle est défini pour un exécution réparie en définissant les actions des processus actifs et inactifs
++ Configuration terminale
+	+ aucune action supplémentaire de l'appli ne peut être exécutée
+	+ tous les canaux de communication sont vides
++ Etat
+	+ actif. si une action interne ou l'action emmètre est applicable
+	+ inactif. dans le cas contraire
++ Message
+	+ applicatif.
+	+ contrôle. message de l'algorithme de detection de la terminaison
 
-Les processus suivent les ègles suivantes
-1. initialement chaque proc p peut etre dans l'etat actif ou inactif
-2. un proc p peut passer spontanément de l'etat actif a innactif
-3. seul les proc actifs peuvent envoyer des msgs applis
-4. losrs de la réception d'un message appli, un proc p inactif passe a actif
-	+ seule facon pour un processus inactif de passer actif
+Un modèle est défini pour un exécution répartie en définissant les actions des processus actifs et inactifs
+
+Les processus suivent les **règles** suivantes
+1. initialement chaque processus $p$ peut être dans l’état *actif* ou *inactif*
+2. un processus $p$ peut passer spontanément de l’état actif a inactif
+3. seul les processus actifs peuvent envoyer des messages application
+4. lors de la réception d'un message application, un proc $p$ inactif passe a actif
+	+ seule façon pour un processus inactif de passer actif
 observations
-+ un message de contrôle émis lorsque le proc est inactif ne le rend pas actif
-+ la reception d'un messaeg de control non plus
-Terminaison
-+ P: ensemble de processsus
-+ C ensemblde de canaux
++ un message de contrôle émis lorsque le processus est inactif ne le rend pas actif.
++ la reception d'un message de contrôle non plus.
+## Terminaison
++ $P$: ensemble de processus
++ $C$: ensemble de canaux
 + Prédicat TERM
-	+ TERM <-> forall p in P: p inactif et forall c in c : c vide
-		+ TERM est un predicat stable
-			+ ...
-Propriétés
-+ sûreté. si un proc detecte la terminaison a l'instant t, alors TERM(t) = true
-	+ pas de fausse detection
-+ vivacité. si a un instant t TERM(t) = true, alors l'algo de detection finira par d+etecter cette terminaison
+	+ TERM <-> ($\forall p \in P: p \text{ inactif}) \text{ et } (\forall c \in c : C \text{ vide})$
+		+ TERM est un prédicat stable:
+			+ $\text{TERM}(t) = \text{true} \Rightarrow \forall t' > t: \text{TERM}(t') = \text{true}$
+## Propriétés
++ **sûreté**. si un proc detecte la terminaison a l'instant $t$, alors$\text{TERM}(t) = \text{true}$
+	+ pas de fausse detection.
++ **vivacité**. si a un instant $t, \text{TERM}(t) = \text{true}$, alors l'algorithme de detection finira par détecter cette terminaison.
+
 > Example d'un mauvais algo:
-+ les sites se trouve soit dans l'état inactif soit dans l'état actif
++ les sites se trouve soit dans l'état *inactif* soit dans l'état *actif*
 + algo
-	+ faire circuler un jeton (msg contrôle) selon une structure d'anneau, envoyé initialement par P_0
-	+ Lorsq'un site est inactif et possède le jeton, il l'envoie au site suivant
-	+ lorsque le jeton revient à P_0, la terminaison est détectée
+	+ faire circuler un jeton (message contrôle) selon une structure d'anneau, envoyé initialement par $P_0$
+	+ Lorsqu'un site est inactif et possède le jeton, il l'envoie au site suivant.
+	+ lorsque le jeton revient à $P_0$, la terminaison est détectée
 ## Algorithmes
-### algorithme de Misra (1983)
-+ Anneau logique
-	+ canaux FIFO unidirectionnels
-+ chaque site une couleur noir ou blanc
-	+ noir -> actif
-	+ blanc -> inactif
-+ jeton porte un compteur
-+ ...
-+ Terminaison
-	+ tous les sites sont blanc
-```
-init:
-	state = actif
-	color = black
-	if i == 0 :
-		
-```
++ algorithme de Misra (1983) [[2b91-algorithme-misra]]
 
 
 ### Modèle à communication instantanée

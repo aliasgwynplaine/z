@@ -3,8 +3,8 @@
 ---
 
 Linux offers six main functions
-- Process management
-- Memory management
+- Process management [[1d8h2-linux-process]]
+- Memory management [[1d8h3-linux-memory-management]]
 - Network management
 - Storage management
 - System interface
@@ -31,6 +31,7 @@ through five abstraction layers:
 5. Hardware interfaces
     
     Device drivers, architecture-specific code, …
+
 
 
 ---

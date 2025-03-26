@@ -5,7 +5,7 @@
 	+ multiplication des traces d'exécution
 	+ difficulté de reproduire une exécution
 	+ extrêmement difficile à debugger
-==On utilise donc méthodes inductives basées sur des propriétés invariants et stables.==
+**On utilise donc méthodes inductives basées sur des propriétés invariants et stables.**
 
 + **sûreté**. rien de mauvais ne se produit dans l'exécution
 	+ l'exclusion mutuelle: au plus un proc finit en section critique

@@ -31,4 +31,6 @@ EPT (Extended Page Table) permet d'éviter ces conversions en garantissant la s�
     souvent impracticable pour les systèmes non libres
     exemples: Vmware Vsphere, XEN, MicrosoP Hyper-V server, KVM
 
+#todo 
+
 ---
