@@ -5,9 +5,9 @@ C'est la propriété qui assure qu'une information n'est modifiée que par des e
 
 L’intégrité peut être vérifiée avec une **signature** ou avec l'**empreinte numérique** d'une fonction d'hachage cryptographique ([2a1-cryptographic-hash-function](2a1-cryptographic-hash-function.md)).
 
-fonction signature [[3b5b-digital-signature]]
+fonction signature [3b5b-digital-signature](3b5b-digital-signature.md)
 
-attaques sur l'intégrité [[3b5a-attacks-integrity]]
+attaques sur l'intégrité [3b5a-attacks-integrity](3b5a-attacks-integrity.md)
 
 
 ---

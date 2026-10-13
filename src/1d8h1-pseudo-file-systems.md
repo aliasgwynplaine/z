@@ -7,7 +7,7 @@ the pseudo file system has to be enabled and mounted before being used
 2. mount the pseudo file system
 3.  have fun
 
-in-memory file system [[1d8h1a-ramfs]]
+in-memory file system [1d8h1a-ramfs](1d8h1a-ramfs.md)
 
 
 

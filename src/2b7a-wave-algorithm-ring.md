@@ -2,9 +2,9 @@
 # L'algorithme de l'anneau
 ---
 
-## $p$ initiateur:
+## \\(p\\) initiateur:
 
-$$
+\\[
 \begin{align}
 
 S_p: &\left \{ \text{ spontanément, une fois }\right\} \\\\
@@ -19,7 +19,7 @@ D_p: &\left \{ \text{Rec}_p\right\} \\\\
 \end{align}
 $$
 
-## $p$ non-initiateur:
+## \\(p\\) non-initiateur:
 
 $$
 \begin{align}
@@ -33,7 +33,7 @@ R_p: &\left \{ \text{ un message } <> \text{ arrive }\right\} \\\\
 &\text{Rec}_p = true
 
 \end{align}
-$$
+\\]
 
 
 

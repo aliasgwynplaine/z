@@ -3,5 +3,5 @@
 ---
 + **processus coopérants**. les processus interagissent via des mémoires ou des variables partagées.
 > gérer les conflits d’accès aux ressources communes.
-+ **processus communicants**. les processus s’échangent des messages par l'intermédiaire de canaux [[2b2-communication-channels]].
++ **processus communicants**. les processus s’échangent des messages par l'intermédiaire de canaux [2b2-communication-channels](2b2-communication-channels.md).
 > gérer l'échange de la connaissance.

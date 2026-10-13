@@ -3,8 +3,8 @@
 ---
 
 Linux offers six main functions
-- Process management [[1d8h2-linux-process]]
-- Memory management [[1d8h3-linux-memory-management]]
+- Process management [1d8h2-linux-process](1d8h2-linux-process.md)
+- Memory management [1d8h3-linux-memory-management](1d8h3-linux-memory-management.md)
 - Network management
 - Storage management
 - System interface
@@ -16,10 +16,10 @@ through five abstraction layers:
     
     System calls, procfs, sysfs, device files, …
     
-2. Virtual subsystems [[1d8h1-pseudo-file-systems]]
-    
+2. Virtual subsystems 
     Virtual memory, virtual filesystem, network protocols, …
-    
+	+ pseudo file systems [1d8h1-pseudo-file-systems](1d8h1-pseudo-file-systems.md)
+	+ virtual file systems [1d8h4-virtual-file-systems](1d8h4-virtual-file-systems.md)
 3. Functional subsystems
     
     Filesystems, memory allocators, scheduler, …

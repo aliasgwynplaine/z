@@ -11,9 +11,9 @@ On cherche aussi
 + virtualisation des réseaux
 + virtualisation du stockage
 
-**glossaire** [[5c8-virtual-infrastructures-glossary]]
+**glossaire** [5c8-virtual-infrastructures-glossary](5c8-virtual-infrastructures-glossary.md)
 
-**histoire** [[5c9-virtual-infrastructures-history]]
+**histoire** [5c9-virtual-infrastructures-history](5c9-virtual-infrastructures-history.md)
 
 ## advantages
 + Le matériel virtuel émulé reste plus homogène que les matèriels physiques.
@@ -23,14 +23,14 @@ On cherche aussi
 + limitation de la puissance
 + complexification des interactions
 ## Modèles génériques de virtualisation
-+ SaaS [[5c5-saas]]
-+ PaaS [[5c6-paas]]
-+ IaaS [[5c7-iaas]]
++ SaaS [5c5-saas](5c5-saas.md)
++ PaaS [5c6-paas](5c6-paas.md)
++ IaaS [5c7-iaas](5c7-iaas.md)
 
 ## Types de virtualisation
-+ Conteneur [[5c2-container]]
-+ Virtualisation pure [[5c3-virtualisation-pure]]
-+ Hybride [[5c4-virtualisation-hybride]]
++ Conteneur [5c2-container](5c2-container.md)
++ Virtualisation pure [5c3-virtualisation-pure](5c3-virtualisation-pure.md)
++ Hybride [5c4-virtualisation-hybride](5c4-virtualisation-hybride.md)
 
 
 ---

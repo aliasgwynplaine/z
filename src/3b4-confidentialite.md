@@ -12,8 +12,6 @@ C'est la propriété qui assure qu'une information ne peut être lue que par des
 + inférence. 
 ### attaques par violation de protocole
 + envoie de données non prévues (trames mal-formées, séquence non prévues)
-### attaque par saturation
-+ envoie des messages trop nombreux provoquant un écroulement des systèmes et réseaux. DDoS.
 ### attaques sociales
 + arnaques
 + extorsion

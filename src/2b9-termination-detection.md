@@ -19,34 +19,34 @@ Le *but* c'est de distinguer l'algorithme de détection de terminaison de l'algo
 Un modèle est défini pour un exécution répartie en définissant les actions des processus actifs et inactifs
 
 Les processus suivent les **règles** suivantes
-1. initialement chaque processus $p$ peut être dans l’état *actif* ou *inactif*
-2. un processus $p$ peut passer spontanément de l’état actif a inactif
+1. initialement chaque processus \\(p\\) peut être dans l’état *actif* ou *inactif*
+2. un processus \\(p\\) peut passer spontanément de l’état actif a inactif
 3. seul les processus actifs peuvent envoyer des messages application
-4. lors de la réception d'un message application, un proc $p$ inactif passe a actif
+4. lors de la réception d'un message application, un proc \\(p\\) inactif passe a actif
 	+ seule façon pour un processus inactif de passer actif
 observations
 + un message de contrôle émis lorsque le processus est inactif ne le rend pas actif.
 + la reception d'un message de contrôle non plus.
 ## Terminaison
-+ $P$: ensemble de processus
-+ $C$: ensemble de canaux
++ \\(P\\): ensemble de processus
++ \\(C\\): ensemble de canaux
 + Prédicat TERM
-	+ TERM <-> ($\forall p \in P: p \text{ inactif}) \text{ et } (\forall c \in c : C \text{ vide})$
+	+ TERM <-> (\\(\forall p \in P: p \text{ inactif}) \text{ et } (\forall c \in c : C \text{ vide})\\)
 		+ TERM est un prédicat stable:
-			+ $\text{TERM}(t) = \text{true} \Rightarrow \forall t' > t: \text{TERM}(t') = \text{true}$
+			+ \\(\text{TERM}(t) = \text{true} \Rightarrow \forall t' > t: \text{TERM}(t') = \text{true}\\)
 ## Propriétés
-+ **sûreté**. si un proc detecte la terminaison a l'instant $t$, alors$\text{TERM}(t) = \text{true}$
++ **sûreté**. si un proc detecte la terminaison a l'instant \\(t\\), alors\\(\text{TERM}(t) = \text{true}\\)
 	+ pas de fausse detection.
-+ **vivacité**. si a un instant $t, \text{TERM}(t) = \text{true}$, alors l'algorithme de detection finira par détecter cette terminaison.
++ **vivacité**. si a un instant \\(t, \text{TERM}(t) = \text{true}\\), alors l'algorithme de detection finira par détecter cette terminaison.
 
 > Example d'un mauvais algo:
 + les sites se trouve soit dans l'état *inactif* soit dans l'état *actif*
 + algo
-	+ faire circuler un jeton (message contrôle) selon une structure d'anneau, envoyé initialement par $P_0$
+	+ faire circuler un jeton (message contrôle) selon une structure d'anneau, envoyé initialement par \\(P_0\\)
 	+ Lorsqu'un site est inactif et possède le jeton, il l'envoie au site suivant.
-	+ lorsque le jeton revient à $P_0$, la terminaison est détectée
+	+ lorsque le jeton revient à \\(P_0\\), la terminaison est détectée
 ## Algorithmes
-+ algorithme de Misra (1983) [[2b91-algorithme-misra]]
++ algorithme de Misra (1983) [2b91-algorithme-misra](2b91-algorithme-misra.md)
 
 
 ### Modèle à communication instantanée

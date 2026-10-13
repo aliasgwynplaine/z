@@ -1,7 +1,7 @@
 #algorithmes #fr #distributedalgorithms #sorbonne #mutex
 # Ricart-Agrawala (1981)
 ---
-C'est une amelioration de l'algorithme de Lamport [[2b8b1-lamport-mutex]]
+C'est une amelioration de l'algorithme de Lamport [2b8b1-lamport-mutex](2b8b1-lamport-mutex.md)
 
 + File d'attente. chaque processus P_i ne conserve dans sa file d'attente FA_i que les requêtes dont l'acquittement a été différé.
 + `RELEASE` est remplacé par le message `REPLY` qui possède le sens 'dune autorisation d'accès, délivrée de façon conditionnelle.
@@ -48,7 +48,7 @@ Mettre à jour H_i (H_i = max(H_i, H_j) + 1);
 ```
 
 ## Evaluation
-+ $2(N-1)$ messages par exécution de section critique
++ \\(2(N-1)\\) messages par exécution de section critique
 + **sûreté**. seul le site en tête de la file d'attente `FA` pourra rentrer en section critique. Les autres attendent que cette demande soit retirée avec un reception de RELEASE
 + **vivacité**. toute demande finira par avoir la plus petite estampille et donc se trouvera en tête de la file d'attente
 + **equitable**. par l'ordre total

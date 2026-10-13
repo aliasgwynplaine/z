@@ -13,17 +13,19 @@ Les algorithmes à vagues sont utilisés pour diffuser une info sur le réseau, 
 + **dépendance**. une décision est précédée causalement par un événement de chaque processus
 
 
-anneau [[2b7a-wave-algorithm-ring]]
+anneau [2b7a-wave-algorithm-ring](2b7a-wave-algorithm-ring.md)
 
-arbre [[2b7b-wave-algorithm-tree]]
+arbre [2b7b-wave-algorithm-tree](2b7b-wave-algorithm-tree.md)
 
-echo [[2b7c-wave-algorithm-echo]]
+echo [2b7c-wave-algorithm-echo](2b7c-wave-algorithm-echo.md)
 
-phase [[2b7d-wave-algorithm-phase]]
+phase [2b7d-wave-algorithm-phase](2b7d-wave-algorithm-phase.md)
 
-depth-first token circulation [[2b7f-wave-algorithm-dftc]]
+depth-first token circulation [2b7f-wave-algorithm-dftc](2b7f-wave-algorithm-dftc.md)
 
-algorithme d'Awerbuch Circulation de jeton en profondeur d'abord [[2b7e-wave-algorithm-dftc-awerbuch]]
+algorithme d'Awerbuch Circulation de jeton en profondeur d'abord [2b7e-wave-algorithm-dftc-awerbuch](2b7e-wave-algorithm-dftc-awerbuch.md)
+
+## comparatif
 
 | algorithme | topologie                 | type                               | Décideur       | Symétrie | nb. msg | temps |
 | ---------- | ------------------------- | ---------------------------------- | -------------- | -------- | ------- | ----- |

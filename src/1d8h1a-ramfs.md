@@ -11,13 +11,13 @@ Con: These mechanisms are synchronous from user to kernel, but asynchronous in t
 
 
 ## ramfs representing the kernel data or conf
-proc file system [[1d8h1a1-procfs]]
+proc file system [1d8h1a1-procfs](1d8h1a1-procfs.md)
 
-sys file system [[1d8h1a2-sysfs]]
+sys file system [1d8h1a2-sysfs](1d8h1a2-sysfs.md)
 
-config file system [[1d8h1a3-configfs]]
+config file system [1d8h1a3-configfs](1d8h1a3-configfs.md)
 
-debug file system [[1d8h1a4-debugfs]]
+debug file system [1d8h1a4-debugfs](1d8h1a4-debugfs.md)
 
 #todo: ioctl ? read ? fileoperations ?
 

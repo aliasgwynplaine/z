@@ -91,7 +91,7 @@ The kernel separates pages in multiple zones with different properties. But:
 + `ZONE_DMA`
 + `ZONE_DMA32`
 + `ZONE_NORMAL`
-+ `ZONE_HIGHMEM`
++ `ZONE_HIGHMEM` [1d8h3a-high-memory](1d8h3a-high-memory.md)
 
 ## Memory API
 > internal fragmentation: when we store way less information than needed.

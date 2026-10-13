@@ -1,7 +1,8 @@
 #todo #gnu #gnulinux 
 # GNU-Linux
 ---
-Uses the linux kernel [[1d8-linux]]
+Uses the linux kernel [1d8-linux](1d8-linux.md)
+
 ## Démarrage
 ### Etape 1: Firmware: BIOS / (U)EFI
 + BIOS. code qui lance le bootloader

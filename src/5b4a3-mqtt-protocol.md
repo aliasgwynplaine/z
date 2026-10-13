@@ -3,7 +3,7 @@
 ---
 + Modèle publish (topic-value) / subscribe (topic)
 + décentralisée et asynchrone
-+ basé sur TCP [[5b4a1-tcp-protocol]]
++ basé sur TCP [5b4a1-tcp-protocol](5b4a1-tcp-protocol.md)
 + développé par IBM en 1999
 + adapté aux réseaux sans fils
 + faible consommation énergétique

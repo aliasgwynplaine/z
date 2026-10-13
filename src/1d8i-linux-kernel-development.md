@@ -5,7 +5,7 @@
 Is important to keep in mind the directory tree
 
 
-the kernel dynamic linker [[1d8i1-kernel-dynamic-linker]]
+the kernel dynamic linker [1d8i1-kernel-dynamic-linker](1d8i1-kernel-dynamic-linker.md)
 
 ## Annotations
 

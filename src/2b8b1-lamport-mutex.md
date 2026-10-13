@@ -55,7 +55,7 @@ Switch(type msg)
 ```
 
 ## Evaluation
-+ $3(N-1)$ messages par exécution de section critique
++ \\(3(N-1)\\) messages par exécution de section critique
 + **sûreté**. seul le site en tête de la file d'attente `FA` pourra rentrer en section critique. Les autres attendent que cette demande soit retirée avec un reception de RELEASE
 + **vivacité**. toute demande finira par avoir la plus petite estampille et donc se trouvera en tête de la file d'attente
 + **equitable**. par l'ordre total
@@ -65,7 +65,7 @@ Switch(type msg)
 	+ pas extensible
 
 
-> amélioré par Ricart-Agrawala [[2b8b2-ricart-agrawala-mutex]]
+> amélioré par Ricart-Agrawala [2b8b2-ricart-agrawala-mutex](2b8b2-ricart-agrawala-mutex.md)
 
 ----
 

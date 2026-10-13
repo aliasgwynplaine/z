@@ -8,8 +8,8 @@ Cons:
 + complex
 + each file represents one single piece of data
 + a piece of data cannot be larger than one page (`PAGE_SIZE`)
-## directories [[1d8h1a2a-sysfs-folders]]
+## directories [1d8h1a2a-sysfs-folders](1d8h1a2a-sysfs-folders.md)
 
-## files [[1d8h1a2b-sysfs-files]]
+## files [1d8h1a2b-sysfs-files](1d8h1a2b-sysfs-files.md)
 
 > diff: snprintf sprintf

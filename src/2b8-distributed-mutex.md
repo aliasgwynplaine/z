@@ -27,6 +27,6 @@ Un algorithme d'exclusion mutuelle doit garantir:
 + pas de famine
 
 
-algorithmes centralisés [[2b8a-distributed-mutex-centralized]]
+algorithmes centralisés [2b8a-distributed-mutex-centralized](2b8a-distributed-mutex-centralized.md)
 
-algorithmes répartis [[2b8b-distributed-mutex-non-centralized]]
+algorithmes répartis [2b8b-distributed-mutex-non-centralized](2b8b-distributed-mutex-non-centralized.md)

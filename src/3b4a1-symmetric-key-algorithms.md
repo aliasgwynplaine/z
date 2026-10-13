@@ -10,7 +10,7 @@ On prefers les crypto-système symétriques à cause de son effectivité pratiqu
 + par transposition
 + ECB
 + CBC
-+ DES [[3b4a1a-DES]]
++ DES [3b4a1a-DES](3b4a1a-DES.md)
 + 
 
 

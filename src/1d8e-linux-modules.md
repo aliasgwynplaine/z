@@ -25,9 +25,9 @@ The dependencies are automatically inferred when compiled and available at `/lib
 
 
 ### Building a module
-The running kernel is deployed with a generic `Makefile` [^1] [[1a4-make]]
+The running kernel is deployed with a generic `Makefile` [^1] [1a4-make](1a4-make.md)
 ```bash
-make -C /lib/module/$(uname -r)/build M=$PWD
+make -C /lib/module/\\((uname -r)/build M=\\)PWD
 ```
 This following Makefile can be used to compile a kernel module:
 ```make
@@ -36,10 +36,10 @@ KERNELDIR_LKP ?= /lib/modules/$(shell uname -r)/build
 obj-m += helloWorld.o
 
 all:
-	make -C $(KERNELDIR_LKP) M=$$PWD modules
+	make -C \\((KERNELDIR_LKP) M=\\)$PWD modules
 
 clean:
-	make -C $(KERNELDIR_LKP) M=$$PWD clean
+	make -C \\((KERNELDIR_LKP) M=\\)$PWD clean
 
 ```
 

@@ -1,7 +1,7 @@
 #kernel #programming #fr #drivers #fileops
-# Linux drivers programming
+# Linux file operations
 ---
-La structure `file_operations` est défini dans `linux/fs.h` est il a des champs qui sont des pointeurs aux fonctions. Chaque fichier char associé à un driver est associé a une structure `file_operations` [1d8f-linux-file-struct](1d8f-linux-file-struct.md).
+La structure `file_operations` est défini dans `linux/fs.h` est il a des champs qui sont des pointeurs aux fonctions. Chaque fichier char associé à un driver est associé a une structure `file_operations` [1d8h4a-file-descriptors](1d8h4a-file-descriptors.md).
 
 ```c
  struct file_operations {

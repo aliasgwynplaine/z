@@ -3,16 +3,16 @@
 ---
 
 
-[[5b4b-osi-model]]
+[5b4b-osi-model](5b4b-osi-model.md)
 
-[[5b4d-tcp-ip-model]]
+[5b4d-tcp-ip-model](5b4d-tcp-ip-model.md)
 
 
-[[5b4a-communication-protocols]]
+[5b4a-communication-protocols](5b4a-communication-protocols.md)
 
 ## types de réseau
 + Topologie
-	+ peer to peer [[2b10-peer-to-peer]]
+	+ peer to peer [2b10-peer-to-peer](2b10-peer-to-peer.md)
 	+ star
 	+ cluster tree
 	+ mesh
@@ -32,7 +32,7 @@
 	+ 32 nœuds : star + roaming
 	+ autonomie en heures
 	+ 11 - x100 Mbs 
-+ Bluetooth Low Energy [[5b4a-ble]] -> IOT 
++ Bluetooth Low Energy [5b4a-ble](5b4a-ble.md) -> IOT 
 	+ autonomie en années
 	+ P2P ou Star nb de nœuds illimité
 	+ 300 kbs
